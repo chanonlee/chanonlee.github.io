@@ -1,0 +1,624 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chanon">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="概念介绍： **XLOG           **            Transaction Log 事务日志，是一个统称 WAL段文件               磁盘中存储XLOG的区块，数据按存储页的形式组织，每一页可能有多条XLOG数据 XLOG record data  写在WAL段文件中的一条一条具体的数据， 含有日志序列号LSN Log Sequence Number  正文段文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Chanon_Lee">
+<meta property="og:url" content="http://example.com/2023/08/21/WAL%E5%9C%A8%E7%A3%81%E7%9B%98%E4%B8%8A%E6%98%AF%E5%A6%82%E4%BD%95%E5%AD%98%E5%82%A8%E7%9A%84/index.html">
+<meta property="og:site_name" content="Chanon_Lee">
+<meta property="og:description" content="概念介绍： **XLOG           **            Transaction Log 事务日志，是一个统称 WAL段文件               磁盘中存储XLOG的区块，数据按存储页的形式组织，每一页可能有多条XLOG数据 XLOG record data  写在WAL段文件中的一条一条具体的数据， 含有日志序列号LSN Log Sequence Number  正文段文">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/32610216/1686159058102-b114ade8-af27-4333-93d3-d38d9a42f61b.png#averageHue=%23f5f5f5&clientId=u9288eda9-28b4-4&from=paste&height=285&id=u85073801&originHeight=570&originWidth=1327&originalType=binary&ratio=2&rotation=0&showTitle=false&size=143980&status=done&style=none&taskId=u808a58f3-244d-4af1-84a6-d09dd0c21d5&title=&width=663.5">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/32610216/1686159887760-e2fbc00f-c86f-43cc-b6fb-a20fee138316.png#averageHue=%23eeeeee&clientId=u9288eda9-28b4-4&from=paste&height=380&id=u1b7c0899&originHeight=760&originWidth=1329&originalType=binary&ratio=2&rotation=0&showTitle=false&size=244854&status=done&style=none&taskId=u41338af3-4b56-4853-b924-b46bfd57d56&title=&width=664.5">
+<meta property="article:published_time" content="2023-08-21T11:37:39.553Z">
+<meta property="article:modified_time" content="2023-08-21T11:37:39.756Z">
+<meta property="article:author" content="chanon">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2023/png/32610216/1686159058102-b114ade8-af27-4333-93d3-d38d9a42f61b.png#averageHue=%23f5f5f5&clientId=u9288eda9-28b4-4&from=paste&height=285&id=u85073801&originHeight=570&originWidth=1327&originalType=binary&ratio=2&rotation=0&showTitle=false&size=143980&status=done&style=none&taskId=u808a58f3-244d-4af1-84a6-d09dd0c21d5&title=&width=663.5">
+  
+  
+  
+  <title>Chanon_Lee</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-08-21 19:37" pubdate>
+          August 21, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h4 id="概念介绍："><a href="#概念介绍：" class="headerlink" title="概念介绍："></a>概念介绍：</h4><ul>
+<li>**XLOG           **            Transaction Log 事务日志，是一个统称</li>
+<li><strong>WAL段文件</strong>               磁盘中存储XLOG的区块，数据按存储页的形式组织，每一页可能有多条XLOG数据</li>
+<li><strong>XLOG record data</strong>  写在WAL段文件中的一条一条具体的数据， 含有日志序列号LSN Log Sequence Number</li>
+</ul>
+<h4 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h4><h5 id="段文件的结构"><a href="#段文件的结构" class="headerlink" title="段文件的结构"></a>段文件的结构</h5><p>下图就是一个具体的WAL段文件区块，整个16MB的空间是存储分配给它的空间，这个段文件的大小可以通过参数调整，但默认为16MB。在段文件内部，空间会被按页划分，每一页时一个8KB的区块。这样当PostgreSQL系统读入WAL时就可以一页一页地读入了。每一页数据都包含了首部和数据部分。除了第一页的首部稍有不同外，其他的每一页都有相同的首部。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32610216/1686159058102-b114ade8-af27-4333-93d3-d38d9a42f61b.png#averageHue=%23f5f5f5&clientId=u9288eda9-28b4-4&from=paste&height=285&id=u85073801&originHeight=570&originWidth=1327&originalType=binary&ratio=2&rotation=0&showTitle=false&size=143980&status=done&style=none&taskId=u808a58f3-244d-4af1-84a6-d09dd0c21d5&title=&width=663.5" srcset="/img/loading.gif" lazyload alt="image.png"><br>图1. WAL段文件的内部布局<br>下面是两种页面的首部结构。可以看到，首页的首部除了包含校验信息外，还记录了一些WAL的元数据。对于存储来说，元数据就是用来标记位置的信息，xlp_page_addr和xlp_rem_len就起到了这个作用。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">XLogPageHeaderData</span></span><br><span class="hljs-class">&#123;</span><br>    uint16         xlp_magic;    /＊ 用于正确性检查的魔数 ＊/<br>    uint16         xlp_info;     /＊ 标记位 ＊/<br>    TimeLineID    xlp_tli;       /＊ 页面中第一条记录的时间线ID ＊/<br>    XLogRecPtr    xlp_pageaddr; /＊ 当前页面的XLOG地址 ＊/<br><br>    /＊ 当当前页面放不下一条完整记录时，我们会在下一个页面继续放，xlp_rem_len存储了先前页面<br>    ＊ 记录剩余的字节数。注意，xl_rem_len包含了备份区块的数据，也就是说它会在第一个首部跟踪<br>    ＊ xl_tot_len而不是xl_len。还要注意，延续的数据不一定是对齐的 ＊/<br>    uint32         xlp_rem_len;  /＊ 记录所有剩余数据的长度 ＊/<br>    &#125; XLogPageHeaderData;<br><br><span class="hljs-keyword">typedef</span> XLogPageHeaderData ＊XLogPageHeader;<br><br>/＊ 当设置了XLP_LONG_HEADER标记位时，我们将在页首部中存储额外的字段。<br>＊ (通常是在XLOG文件中的第一个页面中) 额外的字段用于确保文件的正确性 ＊/<br>    <span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">XLogLongPageHeaderData</span></span><br><span class="hljs-class">&#123;</span><br>    XLogPageHeaderData <span class="hljs-built_in">std</span>;              /＊ 标准首部 ＊/<br>    uint64               xlp_sysid;       /＊ 来自pg_control中的系统标识符 ＊/<br>    uint32               xlp_seg_size;   /＊ 交叉校验 ＊/<br>    uint32               xlp_xlog_blcksz;/＊ 交叉校验 ＊/<br>    &#125; XLogLongPageHeaderData;<br></code></pre></td></tr></table></figure>
+
+<h5 id="XLOG-record-data数据结构"><a href="#XLOG-record-data数据结构" class="headerlink" title="XLOG record data数据结构"></a>XLOG record data数据结构</h5><p>接下来聊聊XLOG record data是如何组织的。<br>每一个XLOG record data也有一个它自己的首部和它的数据部分。所有XLOG record data的首部结构都是相同的，它的数据结构是XLogRecord。它的结构如下，需要注意的是它包含了xl_xid事务标识。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">XLogRecord</span></span><br><span class="hljs-class">&#123;</span><br>  uint32           xl_tot_len;   /＊ 整条记录的全长 ＊/<br>  TransactionId   xl_xid;        /＊ 事务ID ＊/<br>  uint32           xl_len;        /＊ 资源管理器的数据长度 ＊/<br>  uint8             xl_info;       /＊ 标记位，如下所示 ＊/<br>  RmgrId           xl_rmid;       /＊ 本记录的资源管理器 ＊/<br>  /＊ 这里有<span class="hljs-number">2B</span>的填充，初始化为<span class="hljs-number">0</span> ＊/<br>  XLogRecPtr       xl_prev;       /＊ 在日志中指向先前记录的指针 ＊/<br>  pg_crc32         xl_crc;        /＊ 本记录的CRC ＊/<br>&#125; XLogRecord;<br></code></pre></td></tr></table></figure>
+<p>在PostgreSQL中，9.4和9.5是一个比较大的版本分界线，通用的首部，之后的数据部分前后版本不太一致，这里仅以9.4之前版本举例。对于9.5以后的版本，感兴趣的朋友可以去翻阅文档，这里就不再一一赘述了。<br>在9.4及以前版本，XLOG record data的数据部分有两种格式，分别是备份区块的格式和非备份区块的格式。插入介绍一下，PostgreSQL的WAL除了记录数据库进行的操作外，也会隔一段时间进行一次整页写入。这些整页写入就是备份区块，记录的操作就是非备份区块。<br>备份区块的数据结构如图所示，除了首部XLogRecord以外，还包含了BkpBlock和一个具体的页面。BkpBlock相当于数据库集簇里具体页面的元数据，包含了RelFileNode（即具体的关系的指针）、ForkNumber（指向是否是关系主体还是其他）文件内的区块号和页面空闲空间的信息。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32610216/1686159887760-e2fbc00f-c86f-43cc-b6fb-a20fee138316.png#averageHue=%23eeeeee&clientId=u9288eda9-28b4-4&from=paste&height=380&id=u1b7c0899&originHeight=760&originWidth=1329&originalType=binary&ratio=2&rotation=0&showTitle=false&size=244854&status=done&style=none&taskId=u41338af3-4b56-4853-b924-b46bfd57d56&title=&width=664.5" srcset="/img/loading.gif" lazyload alt="image.png"><br>        而在非备份区块中，数据结构会因操作而异，一条INSERT语句的XLOG记录由XlLogRecord结构体、xl_heap_insert结构和被插入的元组组成。xl_heap_insert用于定位插入位置。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2023/08/21/WAL在磁盘上是如何存储的/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>chanon</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>August 21, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/08/21/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%B7%B2%E7%BB%8F%E5%AD%98%E5%82%A8%E4%BA%86%E6%95%B0%E6%8D%AE%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E4%BB%AC%E8%BF%98%E8%A6%81%E6%9C%89WAL/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
