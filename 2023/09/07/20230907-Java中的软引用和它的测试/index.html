@@ -1,0 +1,645 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chanon">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Java中的软引用和它的测试软引用介绍软引用和它的测试​	将被回收的困难程度排序，应该是强引用&gt;软引用&gt;弱引用。对比软引用和对引用，软引用的回收时间是不可预测的，它仅在内存紧张的GC进行回收。而弱引用会在下一次GC时被回收。 测试设计​	为了验证它的回收，我们可以创建一个持有SoftReference的list，不断往里塞大对象，不断触发GC，查看结果。注，内存紧张回收后，该对象被回收">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java中的软引用和它的测试">
+<meta property="og:url" content="http://example.com/2023/09/07/20230907-Java%E4%B8%AD%E7%9A%84%E8%BD%AF%E5%BC%95%E7%94%A8%E5%92%8C%E5%AE%83%E7%9A%84%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:site_name" content="Chanon_Lee">
+<meta property="og:description" content="Java中的软引用和它的测试软引用介绍软引用和它的测试​	将被回收的困难程度排序，应该是强引用&gt;软引用&gt;弱引用。对比软引用和对引用，软引用的回收时间是不可预测的，它仅在内存紧张的GC进行回收。而弱引用会在下一次GC时被回收。 测试设计​	为了验证它的回收，我们可以创建一个持有SoftReference的list，不断往里塞大对象，不断触发GC，查看结果。注，内存紧张回收后，该对象被回收">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/%5Cimg%5C230907-%E8%BD%AF%E5%BC%95%E7%94%A8%E5%8F%98%E9%87%8F%E5%9B%9E%E6%94%B6.png">
+<meta property="article:published_time" content="2023-09-07T06:42:46.000Z">
+<meta property="article:modified_time" content="2023-09-07T08:01:06.643Z">
+<meta property="article:author" content="chanon">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/%5Cimg%5C230907-%E8%BD%AF%E5%BC%95%E7%94%A8%E5%8F%98%E9%87%8F%E5%9B%9E%E6%94%B6.png">
+  
+  
+  
+  <title>Java中的软引用和它的测试 - Chanon_Lee</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/230907-Java%E4%B8%AD%E7%9A%84%E8%BD%AF%E5%BC%95%E7%94%A8%E5%92%8C%E5%AE%83%E7%9A%84%E6%B5%8B%E8%AF%95.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Java中的软引用和它的测试"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-09-07 14:42" pubdate>
+          September 7, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.7k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          31 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Java中的软引用和它的测试</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="Java中的软引用和它的测试"><a href="#Java中的软引用和它的测试" class="headerlink" title="Java中的软引用和它的测试"></a>Java中的软引用和它的测试</h3><h4 id="软引用介绍"><a href="#软引用介绍" class="headerlink" title="软引用介绍"></a>软引用介绍</h4><h3 id="软引用和它的测试"><a href="#软引用和它的测试" class="headerlink" title="软引用和它的测试"></a>软引用和它的测试</h3><p>​	将被回收的困难程度排序，应该是强引用&gt;软引用&gt;弱引用。对比软引用和对引用，软引用的回收时间是不可预测的，它仅在内存紧张的GC进行回收。而弱引用会在下一次GC时被回收。</p>
+<h4 id="测试设计"><a href="#测试设计" class="headerlink" title="测试设计"></a>测试设计</h4><p>​	为了验证它的回收，我们可以创建一个持有SoftReference的list，不断往里塞大对象，不断触发GC，查看结果。注，内存紧张回收后，该对象被回收，但指向该对象的指针没有被回收。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">ArrayList&lt;SoftReference&lt;<span class="hljs-type">byte</span>[]&gt;&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br><span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;<br>	list.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">SoftReference</span>&lt;<span class="hljs-type">byte</span>[]&gt;(<span class="hljs-keyword">new</span> <span class="hljs-title class_">byte</span>[<span class="hljs-number">1024</span> * <span class="hljs-number">100</span>]));<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">System.out.println(<span class="hljs-string">&quot;first data in list: &quot;</span> + list.get(<span class="hljs-number">0</span>).get());<br></code></pre></td></tr></table></figure>
+
+<p>测试代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">testSoftReference</span><span class="hljs-params">()</span>&#123;<br>    ArrayList&lt;SoftReference&lt;<span class="hljs-type">byte</span>[]&gt;&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">Thread</span>(() -&gt; &#123;<br>        <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;<br>            list.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">SoftReference</span>&lt;<span class="hljs-type">byte</span>[]&gt;(<span class="hljs-keyword">new</span> <span class="hljs-title class_">byte</span>[<span class="hljs-number">1024</span> * <span class="hljs-number">100</span>]));<br>            <span class="hljs-keyword">try</span> &#123;<br>                Thread.sleep(<span class="hljs-number">1000</span>);<br>            &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;<br>                <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(e);<br>            &#125;<br>        &#125;<br>    &#125;).start();<br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">Thread</span>(<br>        () -&gt;&#123;<br>            <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;<br>                System.out.println(<span class="hljs-string">&quot;soft reference list size: &quot;</span> + list.size());<br>                System.out.println(<span class="hljs-string">&quot;first data in list: &quot;</span> + list.get(<span class="hljs-number">0</span>).get());<br>                <span class="hljs-keyword">try</span> &#123;<br>                    Thread.sleep(<span class="hljs-number">300L</span>);<br>                &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;<br>                    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(e);<br>                &#125;<br>            &#125;<br>        &#125;<br>    ).start();<br><br>    <span class="hljs-keyword">try</span> &#123;<br>        Thread.currentThread().join();<br>    &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;<br>        e.printStackTrace();<br>        System.exit(<span class="hljs-number">1</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>设置JVM参数如下</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim">-<span class="hljs-keyword">ea</span> -<span class="hljs-keyword">verbose</span>:gc -Xms4m -Xmx4m -Xmn2m <br></code></pre></td></tr></table></figure>
+
+<h4 id="分析测试结果"><a href="#分析测试结果" class="headerlink" title="分析测试结果"></a>分析测试结果</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">System.out.println(<span class="hljs-string">&quot;first data in list: &quot;</span> + list.get(<span class="hljs-number">0</span>).get());<br></code></pre></td></tr></table></figure>
+
+<p>​	上面语句不会报空指针异常，这说明GC回收了软引用对象后，并没有回收软引用变量本身，如果希望软引用变量被回收，最好将它添加到reference queue再手动回收。</p>
+<p>打印日志如下</p>
+<figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs mathematica"><span class="hljs-punctuation">[</span><span class="hljs-built_in">Full</span> <span class="hljs-variable">GC</span> <span class="hljs-punctuation">(</span><span class="hljs-variable">Ergonomics</span><span class="hljs-punctuation">)</span>  <span class="hljs-number">3039</span><span class="hljs-built_in">K</span><span class="hljs-operator">-&gt;</span><span class="hljs-number">2586</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">(</span><span class="hljs-number">3584</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">)</span><span class="hljs-operator">,</span> <span class="hljs-number">0.0083289</span> <span class="hljs-variable">secs</span><span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">[</span><span class="hljs-built_in">Full</span> <span class="hljs-variable">GC</span> <span class="hljs-punctuation">(</span><span class="hljs-variable">Ergonomics</span><span class="hljs-punctuation">)</span>  <span class="hljs-number">3039</span><span class="hljs-built_in">K</span><span class="hljs-operator">-&gt;</span><span class="hljs-number">2610</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">(</span><span class="hljs-number">3584</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">)</span><span class="hljs-operator">,</span> <span class="hljs-number">0.0100043</span> <span class="hljs-variable">secs</span><span class="hljs-punctuation">]</span><br><span class="hljs-variable">soft</span> <span class="hljs-variable">reference</span> <span class="hljs-variable">list</span> <span class="hljs-variable">size</span><span class="hljs-operator">:</span> <span class="hljs-number">1</span><br><span class="hljs-variable">first</span> <span class="hljs-variable">data</span> <span class="hljs-variable">in</span> <span class="hljs-variable">list</span><span class="hljs-operator">:</span> <span class="hljs-punctuation">[</span><span class="hljs-variable">B</span><span class="hljs-operator">@</span><span class="hljs-number">2781</span><span class="hljs-variable">fef4</span><br><span class="hljs-punctuation">[</span><span class="hljs-built_in">Full</span> <span class="hljs-variable">GC</span> <span class="hljs-punctuation">(</span><span class="hljs-variable">Ergonomics</span><span class="hljs-punctuation">)</span>  <span class="hljs-number">3035</span><span class="hljs-built_in">K</span><span class="hljs-operator">-&gt;</span><span class="hljs-number">2732</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">(</span><span class="hljs-number">3584</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">)</span><span class="hljs-operator">,</span> <span class="hljs-number">0.0090069</span> <span class="hljs-variable">secs</span><span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">[</span><span class="hljs-built_in">Full</span> <span class="hljs-variable">GC</span> <span class="hljs-punctuation">(</span><span class="hljs-variable">Ergonomics</span><span class="hljs-punctuation">)</span>  <span class="hljs-number">3039</span><span class="hljs-built_in">K</span><span class="hljs-operator">-&gt;</span><span class="hljs-number">2896</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">(</span><span class="hljs-number">3584</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">)</span><span class="hljs-operator">,</span> <span class="hljs-number">0.0137084</span> <span class="hljs-variable">secs</span><span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">[</span><span class="hljs-built_in">Full</span> <span class="hljs-variable">GC</span> <span class="hljs-punctuation">(</span><span class="hljs-variable">Ergonomics</span><span class="hljs-punctuation">)</span>  <span class="hljs-number">3029</span><span class="hljs-built_in">K</span><span class="hljs-operator">-&gt;</span><span class="hljs-number">3007</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">(</span><span class="hljs-number">3584</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">)</span><span class="hljs-operator">,</span> <span class="hljs-number">0.0065464</span> <span class="hljs-variable">secs</span><span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">[</span><span class="hljs-built_in">Full</span> <span class="hljs-variable">GC</span> <span class="hljs-punctuation">(</span><span class="hljs-variable">Ergonomics</span><span class="hljs-punctuation">)</span>  <span class="hljs-number">3021</span><span class="hljs-built_in">K</span><span class="hljs-operator">-&gt;</span><span class="hljs-number">2986</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">(</span><span class="hljs-number">3584</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">)</span><span class="hljs-operator">,</span> <span class="hljs-number">0.0062080</span> <span class="hljs-variable">secs</span><span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">[</span><span class="hljs-built_in">Full</span> <span class="hljs-variable">GC</span> <span class="hljs-punctuation">(</span><span class="hljs-variable">Ergonomics</span><span class="hljs-punctuation">)</span>  <span class="hljs-number">3029</span><span class="hljs-built_in">K</span><span class="hljs-operator">-&gt;</span><span class="hljs-number">3010</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">(</span><span class="hljs-number">3584</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">)</span><span class="hljs-operator">,</span> <span class="hljs-number">0.0056912</span> <span class="hljs-variable">secs</span><span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">[</span><span class="hljs-built_in">Full</span> <span class="hljs-variable">GC</span> <span class="hljs-punctuation">(</span><span class="hljs-variable">Ergonomics</span><span class="hljs-punctuation">)</span>  <span class="hljs-number">3028</span><span class="hljs-built_in">K</span><span class="hljs-operator">-&gt;</span><span class="hljs-number">3010</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">(</span><span class="hljs-number">3584</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">)</span><span class="hljs-operator">,</span> <span class="hljs-number">0.0059427</span> <span class="hljs-variable">secs</span><span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">[</span><span class="hljs-built_in">Full</span> <span class="hljs-variable">GC</span> <span class="hljs-punctuation">(</span><span class="hljs-variable">Allocation</span> <span class="hljs-built_in">Failure</span><span class="hljs-punctuation">)</span>  <span class="hljs-number">3010</span><span class="hljs-built_in">K</span><span class="hljs-operator">-&gt;</span><span class="hljs-number">2704</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">(</span><span class="hljs-number">3584</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">)</span><span class="hljs-operator">,</span> <span class="hljs-number">0.0124300</span> <span class="hljs-variable">secs</span><span class="hljs-punctuation">]</span><br><span class="hljs-variable">soft</span> <span class="hljs-variable">reference</span> <span class="hljs-variable">list</span> <span class="hljs-variable">size</span><span class="hljs-operator">:</span> <span class="hljs-number">1</span><br><span class="hljs-variable">first</span> <span class="hljs-variable">data</span> <span class="hljs-variable">in</span> <span class="hljs-variable">list</span><span class="hljs-operator">:</span> <span class="hljs-variable">null</span><br></code></pre></td></tr></table></figure>
+
+<p>​	通过这段代码我们可以观察到，在GC的初始几次循环中尽管发生了垃圾回收，但是软引用对象还没有被回收。这是因为JVM认为内存空间还充足,可以继续保留软引用对象。但是随着程序运行，内存空间逐渐紧张，在某一次GC过程中，JVM终于决定回收软引用对象以释放更多内存。此时我们打印软引用所引用的对象,其值为null。这表示软引用对象已经被回收了。</p>
+<p>​	但需要注意的是，原本指向这个软引用对象的软引用变量list本身还存在，它仍然保持对这个已经被回收对象的引用，只是这个引用现在无效了，如下图。如果程序不及时清理这种无效引用,可能会渐渐占用较多内存。</p>
+<p><img src="/%5Cimg%5C230907-%E8%BD%AF%E5%BC%95%E7%94%A8%E5%8F%98%E9%87%8F%E5%9B%9E%E6%94%B6.png" srcset="/img/loading.gif" lazyload alt="230907-软引用变量回收"></p>
+<h4 id="软引用变量的回收"><a href="#软引用变量的回收" class="headerlink" title="软引用变量的回收"></a>软引用变量的回收</h4><p>​	为了避免上述情况，我们可以主动回收软引用变量。</p>
+<h5 id="放入引用队列进行回收"><a href="#放入引用队列进行回收" class="headerlink" title="放入引用队列进行回收"></a>放入引用队列进行回收</h5><p>将软引用变量放入引用队列里，在回收的时候手动释放它。将创建对象并塞入对象的代码改为</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"> ArrayList&lt;SoftReference&lt;<span class="hljs-type">byte</span>[]&gt;&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>ReferenceQueue&lt;<span class="hljs-type">byte</span>[]&gt; referenceQueue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ReferenceQueue</span>&lt;&gt;();<br><br> <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;    <br>     list.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">SoftReference</span>&lt;<span class="hljs-type">byte</span>[]&gt;(<span class="hljs-keyword">new</span> <span class="hljs-title class_">byte</span>[<span class="hljs-number">1024</span> * <span class="hljs-number">100</span>], referenceQueue));<br> &#125;<br></code></pre></td></tr></table></figure>
+
+<p>​    使用另一个线程不断扫描referenceQueue，当软引用对象被回收时，软引用变量就会被放入referenceQueue中，我们可以通过手动把它设置为null，或者从list中移除它来回收。</p>
+<h5 id="WeakHashMap进行回收"><a href="#WeakHashMap进行回收" class="headerlink" title="WeakHashMap进行回收"></a>WeakHashMap进行回收</h5><p>​	另外，也可以使用WeakHashMap来储存，储存的代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java">WeakHashMap&lt;SoftReference&lt;<span class="hljs-type">byte</span>[]&gt;, <span class="hljs-type">byte</span>[]&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WeakHashMap</span>&lt;&gt;();<br><span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;<br>	SoftReference&lt;<span class="hljs-type">byte</span>[]&gt; obj = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SoftReference</span>&lt;&gt;(<span class="hljs-keyword">new</span> <span class="hljs-title class_">byte</span>[<span class="hljs-number">1024</span> * <span class="hljs-number">100</span>]);<br>    map.put(obj, obj.get());<br>    System.out.println(<span class="hljs-string">&quot;add data in map.&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>命令行输出</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs tex">[Full GC (Ergonomics)  3014K-&gt;2907K(3584K), 0.0063295 secs]<br>soft reference map size: 2<br>first data in map: java.lang.ref.SoftReference@4c67258e=[B@58a828a3<br>[Full GC (Ergonomics)  2912K-&gt;2807K(3584K), 0.0058464 secs]<br>add data in map.<br>[Full GC (Ergonomics)  2913K-&gt;2807K(3584K), 0.0080876 secs]<br>add data in map.<br>[Full GC (Ergonomics)  2912K-&gt;2807K(3584K), 0.0067576 secs]<br>add data in map.<br>soft reference map size: 1<br>first data in map: java.lang.ref.SoftReference@2b0d69c0=[B@1daaadd2<br></code></pre></td></tr></table></figure>
+
+<p>​	分析日志，可以看到，最开始map中已经有两个对象，后面也在不断往map中插入数据。但经过几轮回收后，map size变为了1。这说明，JVM中间经过了一次内存紧张的回收，将我们建立的软引用变量回收了，而在下一次回收中，weakHashMap识别到它的value被回收，于是主动删除了这个键值对。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Java中的软引用和它的测试</div>
+      <div>http://example.com/2023/09/07/20230907-Java中的软引用和它的测试/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>chanon</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>September 7, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/09/02/%E5%86%99%E4%B8%80%E4%B8%AA%E7%94%A8zk%E7%9B%91%E5%90%AC%E5%8F%98%E5%8C%96%E7%9A%84kafkaconsumer/" title="写一个用zk监听变化的Kafka Consumer">
+                        <span class="hidden-mobile">写一个用zk监听变化的Kafka Consumer</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
