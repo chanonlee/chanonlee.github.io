@@ -23,12 +23,12 @@
 <meta property="og:site_name" content="Chanon_Lee">
 <meta property="og:description" content="Java中的软引用和它的测试软引用介绍软引用和它的测试​	将被回收的困难程度排序，应该是强引用&gt;软引用&gt;弱引用。对比软引用和对引用，软引用的回收时间是不可预测的，它仅在内存紧张的GC进行回收。而弱引用会在下一次GC时被回收。 测试设计​	为了验证它的回收，我们可以创建一个持有SoftReference的list，不断往里塞大对象，不断触发GC，查看结果。注，内存紧张回收后，该对象被回收">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="c:\github\ludanye\source\img\230907-%E8%BD%AF%E5%BC%95%E7%94%A8%E5%8F%98%E9%87%8F%E5%9B%9E%E6%94%B6.png">
+<meta property="og:image" content="http://example.com/img/230907-%E8%BD%AF%E5%BC%95%E7%94%A8%E5%8F%98%E9%87%8F%E5%9B%9E%E6%94%B6.jpg">
 <meta property="article:published_time" content="2023-09-07T06:42:46.000Z">
-<meta property="article:modified_time" content="2023-09-07T08:16:37.602Z">
+<meta property="article:modified_time" content="2023-09-07T08:19:41.102Z">
 <meta property="article:author" content="chanon">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="c:\github\ludanye\source\img\230907-%E8%BD%AF%E5%BC%95%E7%94%A8%E5%8F%98%E9%87%8F%E5%9B%9E%E6%94%B6.png">
+<meta name="twitter:image" content="http://example.com/img/230907-%E8%BD%AF%E5%BC%95%E7%94%A8%E5%8F%98%E9%87%8F%E5%9B%9E%E6%94%B6.jpg">
   
   
   
@@ -294,7 +294,7 @@
 
 <p>​	通过这段代码我们可以观察到，在GC的初始几次循环中尽管发生了垃圾回收，但是软引用对象还没有被回收。这是因为JVM认为内存空间还充足,可以继续保留软引用对象。但是随着程序运行，内存空间逐渐紧张，在某一次GC过程中，JVM终于决定回收软引用对象以释放更多内存。此时我们打印软引用所引用的对象,其值为null。这表示软引用对象已经被回收了。</p>
 <p>​	但需要注意的是，原本指向这个软引用对象的软引用变量list本身还存在，它仍然保持对这个已经被回收对象的引用，只是这个引用现在无效了，如下图。如果程序不及时清理这种无效引用,可能会渐渐占用较多内存。</p>
-<p><img src="C:\github\ludanye\source\img\230907-软引用变量回收.png" srcset="/img/loading.gif" lazyload alt="230907-软引用变量回收"></p>
+<p><img src="/img/230907-%E8%BD%AF%E5%BC%95%E7%94%A8%E5%8F%98%E9%87%8F%E5%9B%9E%E6%94%B6.jpg" srcset="/img/loading.gif" lazyload alt="230907-软引用变量回收"></p>
 <h4 id="软引用变量的回收"><a href="#软引用变量的回收" class="headerlink" title="软引用变量的回收"></a>软引用变量的回收</h4><p>​	为了避免上述情况，我们可以主动回收软引用变量。</p>
 <h5 id="放入引用队列进行回收"><a href="#放入引用队列进行回收" class="headerlink" title="放入引用队列进行回收"></a>放入引用队列进行回收</h5><p>将软引用变量放入引用队列里，在回收的时候手动释放它。将创建对象并塞入对象的代码改为</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"> ArrayList&lt;SoftReference&lt;<span class="hljs-type">byte</span>[]&gt;&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>ReferenceQueue&lt;<span class="hljs-type">byte</span>[]&gt; referenceQueue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ReferenceQueue</span>&lt;&gt;();<br><br> <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;    <br>     list.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">SoftReference</span>&lt;<span class="hljs-type">byte</span>[]&gt;(<span class="hljs-keyword">new</span> <span class="hljs-title class_">byte</span>[<span class="hljs-number">1024</span> * <span class="hljs-number">100</span>], referenceQueue));<br> &#125;<br></code></pre></td></tr></table></figure>
