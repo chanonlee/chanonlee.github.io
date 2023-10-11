@@ -1,0 +1,633 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chanon">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一些PostgreSQL跟MySQL的细微差别1. PostgreSQL和MySQL的MVCC当同一个数据被两个事务写的时候，MySQL（Innodb）的默认实现是使用悲观锁行锁，锁住当前行，禁止其他事务读写。而PostgreSQL使用了MVCC，也就是记录了数据的版本号，当事务A写数据时，事务B仍可读到旧版本的数据。 1.1. postgres mvcc 一个事务读，一个事务写A事务读取数据，获">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一些PostgreSQL跟MySQL的细微差别">
+<meta property="og:url" content="http://example.com/2023/10/11/20231011-%E4%B8%80%E4%BA%9BPostgreSQL%E8%B7%9FMySQL%E7%9A%84%E7%BB%86%E5%BE%AE%E5%B7%AE%E5%88%AB/index.html">
+<meta property="og:site_name" content="Chanon_Lee">
+<meta property="og:description" content="一些PostgreSQL跟MySQL的细微差别1. PostgreSQL和MySQL的MVCC当同一个数据被两个事务写的时候，MySQL（Innodb）的默认实现是使用悲观锁行锁，锁住当前行，禁止其他事务读写。而PostgreSQL使用了MVCC，也就是记录了数据的版本号，当事务A写数据时，事务B仍可读到旧版本的数据。 1.1. postgres mvcc 一个事务读，一个事务写A事务读取数据，获">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-10-11T13:12:30.000Z">
+<meta property="article:modified_time" content="2023-10-11T13:22:35.723Z">
+<meta property="article:author" content="chanon">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>一些PostgreSQL跟MySQL的细微差别 - Chanon_Lee</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/231011-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8C%BA%E5%88%AB.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="一些PostgreSQL跟MySQL的细微差别"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-10-11 21:12" pubdate>
+          October 11, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">一些PostgreSQL跟MySQL的细微差别</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="一些PostgreSQL跟MySQL的细微差别"><a href="#一些PostgreSQL跟MySQL的细微差别" class="headerlink" title="一些PostgreSQL跟MySQL的细微差别"></a>一些PostgreSQL跟MySQL的细微差别</h3><h3 id="1-PostgreSQL和MySQL的MVCC"><a href="#1-PostgreSQL和MySQL的MVCC" class="headerlink" title="1. PostgreSQL和MySQL的MVCC"></a>1. PostgreSQL和MySQL的MVCC</h3><p>当同一个数据被两个事务写的时候，MySQL（Innodb）的默认实现是使用悲观锁行锁，锁住当前行，禁止其他事务读写。而PostgreSQL使用了MVCC，也就是记录了数据的版本号，当事务A写数据时，事务B仍可读到旧版本的数据。</p>
+<h4 id="1-1-postgres-mvcc-一个事务读，一个事务写"><a href="#1-1-postgres-mvcc-一个事务读，一个事务写" class="headerlink" title="1.1. postgres mvcc 一个事务读，一个事务写"></a>1.1. postgres mvcc 一个事务读，一个事务写</h4><p>A事务读取数据，获取自己的快照</p>
+<p>B事务读取数据</p>
+<p>A事务修改完成，提交，更新数据版本号</p>
+<h4 id="1-2-postgres-mvcc-两个事务写"><a href="#1-2-postgres-mvcc-两个事务写" class="headerlink" title="1.2. postgres mvcc 两个事务写"></a>1.2. postgres mvcc 两个事务写</h4><p>乐观锁，会等到第一个事务执行完再执行第二个数据。</p>
+<p>A事务读取数据，获取自己的快照</p>
+<p>B事务读取数据，获取自己的快照</p>
+<p>A事务修改完成，提交，更新数据版本号</p>
+<p>B事务修改完成，提交，发现自己版本号较低，重新获取快照修改</p>
+<p>B事务修改完成，提交，更新数据版本号</p>
+<h4 id="1-3-怎么启用mysql的mvcc？"><a href="#1-3-怎么启用mysql的mvcc？" class="headerlink" title="1.3. 怎么启用mysql的mvcc？"></a>1.3. 怎么启用mysql的mvcc？</h4><p>​	mysql5.6以上版本才支持，RR隔离级别才支持</p>
+<h4 id="1-4-mvcc跟行锁有什么区别？"><a href="#1-4-mvcc跟行锁有什么区别？" class="headerlink" title="1.4. mvcc跟行锁有什么区别？"></a>1.4. mvcc跟行锁有什么区别？</h4><p>​	两个请求同时抵达数据库，每个请求是一个独立事务。A请求修改数据，B请求查询数据，A请求先到。</p>
+<p>​	在MySQL的机制下，A事务会锁住这一行数据，B无法读取。等到A释放行锁后，B才可以读取数据。</p>
+<p>​	在MVCC机制下，A会新增一行记录，不锁数据。B可以无阻塞地查到旧版本的数据。</p>
+<h3 id="2-PostgreSQL和MySQL的索引"><a href="#2-PostgreSQL和MySQL的索引" class="headerlink" title="2. PostgreSQL和MySQL的索引"></a>2. PostgreSQL和MySQL的索引</h3><p>​	mysql只能在整张表上建立索引，但pg可以在某些列上建立索引。</p>
+<p>​	postgres还支持更多的索引类型。</p>
+<p>​	mysql仅支持B树索引和hash索引，postgres还支持GiST、SP-GiST等。</p>
+<p>​	mysql仅支持整张表建立索引，pg可以建立部分索引、表达式索引、多列索引。</p>
+<p>​	postgres支持并发索引。</p>
+<h3 id="3-PostgreSQL和MySQL对SQL的优化"><a href="#3-PostgreSQL和MySQL对SQL的优化" class="headerlink" title="3. PostgreSQL和MySQL对SQL的优化"></a>3. PostgreSQL和MySQL对SQL的优化</h3><h4 id="3-1-查询计划优化"><a href="#3-1-查询计划优化" class="headerlink" title="3.1. 查询计划优化"></a>3.1. 查询计划优化</h4><p>​	PostgreSQL的优化器会考虑表之间的统计相关信息,调整Join顺序以减少记录数。MySQL的优化器基本按照Join语句顺序处理。</p>
+<p>​	PostgreSQL会估算不同的索引在过滤记录数方面的效果,选用最有效的索引。MySQL的选择较简单。</p>
+<h4 id="3-2-统计信息"><a href="#3-2-统计信息" class="headerlink" title="3.2. 统计信息"></a>3.2. 统计信息</h4><p>​	PostgreSQL自动收集并利用各种统计信息进行查询优化,包括列相关性、distinct值比例等。MySQL只有基础的表级统计信息。</p>
+<h3 id="4-PostgreSQL的堆表和InnoDB中的索引表"><a href="#4-PostgreSQL的堆表和InnoDB中的索引表" class="headerlink" title="4. PostgreSQL的堆表和InnoDB中的索引表"></a>4. PostgreSQL的堆表和InnoDB中的索引表</h3><p>​	postgres是堆表，追加写入，主键可以不连续。innodb索引表，涉及页分裂和页合并，主键最好连续。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>一些PostgreSQL跟MySQL的细微差别</div>
+      <div>http://example.com/2023/10/11/20231011-一些PostgreSQL跟MySQL的细微差别/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>chanon</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>October 11, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/09/07/20230907-Java%E4%B8%AD%E7%9A%84%E8%BD%AF%E5%BC%95%E7%94%A8%E5%92%8C%E5%AE%83%E7%9A%84%E6%B5%8B%E8%AF%95/" title="Java中的软引用和它的测试">
+                        <span class="hidden-mobile">Java中的软引用和它的测试</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

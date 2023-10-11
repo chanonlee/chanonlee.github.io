@@ -17,8 +17,8 @@
   <meta name="keywords" content="">
   
     <meta property="og:type" content="website">
-<meta property="og:title" content="Chanon_Lee">
-<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:title" content="Archives">
+<meta property="og:url" content="http://example.com/archives/2023/10/index.html">
 <meta property="og:site_name" content="Chanon_Lee">
 <meta property="og:locale" content="en_US">
 <meta property="article:author" content="chanon">
@@ -26,7 +26,7 @@
   
   
   
-  <title>Chanon_Lee</title>
+  <title>Archives - Chanon_Lee</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -80,7 +80,7 @@
   <header>
     
 
-<div class="header-inner" style="height: 100vh;">
+<div class="header-inner" style="height: 60vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
@@ -180,23 +180,19 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/sanya.png') no-repeat center center; background-size: cover;">
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Chanon"></span>
+            <span id="subtitle" data-typed-text="Archives"></span>
           
         </div>
 
         
       </div>
 
-      
-        <div class="scroll-down-bar">
-          <i class="iconfont icon-arrowdown"></i>
-        </div>
       
     </div>
   </div>
@@ -210,211 +206,28 @@
     
       <div class="container nopadding-x-md">
         <div id="board"
-          style="margin-top: 0">
+          >
           
           <div class="container">
             <div class="row">
               <div class="col-12 col-md-10 m-auto">
                 
 
-
-  <div class="row mx-auto index-card">
+<div class="list-group">
+  <p class="h4">6 posts in total</p>
+  <hr>
+  
+  
     
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2023/10/11/20231011-%E4%B8%80%E4%BA%9BPostgreSQL%E8%B7%9FMySQL%E7%9A%84%E7%BB%86%E5%BE%AE%E5%B7%AE%E5%88%AB/" target="_self">
-          一些PostgreSQL跟MySQL的细微差别
-        </a>
-      </h2>
-
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/10/11/20231011-%E4%B8%80%E4%BA%9BPostgreSQL%E8%B7%9FMySQL%E7%9A%84%E7%BB%86%E5%BE%AE%E5%B7%AE%E5%88%AB/" target="_self">
-        <div>
-          一些PostgreSQL跟MySQL的细微差别1. PostgreSQL和MySQL的MVCC当同一个数据被两个事务写的时候，MySQL（Innodb）的默认实现是使用悲观锁行锁，锁住当前行，禁止其他事务读写。而PostgreSQL使用了MVCC，也就是记录了数据的版本号，当事务A写数据时，事务B仍可读到旧版本的数据。 1.1. postgres mvcc 一个事务读，一个事务写A事务读取数据，获
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-10-11 21:12" pubdate>
-              2023-10-11
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
+      <p class="h5">2023</p>
     
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2023/09/07/20230907-Java%E4%B8%AD%E7%9A%84%E8%BD%AF%E5%BC%95%E7%94%A8%E5%92%8C%E5%AE%83%E7%9A%84%E6%B5%8B%E8%AF%95/" target="_self">
-          Java中的软引用和它的测试
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/09/07/20230907-Java%E4%B8%AD%E7%9A%84%E8%BD%AF%E5%BC%95%E7%94%A8%E5%92%8C%E5%AE%83%E7%9A%84%E6%B5%8B%E8%AF%95/" target="_self">
-        <div>
-          Java中的软引用和它的测试软引用介绍软引用和它的测试​	将被回收的困难程度排序，应该是强引用&gt;软引用&gt;弱引用。对比软引用和对引用，软引用的回收时间是不可预测的，它仅在内存紧张的GC进行回收。而弱引用会在下一次GC时被回收。 测试设计​	为了验证它的回收，我们可以创建一个持有SoftReference的list，不断往里塞大对象，不断触发GC，查看结果。注，内存紧张回收后，该对象被回收
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-09-07 14:42" pubdate>
-              2023-09-07
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2023/09/02/20230903-%E5%86%99%E4%B8%80%E4%B8%AA%E7%94%A8zk%E7%9B%91%E5%90%AC%E5%8F%98%E5%8C%96%E7%9A%84kafkaconsumer/" target="_self">
-          写一个用zk监听变化的Kafka Consumer
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/09/02/20230903-%E5%86%99%E4%B8%80%E4%B8%AA%E7%94%A8zk%E7%9B%91%E5%90%AC%E5%8F%98%E5%8C%96%E7%9A%84kafkaconsumer/" target="_self">
-        <div>
-          功能简介：  写一个kafka consumer manager类 实现一个具体的kafka consumer 注册zk监听器，监听zk变化修改consumer订阅的topic  1. 写一个kafka consumer manager类 kafka consumer manager类，用于管理kafka consumer 找到每个消费者，订阅各自主题 将任务交给线程池处理 设置关闭函数  1.1
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-09-02 22:35" pubdate>
-              2023-09-02
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2023/09/01/20230902-%E5%8F%8D%E5%B0%84+%E6%B3%9B%E5%9E%8B%20%E5%86%99%E4%B8%80%E4%B8%AAZookeeper%E5%B7%A5%E5%85%B7%E7%B1%BB/" target="_self">
-          反射+泛型 写一个Zookeeper工具类
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/09/01/20230902-%E5%8F%8D%E5%B0%84+%E6%B3%9B%E5%9E%8B%20%E5%86%99%E4%B8%80%E4%B8%AAZookeeper%E5%B7%A5%E5%85%B7%E7%B1%BB/" target="_self">
-        <div>
-          功能简介：  初始化和关闭 创建和删除节点 注册监听器  1. 初始化和关闭功能要求  从配置中读取信息 设置权限  123456789101112131415161718192021222324@PostConstructpublic void init()&#123;    try&#123;        if(zkClient == null)&#123;            zkCli
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-09-01 12:27" pubdate>
-              2023-09-01
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2023/08/21/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%B7%B2%E7%BB%8F%E5%AD%98%E5%82%A8%E4%BA%86%E6%95%B0%E6%8D%AE%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E4%BB%AC%E8%BF%98%E8%A6%81%E6%9C%89WAL/" target="_self">
-          
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/08/21/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%B7%B2%E7%BB%8F%E5%AD%98%E5%82%A8%E4%BA%86%E6%95%B0%E6%8D%AE%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E4%BB%AC%E8%BF%98%E8%A6%81%E6%9C%89WAL/" target="_self">
-        <div>
-          磁盘结构参考： https://tech.meituan.com/2017/05/19/about-desk-io.html对于磁盘来说，数据的顺序写和乱序写速度差别很大，顺序IO只需要一次寻址，而乱序IO需要多次寻址，因此速度较慢。数据库管理系统可以保证我们的数据按一定顺序存放，但我们无法保证存放、取用的顺序跟地址顺序是一致的，所以对于IO来说，数据库的CRUD是一种乱序IO，也就是说，它是一种
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-08-21 19:38" pubdate>
-              2023-08-21
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2023/08/21/WAL%E5%9C%A8%E7%A3%81%E7%9B%98%E4%B8%8A%E6%98%AF%E5%A6%82%E4%BD%95%E5%AD%98%E5%82%A8%E7%9A%84/" target="_self">
-          
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/08/21/WAL%E5%9C%A8%E7%A3%81%E7%9B%98%E4%B8%8A%E6%98%AF%E5%A6%82%E4%BD%95%E5%AD%98%E5%82%A8%E7%9A%84/" target="_self">
-        <div>
-          概念介绍： **XLOG           **            Transaction Log 事务日志，是一个统称 WAL段文件               磁盘中存储XLOG的区块，数据按存储页的形式组织，每一页可能有多条XLOG数据 XLOG record data  写在WAL段文件中的一条一条具体的数据， 含有日志序列号LSN Log Sequence Number  正文段文
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-08-21 19:37" pubdate>
-              2023-08-21
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
+    <a href="/2023/10/11/20231011-%E4%B8%80%E4%BA%9BPostgreSQL%E8%B7%9FMySQL%E7%9A%84%E7%BB%86%E5%BE%AE%E5%B7%AE%E5%88%AB/" class="list-group-item list-group-item-action">
+      <time>10-11</time>
+      <div class="list-group-item-title">一些PostgreSQL跟MySQL的细微差别</div>
+    </a>
+  
+</div>
 
 
 

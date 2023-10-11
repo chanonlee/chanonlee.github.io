@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title>一些PostgreSQL跟MySQL的细微差别</title>
+    <link href="/2023/10/11/20231011-%E4%B8%80%E4%BA%9BPostgreSQL%E8%B7%9FMySQL%E7%9A%84%E7%BB%86%E5%BE%AE%E5%B7%AE%E5%88%AB/"/>
+    <url>/2023/10/11/20231011-%E4%B8%80%E4%BA%9BPostgreSQL%E8%B7%9FMySQL%E7%9A%84%E7%BB%86%E5%BE%AE%E5%B7%AE%E5%88%AB/</url>
+    
+    <content type="html"><![CDATA[<h3 id="一些PostgreSQL跟MySQL的细微差别"><a href="#一些PostgreSQL跟MySQL的细微差别" class="headerlink" title="一些PostgreSQL跟MySQL的细微差别"></a>一些PostgreSQL跟MySQL的细微差别</h3><h3 id="1-PostgreSQL和MySQL的MVCC"><a href="#1-PostgreSQL和MySQL的MVCC" class="headerlink" title="1. PostgreSQL和MySQL的MVCC"></a>1. PostgreSQL和MySQL的MVCC</h3><p>当同一个数据被两个事务写的时候，MySQL（Innodb）的默认实现是使用悲观锁行锁，锁住当前行，禁止其他事务读写。而PostgreSQL使用了MVCC，也就是记录了数据的版本号，当事务A写数据时，事务B仍可读到旧版本的数据。</p><h4 id="1-1-postgres-mvcc-一个事务读，一个事务写"><a href="#1-1-postgres-mvcc-一个事务读，一个事务写" class="headerlink" title="1.1. postgres mvcc 一个事务读，一个事务写"></a>1.1. postgres mvcc 一个事务读，一个事务写</h4><p>A事务读取数据，获取自己的快照</p><p>B事务读取数据</p><p>A事务修改完成，提交，更新数据版本号</p><h4 id="1-2-postgres-mvcc-两个事务写"><a href="#1-2-postgres-mvcc-两个事务写" class="headerlink" title="1.2. postgres mvcc 两个事务写"></a>1.2. postgres mvcc 两个事务写</h4><p>乐观锁，会等到第一个事务执行完再执行第二个数据。</p><p>A事务读取数据，获取自己的快照</p><p>B事务读取数据，获取自己的快照</p><p>A事务修改完成，提交，更新数据版本号</p><p>B事务修改完成，提交，发现自己版本号较低，重新获取快照修改</p><p>B事务修改完成，提交，更新数据版本号</p><h4 id="1-3-怎么启用mysql的mvcc？"><a href="#1-3-怎么启用mysql的mvcc？" class="headerlink" title="1.3. 怎么启用mysql的mvcc？"></a>1.3. 怎么启用mysql的mvcc？</h4><p>​mysql5.6以上版本才支持，RR隔离级别才支持</p><h4 id="1-4-mvcc跟行锁有什么区别？"><a href="#1-4-mvcc跟行锁有什么区别？" class="headerlink" title="1.4. mvcc跟行锁有什么区别？"></a>1.4. mvcc跟行锁有什么区别？</h4><p>​两个请求同时抵达数据库，每个请求是一个独立事务。A请求修改数据，B请求查询数据，A请求先到。</p><p>​在MySQL的机制下，A事务会锁住这一行数据，B无法读取。等到A释放行锁后，B才可以读取数据。</p><p>​在MVCC机制下，A会新增一行记录，不锁数据。B可以无阻塞地查到旧版本的数据。</p><h3 id="2-PostgreSQL和MySQL的索引"><a href="#2-PostgreSQL和MySQL的索引" class="headerlink" title="2. PostgreSQL和MySQL的索引"></a>2. PostgreSQL和MySQL的索引</h3><p>​mysql只能在整张表上建立索引，但pg可以在某些列上建立索引。</p><p>​postgres还支持更多的索引类型。</p><p>​mysql仅支持B树索引和hash索引，postgres还支持GiST、SP-GiST等。</p><p>​mysql仅支持整张表建立索引，pg可以建立部分索引、表达式索引、多列索引。</p><p>​postgres支持并发索引。</p><h3 id="3-PostgreSQL和MySQL对SQL的优化"><a href="#3-PostgreSQL和MySQL对SQL的优化" class="headerlink" title="3. PostgreSQL和MySQL对SQL的优化"></a>3. PostgreSQL和MySQL对SQL的优化</h3><h4 id="3-1-查询计划优化"><a href="#3-1-查询计划优化" class="headerlink" title="3.1. 查询计划优化"></a>3.1. 查询计划优化</h4><p>​PostgreSQL的优化器会考虑表之间的统计相关信息,调整Join顺序以减少记录数。MySQL的优化器基本按照Join语句顺序处理。</p><p>​PostgreSQL会估算不同的索引在过滤记录数方面的效果,选用最有效的索引。MySQL的选择较简单。</p><h4 id="3-2-统计信息"><a href="#3-2-统计信息" class="headerlink" title="3.2. 统计信息"></a>3.2. 统计信息</h4><p>​PostgreSQL自动收集并利用各种统计信息进行查询优化,包括列相关性、distinct值比例等。MySQL只有基础的表级统计信息。</p><h3 id="4-PostgreSQL的堆表和InnoDB中的索引表"><a href="#4-PostgreSQL的堆表和InnoDB中的索引表" class="headerlink" title="4. PostgreSQL的堆表和InnoDB中的索引表"></a>4. PostgreSQL的堆表和InnoDB中的索引表</h3><p>​postgres是堆表，追加写入，主键可以不连续。innodb索引表，涉及页分裂和页合并，主键最好连续。</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Java中的软引用和它的测试</title>
     <link href="/2023/09/07/20230907-Java%E4%B8%AD%E7%9A%84%E8%BD%AF%E5%BC%95%E7%94%A8%E5%92%8C%E5%AE%83%E7%9A%84%E6%B5%8B%E8%AF%95/"/>
     <url>/2023/09/07/20230907-Java%E4%B8%AD%E7%9A%84%E8%BD%AF%E5%BC%95%E7%94%A8%E5%92%8C%E5%AE%83%E7%9A%84%E6%B5%8B%E8%AF%95/</url>
