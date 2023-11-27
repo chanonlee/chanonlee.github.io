@@ -19,13 +19,13 @@
     <meta name="description" content="几个多线程类对AQS的state的变更1. 序章1.1. AQS的几个重要接口介绍重要属性：    属性 说明    int state 同步状态，用它来标记是否加解锁了   对外加解锁的重要接口：    tryAcquire 排他锁加锁    tryRelease 排他锁解锁   tryAcquireShared 共享锁加锁   tryReleaseShared 共享锁解锁   对AQS的使用基">
 <meta property="og:type" content="article">
 <meta property="og:title" content="几个多线程类对AQS的state的变更">
-<meta property="og:url" content="http://example.com/2023/11/28/20231128-%E5%94%A0%E5%94%A0Java%E7%BA%BF%E7%A8%8B%E7%9A%84API/index.html">
+<meta property="og:url" content="http://example.com/2023/11/28/20231128-%E5%87%A0%E4%B8%AA%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%B1%BB%E5%AF%B9AQS%E7%9A%84state%E7%9A%84%E5%8F%98%E6%9B%B4/index.html">
 <meta property="og:site_name" content="Chanon_Lee">
 <meta property="og:description" content="几个多线程类对AQS的state的变更1. 序章1.1. AQS的几个重要接口介绍重要属性：    属性 说明    int state 同步状态，用它来标记是否加解锁了   对外加解锁的重要接口：    tryAcquire 排他锁加锁    tryRelease 排他锁解锁   tryAcquireShared 共享锁加锁   tryReleaseShared 共享锁解锁   对AQS的使用基">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/20231128-%E5%87%A0%E4%B8%AA%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%B1%BB%E5%AF%B9AQS%E7%9A%84state%E7%9A%84%E5%8F%98%E6%9B%B4-01.jpg">
 <meta property="article:published_time" content="2023-11-28T06:56:11.000Z">
-<meta property="article:modified_time" content="2023-11-27T17:12:10.323Z">
+<meta property="article:modified_time" content="2023-11-27T17:17:59.286Z">
 <meta property="article:author" content="chanon">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/img/20231128-%E5%87%A0%E4%B8%AA%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%B1%BB%E5%AF%B9AQS%E7%9A%84state%E7%9A%84%E5%8F%98%E6%9B%B4-01.jpg">
@@ -349,7 +349,7 @@
 <td>暂略</td>
 </tr>
 </tbody></table>
-<h3 id="2-ReentrantLock"><a href="#2-ReentrantLock" class="headerlink" title="2. ReentrantLock"></a>2. ReentrantLock</h3><p><img src="/img/20231128-%E5%87%A0%E4%B8%AA%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%B1%BB%E5%AF%B9AQS%E7%9A%84state%E7%9A%84%E5%8F%98%E6%9B%B4-01.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h3 id="2-ReentrantLock-FairSync"><a href="#2-ReentrantLock-FairSync" class="headerlink" title="2. ReentrantLock | FairSync"></a>2. ReentrantLock | FairSync</h3><p><img src="/img/20231128-%E5%87%A0%E4%B8%AA%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%B1%BB%E5%AF%B9AQS%E7%9A%84state%E7%9A%84%E5%8F%98%E6%9B%B4-01.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
 <p>AQS在ReentrantLock里有三个实现类，最底层是两个子类，这里仅以FairSync来说明。</p>
 <h4 id="2-1-使用"><a href="#2-1-使用" class="headerlink" title="2.1. 使用"></a>2.1. 使用</h4><p>略</p>
 <h4 id="2-2-实现"><a href="#2-2-实现" class="headerlink" title="2.2. 实现"></a>2.2. 实现</h4><h5 id="2-2-1-lock"><a href="#2-2-1-lock" class="headerlink" title="2.2.1. lock"></a>2.2.1. lock</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ReentrantLock</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Lock</span>, java.io.Serializable &#123;<br><br>    <span class="hljs-comment">// 其他部分省略</span><br>    <br>	<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">lock</span><span class="hljs-params">()</span> &#123;<br>        sync.lock();<br>    &#125;<br><br>	<span class="hljs-comment">// 其他部分省略</span><br><br>&#125;<br>    <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">FairSync</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Sync</span> &#123;<br>        <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">serialVersionUID</span> <span class="hljs-operator">=</span> -<span class="hljs-number">3000897897090466540L</span>;<br><br>        <span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">lock</span><span class="hljs-params">()</span> &#123;<br>            acquire(<span class="hljs-number">1</span>);<br>        &#125;<br><br>        <span class="hljs-comment">// 其他部分省略</span><br>        <br>    &#125;<br></code></pre></td></tr></table></figure>
@@ -467,7 +467,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>几个多线程类对AQS的state的变更</div>
-      <div>http://example.com/2023/11/28/20231128-唠唠Java线程的API/</div>
+      <div>http://example.com/2023/11/28/20231128-几个多线程类对AQS的state的变更/</div>
     </div>
     <div class="license-meta">
       
