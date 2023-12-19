@@ -224,6 +224,79 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2023/12/19/20231219-go%E7%9A%84net%E5%8C%85%E4%B8%AD%E7%9A%84%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B/" target="_self">
+          go的net包中的套接字编程
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/12/19/20231219-go%E7%9A%84net%E5%8C%85%E4%B8%AD%E7%9A%84%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B/" target="_self">
+        <div>
+          Golang的net包中的套接字编程套接字的意思是：  在操作系统网络堆栈中,用于标识一个“端点”的抽象资源。一个端点包括IP地址和端口号。 套接字通过端点来标识正在网络上进行通信的两个应用进程。  在这里，我们需要查看套接字是如何被创建和使用的。使用套接字编程，需要用户自己处理以下几个点：  连接管理（如 连接数过多） 数据封包和拆包（序列化和反序列化） 错误处理 （返回error或返回错误码)
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-12-19 12:42" pubdate>
+              2023-12-19
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/golang/">#golang</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2023/12/18/go%E7%9A%84%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8Bnet%E5%8C%85/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/12/18/go%E7%9A%84%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8Bnet%E5%8C%85/" target="_self">
+        <div>
+          go的net包中的套接字编程套接字的意思是：  在操作系统网络堆栈中,用于标识一个“端点”的抽象资源。一个端点包括IP地址和端口号。 套接字通过端点来标识正在网络上进行通信的两个应用进程。  在这里，我们需要查看套接字是如何被创建和使用的。使用套接字编程，需要用户自己处理以下几个点：  连接管理（如 连接数过多） 数据封包和拆包（序列化和反序列化） 错误处理 （返回error或返回错误码)  TC
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-12-18 00:17" pubdate>
+              2023-12-18
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2023/11/28/20231128-%E5%87%A0%E4%B8%AA%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%B1%BB%E5%AF%B9AQS%E7%9A%84state%E7%9A%84%E5%8F%98%E6%9B%B4/" target="_self">
           几个多线程类对AQS的state的变更
         </a>
@@ -407,72 +480,6 @@
             <i class="iconfont icon-date"></i>
             <time datetime="2023-09-01 12:27" pubdate>
               2023-09-01
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2023/08/21/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%B7%B2%E7%BB%8F%E5%AD%98%E5%82%A8%E4%BA%86%E6%95%B0%E6%8D%AE%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E4%BB%AC%E8%BF%98%E8%A6%81%E6%9C%89WAL/" target="_self">
-          
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/08/21/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%B7%B2%E7%BB%8F%E5%AD%98%E5%82%A8%E4%BA%86%E6%95%B0%E6%8D%AE%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E4%BB%AC%E8%BF%98%E8%A6%81%E6%9C%89WAL/" target="_self">
-        <div>
-          磁盘结构参考： https://tech.meituan.com/2017/05/19/about-desk-io.html对于磁盘来说，数据的顺序写和乱序写速度差别很大，顺序IO只需要一次寻址，而乱序IO需要多次寻址，因此速度较慢。数据库管理系统可以保证我们的数据按一定顺序存放，但我们无法保证存放、取用的顺序跟地址顺序是一致的，所以对于IO来说，数据库的CRUD是一种乱序IO，也就是说，它是一种
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-08-21 19:38" pubdate>
-              2023-08-21
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2023/08/21/WAL%E5%9C%A8%E7%A3%81%E7%9B%98%E4%B8%8A%E6%98%AF%E5%A6%82%E4%BD%95%E5%AD%98%E5%82%A8%E7%9A%84/" target="_self">
-          
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/08/21/WAL%E5%9C%A8%E7%A3%81%E7%9B%98%E4%B8%8A%E6%98%AF%E5%A6%82%E4%BD%95%E5%AD%98%E5%82%A8%E7%9A%84/" target="_self">
-        <div>
-          概念介绍： **XLOG           **            Transaction Log 事务日志，是一个统称 WAL段文件               磁盘中存储XLOG的区块，数据按存储页的形式组织，每一页可能有多条XLOG数据 XLOG record data  写在WAL段文件中的一条一条具体的数据， 含有日志序列号LSN Log Sequence Number  正文段文
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-08-21 19:37" pubdate>
-              2023-08-21
             </time>
           </div>
         
