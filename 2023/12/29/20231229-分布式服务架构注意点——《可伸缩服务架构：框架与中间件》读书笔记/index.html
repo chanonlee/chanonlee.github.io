@@ -18,26 +18,26 @@
   
     <meta name="description" content="这是一本非常详尽的工具书，可以直接对照着做需求开发。里面给出了一些案例分析，可以作为设计时候的参考，当练习题使用。唯一可抱怨的点是，这本书有一些源码解析，需要非常花时间深研，这跟我想要直接看本工具书的预期不符，我会直接掠过。 我这里的笔记仅给我自己看，具体例子可以见书中例子，也可结合大家自己的开发经验分析，我就不作举例了。 1. 分布式服务中的发号器1.1. 要求时间粗略有序 ​	时间粗略有序是为">
 <meta property="og:type" content="article">
-<meta property="og:title" content="分布式服务架构注意点——《可伸缩服务架构：框架与中间件》读后感">
-<meta property="og:url" content="http://example.com/2023/12/29/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E5%90%8E%E6%84%9F/index.html">
+<meta property="og:title" content="分布式服务架构注意点——《可伸缩服务架构：框架与中间件》读书笔记">
+<meta property="og:url" content="http://example.com/2023/12/29/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Chanon_Lee">
 <meta property="og:description" content="这是一本非常详尽的工具书，可以直接对照着做需求开发。里面给出了一些案例分析，可以作为设计时候的参考，当练习题使用。唯一可抱怨的点是，这本书有一些源码解析，需要非常花时间深研，这跟我想要直接看本工具书的预期不符，我会直接掠过。 我这里的笔记仅给我自己看，具体例子可以见书中例子，也可结合大家自己的开发经验分析，我就不作举例了。 1. 分布式服务中的发号器1.1. 要求时间粗略有序 ​	时间粗略有序是为">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E5%90%8E%E6%84%9F/01.jpg">
-<meta property="og:image" content="http://example.com/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E5%90%8E%E6%84%9F/02.jpg">
-<meta property="og:image" content="http://example.com/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E5%90%8E%E6%84%9F/03.jpg">
-<meta property="og:image" content="http://example.com/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E5%90%8E%E6%84%9F/04.jpg">
-<meta property="og:image" content="http://example.com/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E5%90%8E%E6%84%9F/05.jpg">
-<meta property="og:image" content="http://example.com/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E5%90%8E%E6%84%9F/06.jpg">
+<meta property="og:image" content="http://example.com/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/01.jpg">
+<meta property="og:image" content="http://example.com/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/02.jpg">
+<meta property="og:image" content="http://example.com/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/03.jpg">
+<meta property="og:image" content="http://example.com/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/04.jpg">
+<meta property="og:image" content="http://example.com/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/05.jpg">
+<meta property="og:image" content="http://example.com/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/06.jpg">
 <meta property="article:published_time" content="2023-12-29T08:57:58.000Z">
-<meta property="article:modified_time" content="2023-12-29T09:12:14.431Z">
+<meta property="article:modified_time" content="2023-12-29T15:33:39.509Z">
 <meta property="article:author" content="chanon">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E5%90%8E%E6%84%9F/01.jpg">
+<meta name="twitter:image" content="http://example.com/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/01.jpg">
   
   
   
-  <title>分布式服务架构注意点——《可伸缩服务架构：框架与中间件》读后感 - Chanon_Lee</title>
+  <title>分布式服务架构注意点——《可伸缩服务架构：框架与中间件》读书笔记 - Chanon_Lee</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -197,13 +197,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E5%90%8E%E6%84%9F-title.jpg') no-repeat center center; background-size: cover;">
+     style="background: url('/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-title.jpg') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="分布式服务架构注意点——《可伸缩服务架构：框架与中间件》读后感"></span>
+            <span id="subtitle" data-typed-text="分布式服务架构注意点——《可伸缩服务架构：框架与中间件》读书笔记"></span>
           
         </div>
 
@@ -274,7 +274,7 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">分布式服务架构注意点——《可伸缩服务架构：框架与中间件》读后感</h1>
+            <h1 id="seo-header">分布式服务架构注意点——《可伸缩服务架构：框架与中间件》读书笔记</h1>
             
             
               <div class="markdown-body">
@@ -351,7 +351,7 @@
 <h4 id="4-2-分布式锁的实现方式"><a href="#4-2-分布式锁的实现方式" class="headerlink" title="4.2. 分布式锁的实现方式"></a>4.2. 分布式锁的实现方式</h4><p>(1)基于数据库的实现方式该实现方式完全依靠数据库的唯一索引来实现，当想要获得锁时，便向数据库中插入一条记录，成功插入则获得锁，执行完成后删除对应的行数据来释放锁。</p>
 <p>(2)基于Redis的实现方式这基于Redis的setnx命令实现的，当缓存里的key不存在时，才会设置成功，并且返回true，否则直接返回false。如果返回true，则表示获取到了锁，否则获取锁失败。为了防止死锁，我们再使用expire命令对这个key设置一个超时时间。</p>
 <p>(3)基于ZooKeeper的实现方式ZooKeeper是一个为分布式应用提供一致性服务的开源组件，它内部是一个分层的文件系统目录树结构，规定在同一个目录下只能有一个唯一文件名。</p>
-<h4 id="4-3-Quartz框架介绍"><a href="#4-3-Quartz框架介绍" class="headerlink" title="4.3. Quartz框架介绍"></a>4.3. Quartz框架介绍</h4><p><img src="/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E5%90%8E%E6%84%9F/01.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h4 id="4-3-Quartz框架介绍"><a href="#4-3-Quartz框架介绍" class="headerlink" title="4.3. Quartz框架介绍"></a>4.3. Quartz框架介绍</h4><p><img src="/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/01.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
 <ol>
 <li>Quartz应用通过数据库表来感知另一个应用的存在</li>
 <li>Quartz通过数据库实现分布式锁机制</li>
@@ -378,13 +378,13 @@
 <li>定制化流程任务。可高吞吐，可顺序处理。</li>
 <li>现有的Job实例下线，如果下线的是Leader节点，则先选举再触发分片算法的执行。</li>
 </ol>
-<h3 id="5-分布式系统中的缓存"><a href="#5-分布式系统中的缓存" class="headerlink" title="5. 分布式系统中的缓存"></a>5. 分布式系统中的缓存</h3><p><img src="/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E5%90%8E%E6%84%9F/02.jpg" srcset="/img/loading.gif" lazyload alt="img">)</p>
+<h3 id="5-分布式系统中的缓存"><a href="#5-分布式系统中的缓存" class="headerlink" title="5. 分布式系统中的缓存"></a>5. 分布式系统中的缓存</h3><p><img src="/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/02.jpg" srcset="/img/loading.gif" lazyload alt="img">)</p>
 <h4 id="5-1-一个例子"><a href="#5-1-一个例子" class="headerlink" title="5.1. 一个例子"></a>5.1. 一个例子</h4><p>假设要做一个12306的系统，支持10 000&#x2F;s的查询</p>
 <p>(1)假设Tomcat的吞吐量为5000&#x2F;s，则Tomcat台数&#x3D;100000&#x2F;5000&#x3D;20台。</p>
 <p>(2)假设Redis的吞吐量为50000&#x2F;s，则Redis台数&#x3D;100000&#x2F;50000&#x3D;2台。</p>
 <p>(3)假设MySQL的查询吞吐量为1000&#x2F;s，列车总量为3000辆，缓存5秒过期，余票查询操作在5秒内给数据库传递的访问量最多为3000&#x2F;5s&#x3D;600&#x2F;s，MySQL台数&#x3D;600&#x2F;1000 ≈ 1台。</p>
 <p>我们针对查询系统允许有5秒的时间窗口，也就是系统可以提供不超过5秒的不一致行为，这样就可以设计分布式缓存来提高性能，化解海量查询请求带来的系统压力。</p>
-<h4 id="5-2-常用的缓存中间件"><a href="#5-2-常用的缓存中间件" class="headerlink" title="5.2. 常用的缓存中间件"></a>5.2. 常用的缓存中间件</h4><p><img src="/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E5%90%8E%E6%84%9F/03.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h4 id="5-2-常用的缓存中间件"><a href="#5-2-常用的缓存中间件" class="headerlink" title="5.2. 常用的缓存中间件"></a>5.2. 常用的缓存中间件</h4><p><img src="/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/03.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
 <h5 id="5-2-1-关于Redis"><a href="#5-2-1-关于Redis" class="headerlink" title="5.2.1. 关于Redis"></a>5.2.1. 关于Redis</h5><ol>
 <li>单线程，不适用面对大内存、大量计算时的场景</li>
 <li>可持久化</li>
@@ -394,15 +394,15 @@
 <h4 id="5-3-应用层访问缓存的模式"><a href="#5-3-应用层访问缓存的模式" class="headerlink" title="5.3. 应用层访问缓存的模式"></a>5.3. 应用层访问缓存的模式</h4><ol>
 <li>双读双写</li>
 </ol>
-<p><img src="/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E5%90%8E%E6%84%9F/04.jpg" srcset="/img/loading.gif" lazyload alt="img">)</p>
+<p><img src="/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/04.jpg" srcset="/img/loading.gif" lazyload alt="img">)</p>
 <ol>
 <li>异步更新</li>
 </ol>
-<p><img src="/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E5%90%8E%E6%84%9F/05.jpg" srcset="/img/loading.gif" lazyload alt="img">)</p>
+<p><img src="/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/05.jpg" srcset="/img/loading.gif" lazyload alt="img">)</p>
 <ol>
 <li>串联模式</li>
 </ol>
-<p><img src="/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E5%90%8E%E6%84%9F/06.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="/img/20231229-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%94%E2%80%94%E3%80%8A%E5%8F%AF%E4%BC%B8%E7%BC%A9%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/06.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
 <h4 id="5-4-分布式缓存的迁移方案"><a href="#5-4-分布式缓存的迁移方案" class="headerlink" title="5.4. 分布式缓存的迁移方案"></a>5.4. 分布式缓存的迁移方案</h4><h5 id="5-4-1-平滑迁移"><a href="#5-4-1-平滑迁移" class="headerlink" title="5.4.1. 平滑迁移"></a>5.4.1. 平滑迁移</h5><p>平滑迁移使用的是双写方案，方案分成4个步骤：双写、迁移历史数据、切读、下双写。</p>
 <p>在这个过程中，我们需要迁移历史数据，在迁移的过程中可能需要迁移工具，这也需要一部分开发工作量。在迁移后，我们还需要对迁移的数据进行验证，表明我们的数据迁移成功。</p>
 <h5 id="5-4-2-停机迁移"><a href="#5-4-2-停机迁移" class="headerlink" title="5.4.2. 停机迁移"></a>5.4.2. 停机迁移</h5><p>停机迁移的方法比较简单，通常分为停止应用、迁移历史数据、更改应用的数据源、启动应用这4个步骤</p>
@@ -441,8 +441,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>分布式服务架构注意点——《可伸缩服务架构：框架与中间件》读后感</div>
-      <div>http://example.com/2023/12/29/20231229-分布式服务架构注意点——《可伸缩服务架构：框架与中间件》读后感/</div>
+      <div>分布式服务架构注意点——《可伸缩服务架构：框架与中间件》读书笔记</div>
+      <div>http://example.com/2023/12/29/20231229-分布式服务架构注意点——《可伸缩服务架构：框架与中间件》读书笔记/</div>
     </div>
     <div class="license-meta">
       
