@@ -136,9 +136,9 @@
       
       <tag>mongodb</tag>
       
-      <tag>spring-boot</tag>
-      
       <tag>database</tag>
+      
+      <tag>spring-boot</tag>
       
     </tags>
     
@@ -194,9 +194,9 @@
       
       <tag>mongodb</tag>
       
-      <tag>database</tag>
-      
       <tag>index</tag>
+      
+      <tag>database</tag>
       
     </tags>
     
@@ -308,11 +308,11 @@
     
     <tags>
       
-      <tag>reading</tag>
-      
       <tag>architecture</tag>
       
       <tag>distributed-systems</tag>
+      
+      <tag>reading</tag>
       
     </tags>
     
@@ -337,11 +337,11 @@
     
     <tags>
       
+      <tag>reading</tag>
+      
       <tag>bitcoin</tag>
       
       <tag>blockchain</tag>
-      
-      <tag>reading</tag>
       
     </tags>
     
