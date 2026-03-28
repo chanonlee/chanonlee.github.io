@@ -23,12 +23,15 @@
 <meta property="og:site_name" content="Chanon_Lee">
 <meta property="og:description" content="策略模式的介绍可以在网上查到，所以在这里不作介绍，仅记录自己的想法和测试用例。 策略模式 策略模式有一个环境类，提供环境信息，装配不同的策略。 使用策略模式可以干掉繁琐的if和switch，把判断内嵌在环境类中。当共同方法越多，策略模式的优点越明显，可以做到一次选择，直接使用。 【在同一个环境类中选择多个策略】策略模式可以有一个优化。它的环境类会根据上下文选择不同的具体策略，我们有时候可能需要选择">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/img/20240103-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01.jpg">
+<meta property="og:image" content="http://example.com/img/20240103-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.jpg">
 <meta property="article:published_time" content="2024-01-02T17:05:20.000Z">
-<meta property="article:modified_time" content="2024-01-03T11:55:51.672Z">
+<meta property="article:modified_time" content="2026-03-28T08:06:09.780Z">
 <meta property="article:author" content="chanon">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="design-pattern">
+<meta property="article:tag" content="strategy">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/img/20240103-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01.jpg">
+<meta name="twitter:image" content="http://example.com/img/20240103-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.jpg">
   
   
   
@@ -96,7 +99,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>Fluid</strong>
+      <strong>Chanon_Lee</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -126,33 +129,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                <span>Archives</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/">
-                <i class="iconfont icon-category-fill"></i>
-                <span>Categories</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                <span>Tags</span>
+              <a class="nav-link" href="/guide/">
+                <i class="iconfont icon-bookmark-fill"></i>
+                <span>阅读地图</span>
               </a>
             </li>
           
@@ -313,6 +292,38 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="category-chain-item">设计模式</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/java/" class="print-no-link">#java</a>
+      
+        <a href="/tags/design-pattern/" class="print-no-link">#design-pattern</a>
+      
+        <a href="/tags/strategy/" class="print-no-link">#strategy</a>
+      
+    </div>
   
 </div>
 

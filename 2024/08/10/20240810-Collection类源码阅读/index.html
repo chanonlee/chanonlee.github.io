@@ -18,23 +18,24 @@
   
     <meta name="description" content="一. 前言​    最近想要阅读一些源码，所以决定从java基础包开始读起，逐渐向外拓展。 ​    Collection类作为面试大头，在日常工作中又非常常用，自然就成为了我的首选。但我在阅读时发现，选择它作为第一个阅读的源码包其实不是很合适，原因如下： ​    \1. Collection类并不是一次写就的，中间经过多次修改，每一代人修改时想法不尽相同，所以读者在阅读时就会迷惑，为什么这里用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="20240810-Collection类源码阅读">
+<meta property="og:title" content="Collection类源码阅读">
 <meta property="og:url" content="http://example.com/2024/08/10/20240810-Collection%E7%B1%BB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/index.html">
 <meta property="og:site_name" content="Chanon_Lee">
 <meta property="og:description" content="一. 前言​    最近想要阅读一些源码，所以决定从java基础包开始读起，逐渐向外拓展。 ​    Collection类作为面试大头，在日常工作中又非常常用，自然就成为了我的首选。但我在阅读时发现，选择它作为第一个阅读的源码包其实不是很合适，原因如下： ​    \1. Collection类并不是一次写就的，中间经过多次修改，每一代人修改时想法不尽相同，所以读者在阅读时就会迷惑，为什么这里用">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/img/20240810-Collection%E7%B1%BB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/01.jpg">
-<meta property="og:image" content="http://example.com/img/20240810-Collection%E7%B1%BB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/02.jpg">
-<meta property="og:image" content="http://example.com/img/20240810-Collection%E7%B1%BB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/03.jpg">
+<meta property="og:image" content="http://example.com/img/20240810-Collection%E7%B1%BB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB.jpg">
 <meta property="article:published_time" content="2024-08-10T11:36:44.000Z">
-<meta property="article:modified_time" content="2024-08-10T11:55:22.441Z">
+<meta property="article:modified_time" content="2026-03-28T07:59:15.656Z">
 <meta property="article:author" content="chanon">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="source-code">
+<meta property="article:tag" content="collection">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/img/20240810-Collection%E7%B1%BB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/01.jpg">
+<meta name="twitter:image" content="http://example.com/img/20240810-Collection%E7%B1%BB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB.jpg">
   
   
   
-  <title>20240810-Collection类源码阅读 - Chanon_Lee</title>
+  <title>Collection类源码阅读 - Chanon_Lee</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -98,7 +99,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>Fluid</strong>
+      <strong>Chanon_Lee</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -128,33 +129,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                <span>Archives</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/">
-                <i class="iconfont icon-category-fill"></i>
-                <span>Categories</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                <span>Tags</span>
+              <a class="nav-link" href="/guide/">
+                <i class="iconfont icon-bookmark-fill"></i>
+                <span>阅读地图</span>
               </a>
             </li>
           
@@ -200,7 +177,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="20240810-Collection类源码阅读"></span>
+            <span id="subtitle" data-typed-text="Collection类源码阅读"></span>
           
         </div>
 
@@ -271,7 +248,7 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">20240810-Collection类源码阅读</h1>
+            <h1 id="seo-header">Collection类源码阅读</h1>
             
             
               <div class="markdown-body">
@@ -417,7 +394,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/java%E5%9F%BA%E7%A1%80%E5%8C%85/" class="category-chain-item">java基础包</a>
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
   
   
 
@@ -429,6 +406,17 @@
     </div>
   
   
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/java/" class="print-no-link">#java</a>
+      
+        <a href="/tags/source-code/" class="print-no-link">#source-code</a>
+      
+        <a href="/tags/collection/" class="print-no-link">#collection</a>
+      
+    </div>
+  
 </div>
 
 
@@ -437,7 +425,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>20240810-Collection类源码阅读</div>
+      <div>Collection类源码阅读</div>
       <div>http://example.com/2024/08/10/20240810-Collection类源码阅读/</div>
     </div>
     <div class="license-meta">
@@ -482,9 +470,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/08/11/20240811-%E5%9C%A8Springboot%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8MongoDB%E7%9A%84QuickStart/" title="20240811-在Springboot项目中使用MongoDB的QuickStart">
+                      <a href="/2024/08/11/20240811-%E5%9C%A8Springboot%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8MongoDB%E7%9A%84QuickStart/" title="在Springboot项目中使用MongoDB的QuickStart">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">20240811-在Springboot项目中使用MongoDB的QuickStart</span>
+                        <span class="hidden-mobile">在Springboot项目中使用MongoDB的QuickStart</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -492,8 +480,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/08/10/20240810-MongoDB%E7%9A%84Index/" title="20240810-MongoDB的Index">
-                        <span class="hidden-mobile">20240810-MongoDB的Index</span>
+                      <a href="/2024/08/10/20240810-MongoDB%E7%9A%84Index/" title="MongoDB的Index">
+                        <span class="hidden-mobile">MongoDB的Index</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

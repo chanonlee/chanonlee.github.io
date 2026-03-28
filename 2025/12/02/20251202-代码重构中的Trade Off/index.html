@@ -1,0 +1,639 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chanon">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="背景介绍接手了一个代码很杂乱的模块，命名模糊，结构耦合，充满了无效代码，不敢删。我打算逐步管理起这份代码。 修改的目标是长期清晰化，限制是不能扩大修改点，每次只做可控修改。还有些要注意的点，每次提交应该都是干净的，如果改出问题直接revert代码，其他部分不受影响。无论是跟需求夹带优化，还是自测发上生产，这种方法都能保证快速回滚，保证主流程不受影响。 下面分三个阶段，第一阶段移除无用的代码，保证核">
+<meta property="og:type" content="article">
+<meta property="og:title" content="代码重构中的 Trade Off">
+<meta property="og:url" content="http://example.com/2025/12/02/20251202-%E4%BB%A3%E7%A0%81%E9%87%8D%E6%9E%84%E4%B8%AD%E7%9A%84Trade%20Off/index.html">
+<meta property="og:site_name" content="Chanon_Lee">
+<meta property="og:description" content="背景介绍接手了一个代码很杂乱的模块，命名模糊，结构耦合，充满了无效代码，不敢删。我打算逐步管理起这份代码。 修改的目标是长期清晰化，限制是不能扩大修改点，每次只做可控修改。还有些要注意的点，每次提交应该都是干净的，如果改出问题直接revert代码，其他部分不受影响。无论是跟需求夹带优化，还是自测发上生产，这种方法都能保证快速回滚，保证主流程不受影响。 下面分三个阶段，第一阶段移除无用的代码，保证核">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/20250104-%E6%A0%91.jpg">
+<meta property="article:published_time" content="2025-12-02T03:19:03.000Z">
+<meta property="article:modified_time" content="2026-03-28T08:06:09.780Z">
+<meta property="article:author" content="chanon">
+<meta property="article:tag" content="refactor">
+<meta property="article:tag" content="code-quality">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/20250104-%E6%A0%91.jpg">
+  
+  
+  
+  <title>代码重构中的 Trade Off - Chanon_Lee</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chanon_Lee</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/guide/">
+                <i class="iconfont icon-bookmark-fill"></i>
+                <span>阅读地图</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/20250104-%E6%A0%91.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="代码重构中的 Trade Off"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-12-02 11:19" pubdate>
+          December 2, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          10 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">代码重构中的 Trade Off</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h3><p>接手了一个代码很杂乱的模块，命名模糊，结构耦合，充满了无效代码，不敢删。我打算逐步管理起这份代码。</p>
+<p>修改的目标是长期清晰化，限制是不能扩大修改点，每次只做可控修改。还有些要注意的点，每次提交应该都是干净的，如果改出问题直接revert代码，其他部分不受影响。无论是跟需求夹带优化，还是自测发上生产，这种方法都能保证快速回滚，保证主流程不受影响。</p>
+<p>下面分三个阶段，第一阶段移除无用的代码，保证核心代码清洁。第二阶段做代码整理与归拢，方便未来修改。第三阶段才是重构，自底向上，分批重构，从底层驱动上层。</p>
+<h4 id="考虑点1-移除无效代码"><a href="#考虑点1-移除无效代码" class="headerlink" title="考虑点1 移除无效代码"></a>考虑点1 移除无效代码</h4><h5 id="中心思想：-无效代码的移除必须基于覆盖足够长业务周期的观察数据，以确保安全。"><a href="#中心思想：-无效代码的移除必须基于覆盖足够长业务周期的观察数据，以确保安全。" class="headerlink" title="中心思想： 无效代码的移除必须基于覆盖足够长业务周期的观察数据，以确保安全。"></a>中心思想： 无效代码的移除必须基于覆盖足够长业务周期的观察数据，以确保安全。</h5><ol>
+<li>首先需要建立观察期，收集观察期数据，在观察期内无调用即可安全删除代码。观察期应覆盖足够长的业务周期，需注意月周期的调用和年周期的调用。</li>
+<li>收集数据有几种方法。1. 通过日志查询近期有否调用，但日志保留时间短，无法支持较长的观察器。2. 通过接口调用监控建立观察期，有效，但需了解监控原理，指标是否是采样。3. 打印统计类日志，或者报错日志，未来通过收集报错日志确定接口无调用。</li>
+<li>适合一次性删除大量代码，非常高效。</li>
+</ol>
+<h4 id="考虑点2-数据原型不清晰，服务的功能、层级不清晰，功能耦合"><a href="#考虑点2-数据原型不清晰，服务的功能、层级不清晰，功能耦合" class="headerlink" title="考虑点2 数据原型不清晰，服务的功能、层级不清晰，功能耦合"></a>考虑点2 数据原型不清晰，服务的功能、层级不清晰，功能耦合</h4><h5 id="中心思想：-在不重写逻辑的前提下，通过可视化和移动代码来明确边界，为重构打下基础。"><a href="#中心思想：-在不重写逻辑的前提下，通过可视化和移动代码来明确边界，为重构打下基础。" class="headerlink" title="中心思想： 在不重写逻辑的前提下，通过可视化和移动代码来明确边界，为重构打下基础。"></a>中心思想： 在不重写逻辑的前提下，通过可视化和移动代码来明确边界，为重构打下基础。</h5><ol>
+<li>自顶向下画图。有哪些端，用户需要使用哪些功能。业务层提供怎样的统一功能，这个时候无视各个不同端上的细微差异。数据模型是怎样的，哪些数据流入哪些产出，在图上给每个数据原型命名，方便代码命名。不要看代码，给理想中的代码画个内部的分层结构图，职责单一、明确。</li>
+<li>选择通过复制粘贴，将同样功能的代码迁移到同一个类中，通过收集、整理、命名来呈现边界，未来再重写代码。</li>
+<li>如果接口功能比较多，DTO边界也很模糊，可以暂时先不动，等其他部分清理完了，这里的单一功能暴露出来，再继续抽取。</li>
+</ol>
+<h4 id="考虑点3-接口不存在复用，四处分散，各自处理逻辑"><a href="#考虑点3-接口不存在复用，四处分散，各自处理逻辑" class="headerlink" title="考虑点3 接口不存在复用，四处分散，各自处理逻辑"></a>考虑点3 接口不存在复用，四处分散，各自处理逻辑</h4><h5 id="中心思想：-冻结现有烂接口，通过提供统一且干净的新接口来驱动业务调用迁移，并利用测试保证修改范围安全。"><a href="#中心思想：-冻结现有烂接口，通过提供统一且干净的新接口来驱动业务调用迁移，并利用测试保证修改范围安全。" class="headerlink" title="中心思想： 冻结现有烂接口，通过提供统一且干净的新接口来驱动业务调用迁移，并利用测试保证修改范围安全。"></a>中心思想： 冻结现有烂接口，通过提供统一且干净的新接口来驱动业务调用迁移，并利用测试保证修改范围安全。</h5><ol>
+<li>对数据库访问层，保证接口不动，通过整理代码来归拢功能。对于数据库访问和业务耦合的，把业务耦合抽到一个类里，数据访问留在原类，未来迁移。</li>
+<li>等有需求时，提供新的统一、干净的数据访问接口，将业务访问切往这个接口，再在业务处理层修改适配代码。借用测试覆盖修改范围。</li>
+<li>数据字段较多，一个一个核查非常花时间，容易错，直接切换很容易因为手误、理解不完全造成错配。初期不做接口归拢，未来对代码有理解、通过产品明确接口功能以后，再做切换。这种烂接口不要看代码。</li>
+<li>如果数据访问层很乱，业务处理层不太好统一，等上面几步做完再做整理。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" class="category-chain-item">工程实践</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/refactor/" class="print-no-link">#refactor</a>
+      
+        <a href="/tags/code-quality/" class="print-no-link">#code-quality</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>代码重构中的 Trade Off</div>
+      <div>http://example.com/2025/12/02/20251202-代码重构中的Trade Off/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>chanon</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>December 2, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/11/19/20251119-%E5%A4%84%E7%90%86%E9%9F%B3%E9%A2%91%E6%B5%81/" title="处理音频流">
+                        <span class="hidden-mobile">处理音频流</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

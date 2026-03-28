@@ -18,19 +18,25 @@
   
     <meta name="description" content="功能简介：  写一个kafka consumer manager类 实现一个具体的kafka consumer 注册zk监听器，监听zk变化修改consumer订阅的topic  1. 写一个kafka consumer manager类 kafka consumer manager类，用于管理kafka consumer 找到每个消费者，订阅各自主题 将任务交给线程池处理 设置关闭函数  1.1">
 <meta property="og:type" content="article">
-<meta property="og:title" content="写一个用zk监听变化的Kafka Consumer">
+<meta property="og:title" content="写一个用zk监听变化的 Kafka Consumer">
 <meta property="og:url" content="http://example.com/2023/09/02/20230903-%E5%86%99%E4%B8%80%E4%B8%AA%E7%94%A8zk%E7%9B%91%E5%90%AC%E5%8F%98%E5%8C%96%E7%9A%84kafkaconsumer/index.html">
 <meta property="og:site_name" content="Chanon_Lee">
 <meta property="og:description" content="功能简介：  写一个kafka consumer manager类 实现一个具体的kafka consumer 注册zk监听器，监听zk变化修改consumer订阅的topic  1. 写一个kafka consumer manager类 kafka consumer manager类，用于管理kafka consumer 找到每个消费者，订阅各自主题 将任务交给线程池处理 设置关闭函数  1.1">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/230903-%E5%86%99%E4%B8%80%E4%B8%AA%E7%94%A8zk%E7%9B%91%E5%90%AC%E5%8F%98%E5%8C%96%E7%9A%84KafkaConsumer.jpg">
 <meta property="article:published_time" content="2023-09-02T14:35:43.000Z">
-<meta property="article:modified_time" content="2023-09-02T16:10:58.367Z">
+<meta property="article:modified_time" content="2026-03-28T08:06:09.778Z">
 <meta property="article:author" content="chanon">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="zookeeper">
+<meta property="article:tag" content="kafka">
+<meta property="article:tag" content="consumer">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/230903-%E5%86%99%E4%B8%80%E4%B8%AA%E7%94%A8zk%E7%9B%91%E5%90%AC%E5%8F%98%E5%8C%96%E7%9A%84KafkaConsumer.jpg">
   
   
   
-  <title>写一个用zk监听变化的Kafka Consumer - Chanon_Lee</title>
+  <title>写一个用zk监听变化的 Kafka Consumer - Chanon_Lee</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -94,7 +100,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>Fluid</strong>
+      <strong>Chanon_Lee</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -124,33 +130,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                <span>Archives</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/">
-                <i class="iconfont icon-category-fill"></i>
-                <span>Categories</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                <span>Tags</span>
+              <a class="nav-link" href="/guide/">
+                <i class="iconfont icon-bookmark-fill"></i>
+                <span>阅读地图</span>
               </a>
             </li>
           
@@ -196,7 +178,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="写一个用zk监听变化的Kafka Consumer"></span>
+            <span id="subtitle" data-typed-text="写一个用zk监听变化的 Kafka Consumer"></span>
           
         </div>
 
@@ -267,7 +249,7 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">写一个用zk监听变化的Kafka Consumer</h1>
+            <h1 id="seo-header">写一个用zk监听变化的 Kafka Consumer</h1>
             
             
               <div class="markdown-body">
@@ -335,8 +317,6 @@
 <p>​    另外，解决这个并发冲突的过程也是很有意思的过程。</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs text">如果给两个调用共享变量的地方分别加锁,还是存在并发冲突的可能,原因可能有:<br>1. 两个地方加的锁对象不一样,需要使用同一对象锁才能起到互斥的效果。  <br>  check: 打印输出或日志检查,在加锁的地方打印出锁对象的引用,确认是否是同一个对象。引用地址相同，所以是同一个对象。<br>2. 加锁的范围不够,需要扩大锁的范围,直到包含所有访问共享变量的语句。<br>  check: 扩大到不能再大了……还是不行<br>3. 存在死锁情况,一个线程获取锁A等待锁B,另一个线程获取锁B等待锁A,导致互相等待。<br>  check: 应该不是<br>4. 有其它线程没有加锁也访问了该共享变量。<br>  check: 把其中一处代码注释掉再执行，不报错，所以这条排除。后来发现，是一个线程两处调用，另一个线程一处diao&#x27;yong<br>5. 共享变量没有用volatile关键字修饰,导致缓存同步问题。<br>  check: 没有共享变量，仅访问同一实例<br>6. 异常情况下,锁没有被正常释放.<br>  check: synchronized不需要手动释放<br>7. subscribe后有其它可以修改订阅的方法未加锁,如unsubscribe。<br>  check: 给所有subscribe和unsubscribe都加了锁，还是不行。后来发现poll方法也需要加锁。<br></code></pre></td></tr></table></figure>
 
-
-
                 
               </div>
             
@@ -344,6 +324,40 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" class="category-chain-item">中间件</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/java/" class="print-no-link">#java</a>
+      
+        <a href="/tags/zookeeper/" class="print-no-link">#zookeeper</a>
+      
+        <a href="/tags/kafka/" class="print-no-link">#kafka</a>
+      
+        <a href="/tags/consumer/" class="print-no-link">#consumer</a>
+      
+    </div>
   
 </div>
 
@@ -353,7 +367,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>写一个用zk监听变化的Kafka Consumer</div>
+      <div>写一个用zk监听变化的 Kafka Consumer</div>
       <div>http://example.com/2023/09/02/20230903-写一个用zk监听变化的kafkaconsumer/</div>
     </div>
     <div class="license-meta">
