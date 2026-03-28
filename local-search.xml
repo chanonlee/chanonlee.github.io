@@ -308,11 +308,11 @@
     
     <tags>
       
-      <tag>reading</tag>
-      
       <tag>architecture</tag>
       
       <tag>distributed-systems</tag>
+      
+      <tag>reading</tag>
       
     </tags>
     
@@ -337,11 +337,11 @@
     
     <tags>
       
+      <tag>reading</tag>
+      
       <tag>bitcoin</tag>
       
       <tag>blockchain</tag>
-      
-      <tag>reading</tag>
       
     </tags>
     
@@ -513,9 +513,9 @@
       
       <tag>java</tag>
       
-      <tag>zookeeper</tag>
-      
       <tag>kafka</tag>
+      
+      <tag>zookeeper</tag>
       
       <tag>consumer</tag>
       
