@@ -1,0 +1,12 @@
+{
+  "attachmentFolderPath": "posts/source/img",
+  "userIgnoreFilters": [
+    "chanonlee.github.io/",
+    "posts/public/",
+    "posts/img/",
+    "posts/scaffolds/",
+    "posts/themes/"
+  ],
+  "newFileLocation": "folder",
+  "newFileFolderPath": "posts/source/_posts"
+}

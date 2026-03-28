@@ -1,0 +1,235 @@
+{
+  "main": {
+    "id": "03e73c7d69b8a955",
+    "type": "split",
+    "children": [
+      {
+        "id": "fdccd960606163e8",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "633668e86c9d2d38",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "posts/source/_posts/2. code/engineering/20231016-实现拓展的方式：SPI 拦截调用.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "20231016-实现拓展的方式：SPI 拦截调用"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "638e4062f21ec751",
+    "type": "split",
+    "children": [
+      {
+        "id": "7f7ba744ba7df436",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f027cb7d862c94ec",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "文件列表"
+            }
+          },
+          {
+            "id": "b14e799b65d4a515",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "89fc3c602ad89662",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 583.5
+  },
+  "right": {
+    "id": "bf8175436b49e8d6",
+    "type": "split",
+    "children": [
+      {
+        "id": "7e3b0fdffa41fd58",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9a4c40dc34d60be8",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "posts/source/_posts/20251202-代码重构中的Trade Off 1.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for 20251202-代码重构中的Trade Off 1"
+            }
+          },
+          {
+            "id": "0bae274f9818bc76",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "posts/source/_posts/20251202-代码重构中的Trade Off 1.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from 20251202-代码重构中的Trade Off 1"
+            }
+          },
+          {
+            "id": "9673bfe9e69e7052",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "7bec4dec68fee0f0",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "9a5c132c630fb24b",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "posts/source/_posts/20251202-代码重构中的Trade Off 1.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of 20251202-代码重构中的Trade Off 1"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "bases:新建数据库": false
+    }
+  },
+  "active": "f027cb7d862c94ec",
+  "lastOpenFiles": [
+    "posts/source/_posts/4. outside call/middleware/message-queue",
+    "posts/source/_posts/4. outside call",
+    "posts/source/_posts/2. code/engineering/20250104-行政区划下的商店关系——工程实践中的树结构使用 copy.md",
+    "posts/source/_posts/2. code/engineering/20231016-实现拓展的方式：SPI 拦截调用.md",
+    "posts/source/_posts/2. code/engineering",
+    "posts/source/_posts/2. code",
+    "posts/source/_posts/1. llm",
+    "posts/source/guide/index.md",
+    "posts/source/_posts/2. code/scripts/20251119-处理音频流.md",
+    "posts/source/_posts/5. reading/20231229-分布式服务架构注意点——《可伸缩服务架构：框架与中间件》读书笔记.md",
+    "posts/source/_posts/5. reading/20231225-Bitcoin——《精通区块链编程》读书笔记.md",
+    "posts/source/_posts/2. code/engineering/20240103-策略模式学习笔记.md",
+    "posts/source/_posts/2. code/language/go/20231219-go的net包中的套接字编程.md",
+    "posts/source/_posts/2. code/language/go",
+    "posts/source/_posts/2. code/language/java/20240623-使用java function包写一个RetryUtils.md",
+    "posts/source/_posts/2. code/engineering/20251202-代码重构中的Trade Off.md",
+    "posts/source/_posts/4. outside call/database/mongo/20240810-MongoDB的Index.md",
+    "posts/source/_posts/4. outside call/database/mysql",
+    "posts/source/_posts/4. outside call/database/mongo/20240811-在Springboot项目中使用MongoDB的QuickStart.md",
+    "posts/source/_posts/4. outside call/database/mongo",
+    "posts/db.json",
+    "posts/public/img/20231225-Bitcoin——《精通区块链编程》读书笔记-title.jpg",
+    "posts/public/img/20231016-实现拓展的方式：SPI、拦截调用.jpg",
+    "posts/public/img/44d47d503b09e7879b9788cdcc98082.jpg",
+    "posts/public/img/image/20251202-代码重构中的Trade Off-1774684771648.jpeg",
+    "posts/public/img/image/20251202-代码重构中的Trade Off-1774684771173.jpeg",
+    "posts/public/img/image/20251202-代码重构中的Trade Off-1774684734932.jpeg",
+    "posts/public/img/image/20251202-代码重构中的Trade Off-1774684735101.jpeg",
+    "posts/public/img/image/20251202-代码重构中的Trade Off-1774684564733.jpeg",
+    "posts/public/img/image/20251202-代码重构中的Trade Off-1774683976874.jpeg",
+    "posts/public/img/image/20251202-代码重构中的Trade Off-1774684564729.jpeg",
+    "posts/public/2023/12/25/20231225-Bitcoin——《精通区块链编程》读书笔记/index.html",
+    "posts/public/2023/12/25/20231225-Bitcoin——《精通区块链编程》读书笔记",
+    "posts/source/_posts/4. outside call/database/mysql/20231011-一些PostgreSQL跟MySQL的细微差别.md",
+    "posts/source/_posts/20251202-代码重构中的Trade Off.md",
+    "posts/source/_posts/2. code/language/java/关于equals和hashcode方法.md",
+    "posts/source/_posts/2. code/language/java/20231128-几个多线程类对AQS的state的变更.md",
+    "posts/source/_posts/2. code/language/java/20230907-Java中的软引用和它的测试.md",
+    "posts/source/_posts/4. outside call/middleware/message-queue/20230903-写一个用zk监听变化的kafkaconsumer.md",
+    "posts/source/_posts/4. outside call/middleware/20230902-反射+泛型 写一个Zookeeper工具类.md",
+    "posts/source/_posts/2. code/language/java/20240810-Collection类源码阅读.md",
+    "posts/source/_posts/20251202-代码重构中的Trade Off 1.md",
+    "posts/source/_posts/20231011-一些PostgreSQL跟MySQL的细微差别.md",
+    "posts/source/_posts/关于equals和hashcode方法.md",
+    "posts/node_modules/highlight.js/VERSION_11_UPGRADE.md",
+    "posts/node_modules/highlight.js/VERSION_10_UPGRADE.md"
+  ]
+}
