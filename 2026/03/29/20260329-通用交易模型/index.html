@@ -16,25 +16,26 @@
   <meta name="author" content="chanon">
   <meta name="keywords" content="">
   
-    <meta name="description" content="背景介绍接手了一个代码很杂乱的模块，命名模糊，结构耦合，充满了无效代码，不敢删。我打算逐步管理起这份代码。 修改的目标是长期清晰化，限制是不能扩大修改点，每次只做可控修改。还有些要注意的点，每次提交应该都是干净的，如果改出问题直接revert代码，其他部分不受影响。无论是跟需求夹带优化，还是自测发上生产，这种方法都能保证快速回滚，保证主流程不受影响。 下面分三个阶段，第一阶段移除无用的代码，保证核">
+    <meta name="description" content="最近在整理交易及相关上下游的业务模型，在这里试着写一下心得。 我们先把所有后端服务做一个粗糙的分类  计算型模块。如批处理计算，如配送路径优化，如 bom 拆解 状态机模块。如交易、支付、履约。 工作流模块。现在的业务 AI Agent 其实就应用了工作流，里面的核心是图结构。 基础数据模块。维护基础数据，如买家卖家信息，商品信息，公司信息。  交易是个典型的状态机模块，核心是领域单据的状态机，所">
 <meta property="og:type" content="article">
-<meta property="og:title" content="代码重构中的 Trade Off">
-<meta property="og:url" content="http://example.com/2025/12/02/20251202-%E4%BB%A3%E7%A0%81%E9%87%8D%E6%9E%84%E4%B8%AD%E7%9A%84Trade%20Off/index.html">
+<meta property="og:title" content="通用交易模型">
+<meta property="og:url" content="http://example.com/2026/03/29/20260329-%E9%80%9A%E7%94%A8%E4%BA%A4%E6%98%93%E6%A8%A1%E5%9E%8B/index.html">
 <meta property="og:site_name" content="Chanon_Lee">
-<meta property="og:description" content="背景介绍接手了一个代码很杂乱的模块，命名模糊，结构耦合，充满了无效代码，不敢删。我打算逐步管理起这份代码。 修改的目标是长期清晰化，限制是不能扩大修改点，每次只做可控修改。还有些要注意的点，每次提交应该都是干净的，如果改出问题直接revert代码，其他部分不受影响。无论是跟需求夹带优化，还是自测发上生产，这种方法都能保证快速回滚，保证主流程不受影响。 下面分三个阶段，第一阶段移除无用的代码，保证核">
+<meta property="og:description" content="最近在整理交易及相关上下游的业务模型，在这里试着写一下心得。 我们先把所有后端服务做一个粗糙的分类  计算型模块。如批处理计算，如配送路径优化，如 bom 拆解 状态机模块。如交易、支付、履约。 工作流模块。现在的业务 AI Agent 其实就应用了工作流，里面的核心是图结构。 基础数据模块。维护基础数据，如买家卖家信息，商品信息，公司信息。  交易是个典型的状态机模块，核心是领域单据的状态机，所">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/img/20250104-%E6%A0%91.jpg">
-<meta property="article:published_time" content="2025-12-02T03:19:03.000Z">
-<meta property="article:modified_time" content="2026-03-28T08:06:09.780Z">
+<meta property="og:image" content="http://example.com/img/44d47d503b09e7879b9788cdcc98082.jpg">
+<meta property="article:published_time" content="2026-03-29T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-28T17:30:12.196Z">
 <meta property="article:author" content="chanon">
-<meta property="article:tag" content="refactor">
-<meta property="article:tag" content="code-quality">
+<meta property="article:tag" content="domain-modeling">
+<meta property="article:tag" content="transaction">
+<meta property="article:tag" content="state-machine">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/img/20250104-%E6%A0%91.jpg">
+<meta name="twitter:image" content="http://example.com/img/44d47d503b09e7879b9788cdcc98082.jpg">
   
   
   
-  <title>代码重构中的 Trade Off - Chanon_Lee</title>
+  <title>通用交易模型 - Chanon_Lee</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -170,13 +171,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/20250104-%E6%A0%91.jpg') no-repeat center center; background-size: cover;">
+     style="background: url('/img/44d47d503b09e7879b9788cdcc98082.jpg') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="代码重构中的 Trade Off"></span>
+            <span id="subtitle" data-typed-text="通用交易模型"></span>
           
         </div>
 
@@ -187,8 +188,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-12-02 11:19" pubdate>
-          December 2, 2025 am
+        <time datetime="2026-03-29 10:00" pubdate>
+          March 29, 2026 am
         </time>
       </span>
     
@@ -199,7 +200,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.1k words
+          1.7k words
         
       </span>
     
@@ -210,7 +211,7 @@
         
         
         
-          10 mins
+          15 mins
         
       </span>
     
@@ -247,30 +248,76 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">代码重构中的 Trade Off</h1>
+            <h1 id="seo-header">通用交易模型</h1>
             
             
               <div class="markdown-body">
                 
-                <h3 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h3><p>接手了一个代码很杂乱的模块，命名模糊，结构耦合，充满了无效代码，不敢删。我打算逐步管理起这份代码。</p>
-<p>修改的目标是长期清晰化，限制是不能扩大修改点，每次只做可控修改。还有些要注意的点，每次提交应该都是干净的，如果改出问题直接revert代码，其他部分不受影响。无论是跟需求夹带优化，还是自测发上生产，这种方法都能保证快速回滚，保证主流程不受影响。</p>
-<p>下面分三个阶段，第一阶段移除无用的代码，保证核心代码清洁。第二阶段做代码整理与归拢，方便未来修改。第三阶段才是重构，自底向上，分批重构，从底层驱动上层。</p>
-<h4 id="考虑点1-移除无效代码"><a href="#考虑点1-移除无效代码" class="headerlink" title="考虑点1 移除无效代码"></a>考虑点1 移除无效代码</h4><h5 id="中心思想：-无效代码的移除必须基于覆盖足够长业务周期的观察数据，以确保安全。"><a href="#中心思想：-无效代码的移除必须基于覆盖足够长业务周期的观察数据，以确保安全。" class="headerlink" title="中心思想： 无效代码的移除必须基于覆盖足够长业务周期的观察数据，以确保安全。"></a>中心思想： 无效代码的移除必须基于覆盖足够长业务周期的观察数据，以确保安全。</h5><ol>
-<li>首先需要建立观察期，收集观察期数据，在观察期内无调用即可安全删除代码。观察期应覆盖足够长的业务周期，需注意月周期的调用和年周期的调用。</li>
-<li>收集数据有几种方法。1. 通过日志查询近期有否调用，但日志保留时间短，无法支持较长的观察器。2. 通过接口调用监控建立观察期，有效，但需了解监控原理，指标是否是采样。3. 打印统计类日志，或者报错日志，未来通过收集报错日志确定接口无调用。</li>
-<li>适合一次性删除大量代码，非常高效。</li>
+                <p>最近在整理交易及相关上下游的业务模型，在这里试着写一下心得。</p>
+<p>我们先把所有后端服务做一个粗糙的分类</p>
+<ol>
+<li>计算型模块。如批处理计算，如配送路径优化，如 bom 拆解</li>
+<li>状态机模块。如交易、支付、履约。</li>
+<li>工作流模块。现在的业务 AI Agent 其实就应用了工作流，里面的核心是图结构。</li>
+<li>基础数据模块。维护基础数据，如买家卖家信息，商品信息，公司信息。</li>
 </ol>
-<h4 id="考虑点2-数据原型不清晰，服务的功能、层级不清晰，功能耦合"><a href="#考虑点2-数据原型不清晰，服务的功能、层级不清晰，功能耦合" class="headerlink" title="考虑点2 数据原型不清晰，服务的功能、层级不清晰，功能耦合"></a>考虑点2 数据原型不清晰，服务的功能、层级不清晰，功能耦合</h4><h5 id="中心思想：-在不重写逻辑的前提下，通过可视化和移动代码来明确边界，为重构打下基础。"><a href="#中心思想：-在不重写逻辑的前提下，通过可视化和移动代码来明确边界，为重构打下基础。" class="headerlink" title="中心思想： 在不重写逻辑的前提下，通过可视化和移动代码来明确边界，为重构打下基础。"></a>中心思想： 在不重写逻辑的前提下，通过可视化和移动代码来明确边界，为重构打下基础。</h5><ol>
-<li>自顶向下画图。有哪些端，用户需要使用哪些功能。业务层提供怎样的统一功能，这个时候无视各个不同端上的细微差异。数据模型是怎样的，哪些数据流入哪些产出，在图上给每个数据原型命名，方便代码命名。不要看代码，给理想中的代码画个内部的分层结构图，职责单一、明确。</li>
-<li>选择通过复制粘贴，将同样功能的代码迁移到同一个类中，通过收集、整理、命名来呈现边界，未来再重写代码。</li>
-<li>如果接口功能比较多，DTO边界也很模糊，可以暂时先不动，等其他部分清理完了，这里的单一功能暴露出来，再继续抽取。</li>
+<p>交易是个典型的状态机模块，核心是领域单据的状态机，所有功能由状态机驱动。</p>
+<h3 id="交易的演进"><a href="#交易的演进" class="headerlink" title="交易的演进"></a>交易的演进</h3><p>交易就像是一个市场，有交易的对手双方，一般是一方交钱，一方交货，交易提供一个凭证记录，说明一方付了多少钱，一方交付了什么商品。这个时候的交易记录是没有状态的，成交就是成交，不成交就不成交。</p>
+<p>在现代物流体系下，有可能一方已经交钱了，另一方要三天后货物才能交到对方手里，这时候就需要有个记录跟踪，看看货物是否真的到达用户手上了。这是履约的雏形。这时候交易单已经引入了状态机，支付可能是立即成功的，之后还得记录履约状态，是履约中还是履约成功了。</p>
+<p>对于交易市场来说，买家非常多，卖家也非常多，这是一个 N 对 N 的交易模型。每一笔记录都需要记录买卖双方。交易所调用的支付体系来说，还需要处理不同买家、卖家使用的账户之间的差别。</p>
+<h3 id="领域建模"><a href="#领域建模" class="headerlink" title="领域建模"></a>领域建模</h3><h5 id="1-主数据"><a href="#1-主数据" class="headerlink" title="1. 主数据"></a>1. 主数据</h5><p>我们将这个提供商品的一方称为卖家。</p>
+<p>对于交易来说，一定有一个系统，提供买家信息，也有系统提供卖家信息，还有一个系统提供卖家所有可卖商品，形成如下图样。</p>
+<p>买家主数据 -&gt; 交易<br>卖家主数据 -&gt; 交易<br>商品&#x2F;服务主数据 -&gt; 交易</p>
+<h5 id="2-交易单"><a href="#2-交易单" class="headerlink" title="2. 交易单"></a>2. 交易单</h5><p>每一笔交易都有一个交易单，交易单上记录了这笔交易的情况，比如</p>
+<ul>
+<li>未支付</li>
+<li>已支付未履约</li>
+<li>已完成</li>
+</ul>
+<p>另外，为了防止卖家无法履约，交易单一般都有自动关单时间，避免用户支付了一个半年前的交易单，此时卖家已经无法履约了，用户权益受损。</p>
+<h5 id="3-交易子单"><a href="#3-交易子单" class="headerlink" title="3. 交易子单"></a>3. 交易子单</h5><p>卖家提供多种服务，有商品，有咨询服务，也有代缴费服务，这是交易的不同业务入口。在这个业务入口下，每一种交易的支付和履约流程都不太一样，所以我们采用交易主单记录发生了一笔交易，用交易子单来记录具体的明细。比如商品有商品子单，咨询有咨询子单，代缴费有代缴费子单。</p>
+<table>
+<thead>
+<tr>
+<th>子单类型</th>
+<th>履约特点</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>商品子单</td>
+<td>履约周期长，可能涉及物流的不同状态</td>
+<td>用户购买手机，需等待快递配送</td>
+</tr>
+<tr>
+<td>咨询子单</td>
+<td>履约即时或周期短，状态单一</td>
+<td>用户购买在线课程咨询</td>
+</tr>
+<tr>
+<td>代缴费子单</td>
+<td>履约同步下游系统，周期最短</td>
+<td>用户代缴水电费，系统即时处理</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>说明：交易主单记录整笔交易，子单记录具体明细及履约情况，避免不同业务类型混杂导致逻辑混乱。</p>
+</blockquote>
+<h5 id="4-支付情况"><a href="#4-支付情况" class="headerlink" title="4. 支付情况"></a>4. 支付情况</h5><p>交易中，一般是先付款，再履约。而支付背后的复杂逻辑，银行、银行卡、时间节奏的相关信息由另一个支付模块隔离处理。交易一般只冗余存储是否完成支付。有些时候视系统查询需求，再看是否需要冗余付款人信息、付款时间信息等。</p>
+<blockquote>
+<p>示例：用户下单购买商品时，交易模块只记录“已支付”，实际支付验证由支付模块完成。</p>
+</blockquote>
+<h5 id="5-履约情况"><a href="#5-履约情况" class="headerlink" title="5. 履约情况"></a>5. 履约情况</h5><p>支付流程相对统一，但不同交易子单的履约情况差异较大。</p>
+<ol>
+<li>商品子单可能有多个履约方<br>例如在电商系统中，一个商品订单可能由多个仓库或供应商发货。<br>每个履约方的物流状态，如发货时间、运输进度、预计到达时间，都需要在子单中单独记录，确保查询和报表准确反映每个商品的履约情况。</li>
+<li>服务子单通常只有一个履约方<br>例如在线咨询、代缴费等服务订单，一般只涉及单一履约方，履约信息较为简单。</li>
 </ol>
-<h4 id="考虑点3-接口不存在复用，四处分散，各自处理逻辑"><a href="#考虑点3-接口不存在复用，四处分散，各自处理逻辑" class="headerlink" title="考虑点3 接口不存在复用，四处分散，各自处理逻辑"></a>考虑点3 接口不存在复用，四处分散，各自处理逻辑</h4><h5 id="中心思想：-冻结现有烂接口，通过提供统一且干净的新接口来驱动业务调用迁移，并利用测试保证修改范围安全。"><a href="#中心思想：-冻结现有烂接口，通过提供统一且干净的新接口来驱动业务调用迁移，并利用测试保证修改范围安全。" class="headerlink" title="中心思想： 冻结现有烂接口，通过提供统一且干净的新接口来驱动业务调用迁移，并利用测试保证修改范围安全。"></a>中心思想： 冻结现有烂接口，通过提供统一且干净的新接口来驱动业务调用迁移，并利用测试保证修改范围安全。</h5><ol>
-<li>对数据库访问层，保证接口不动，通过整理代码来归拢功能。对于数据库访问和业务耦合的，把业务耦合抽到一个类里，数据访问留在原类，未来迁移。</li>
-<li>等有需求时，提供新的统一、干净的数据访问接口，将业务访问切往这个接口，再在业务处理层修改适配代码。借用测试覆盖修改范围。</li>
-<li>数据字段较多，一个一个核查非常花时间，容易错，直接切换很容易因为手误、理解不完全造成错配。初期不做接口归拢，未来对代码有理解、通过产品明确接口功能以后，再做切换。这种烂接口不要看代码。</li>
-<li>如果数据访问层很乱，业务处理层不太好统一，等上面几步做完再做整理。</li>
-</ol>
+<blockquote>
+<p>履约数据可根据系统查询需求冗余存储在交易子单上，便于快速查询和统计。<br>需要注意，这些冗余数据仅供参考，不保证百分百准确或实时。</p>
+</blockquote>
+<h5 id="6-反向交易（退货-退款）"><a href="#6-反向交易（退货-退款）" class="headerlink" title="6. 反向交易（退货&#x2F;退款）"></a>6. 反向交易（退货&#x2F;退款）</h5><p>既然市场有交易，就得考虑反向交易，也就是用户退货退款的情况。这种情况下，为了保证退款的准确性，系统必须先校验正向交易是否存在、是否已完成，再根据当时交易的价格和数量进行退款。</p>
+<p>换个思路想，这里也有买家卖家主数据，也有商品数据，只不过商品数据都由正向交易单上获取。反向交易就可以做成一个类似正向交易的系统了，也有主数据，也有交易主单和子单，也有支付（退款）和履约（退货）情况。一切按正向交易流程处理即可。</p>
+<p>特别提醒，如果是一个数据量大且读多写少的系统，正向单据有时需要冗余反向交易情况。需特别记录，此时正单上的反向交易只是冗余，而非事实记录。</p>
 
                 
               </div>
@@ -304,9 +351,11 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/refactor/" class="print-no-link">#refactor</a>
+        <a href="/tags/domain-modeling/" class="print-no-link">#domain-modeling</a>
       
-        <a href="/tags/code-quality/" class="print-no-link">#code-quality</a>
+        <a href="/tags/transaction/" class="print-no-link">#transaction</a>
+      
+        <a href="/tags/state-machine/" class="print-no-link">#state-machine</a>
       
     </div>
   
@@ -318,8 +367,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>代码重构中的 Trade Off</div>
-      <div>http://example.com/2025/12/02/20251202-代码重构中的Trade Off/</div>
+      <div>通用交易模型</div>
+      <div>http://example.com/2026/03/29/20260329-通用交易模型/</div>
     </div>
     <div class="license-meta">
       
@@ -331,7 +380,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>December 2, 2025</div>
+          <div>March 29, 2026</div>
         </div>
       
       
@@ -363,18 +412,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/03/29/20260329-%E9%80%9A%E7%94%A8%E4%BA%A4%E6%98%93%E6%A8%A1%E5%9E%8B/" title="通用交易模型">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">通用交易模型</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/11/19/20251119-%E5%A4%84%E7%90%86%E9%9F%B3%E9%A2%91%E6%B5%81/" title="处理音频流">
-                        <span class="hidden-mobile">处理音频流</span>
+                      <a href="/2025/12/02/20251202-%E4%BB%A3%E7%A0%81%E9%87%8D%E6%9E%84%E4%B8%AD%E7%9A%84Trade%20Off/" title="代码重构中的 Trade Off">
+                        <span class="hidden-mobile">代码重构中的 Trade Off</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
