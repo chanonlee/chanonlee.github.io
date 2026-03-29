@@ -3,6 +3,7 @@ title: 关于
 date: 2026-03-28 12:00:00
 layout: about
 comments: false
+banner_img: /img/44d47d503b09e7879b9788cdcc98082.jpg
 ---
 
 这里主要记录我在后端开发中的学习笔记和工程实践，内容集中在 Java、数据库、中间件、源码阅读，以及一些偏实战的设计思考。
