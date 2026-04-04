@@ -214,7 +214,7 @@
       
       <a class="index-excerpt " href="/2026/04/04/20260404-%E4%B8%80%E4%B8%AA%E5%8F%AA%E5%9C%A8%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E5%87%BA%E7%8E%B0%E7%9A%84%E8%AF%A1%E5%BC%82%E5%8F%8D%E5%B0%84%E6%8A%A5%E9%94%99JaCoCo/" target="_self">
         <div>
-          最近在发布一个版本时发现：**测试环境报错，生产环境正常**；把测试环境回滚到几个月前的版本，问题依旧。排查到最后可以确定：**不是业务代码回归**，而是 **JVM 挂载 JaCoCo 后向类里插入了额外字段**，破坏了「按字段名拼 getter 再反射调用」的假设。本文记录完整排查过程，也方便以后按类似思路拆问题。
+          最近在发布一个版本时发现：测试环境报错，生产环境正常；把测试环境回滚到几个月前的版本，问题依旧。排查到最后可以
         </div>
       </a>
 
@@ -255,9 +255,9 @@
             
               <a href="/tags/java/">#java</a>
             
-              <a href="/tags/reflection/">#reflection</a>
-            
               <a href="/tags/jacoco/">#jacoco</a>
+            
+              <a href="/tags/reflection/">#reflection</a>
             
               <a href="/tags/java-agent/">#java-agent</a>
             
@@ -287,7 +287,7 @@
       
       <a class="index-excerpt " href="/2026/03/29/20260329-%E9%80%9A%E7%94%A8%E4%BA%A4%E6%98%93%E6%A8%A1%E5%9E%8B/" target="_self">
         <div>
-          最近在整理交易及相关上下游的业务模型，把后端服务粗分为计算型、状态机、工作流与基础数据等模块，并说明**交易作为典型状态机**、领域单据状态机如何驱动功能。本文是整理过程中的心得记录。
+          最近在整理交易及相关上下游的业务模型，在这里试着写一下心得。 我们先把所有后端服务做一个粗糙的分类  计算型模块
         </div>
       </a>
 
@@ -358,7 +358,7 @@
       
       <a class="index-excerpt " href="/2025/12/02/20251202-%E4%BB%A3%E7%A0%81%E9%87%8D%E6%9E%84%E4%B8%AD%E7%9A%84Trade%20Off/" target="_self">
         <div>
-          接手一个杂乱、耦合严重的模块后，在**不扩大修改点**的前提下分三阶段渐进清理：先删无效代码、再整理边界、最后自底向上重构。本文记录各阶段的取舍与可回滚的提交策略。
+          背景介绍接手了一个代码很杂乱的模块，命名模糊，结构耦合，充满了无效代码，不敢删。我打算逐步管理起这份代码
         </div>
       </a>
 
@@ -427,7 +427,7 @@
       
       <a class="index-excerpt " href="/2025/11/19/20251119-%E5%A4%84%E7%90%86%E9%9F%B3%E9%A2%91%E6%B5%81/" target="_self">
         <div>
-          用 **Python + PyAudio** 理清从采集到落盘的音频流处理流程，包括采样率、声道与 chunk 等参数含义，以及录音与播放的常用步骤。本文偏脚本与实验记录。
+          1. 电脑处理音频流程 2. 音频参数CHUNK &#x3D; 1024 帧数FORMAT &#x3D
         </div>
       </a>
 
@@ -498,7 +498,7 @@
       
       <a class="index-excerpt " href="/2025/01/04/20250104-%E8%A1%8C%E6%94%BF%E5%8C%BA%E5%88%92%E4%B8%8B%E7%9A%84%E5%95%86%E5%BA%97%E5%85%B3%E7%B3%BB%E2%80%94%E2%80%94%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5%E4%B8%AD%E7%9A%84%E6%A0%91%E7%BB%93%E6%9E%84%E4%BD%BF%E7%94%A8%20copy/" target="_self">
         <div>
-          在**行政区划多层级门店**场景下，把配置与互斥约束抽象成**固定深度的树**上的占用与冲突检测问题，并讨论几种工程实现方案。本文记录问题建模与接口设计。
+          网上很多数据结构练习无法拿来即用套用在工程代码里，原因是在实际设计中还需要考虑很多可能，如程序中断、内存
         </div>
       </a>
 
@@ -569,7 +569,7 @@
       
       <a class="index-excerpt " href="/2024/08/11/20240811-%E5%9C%A8Springboot%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8MongoDB%E7%9A%84QuickStart/" target="_self">
         <div>
-          在 **Spring Boot** 中引入 MongoDB，熟悉 **MongoTemplate / Repository** 与基本 CRUD，并顺带了解依赖选型与上手路径。本文是一篇面向落地的 QuickStart。
+          接下来要在SpringBoot项目中引入MongoDB，接下来做一些探索，熟悉基本的增删改查操作，了解索
         </div>
       </a>
 
@@ -610,9 +610,9 @@
             
               <a href="/tags/mongodb/">#mongodb</a>
             
-              <a href="/tags/database/">#database</a>
-            
               <a href="/tags/spring-boot/">#spring-boot</a>
+            
+              <a href="/tags/database/">#database</a>
             
           </div>
         
@@ -640,7 +640,7 @@
       
       <a class="index-excerpt " href="/2024/08/10/20240810-Collection%E7%B1%BB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" target="_self">
         <div>
-          从 **java.util Collection 家族** 入手做源码阅读，讨论阅读顺序、容易陷入的细节，以及 Iterable、序列化、扩容与异常等横切关注点。本文是阅读过程里的方法与笔记。
+          一. 前言​    最近想要阅读一些源码，所以决定从java基础包开始读起，逐渐向外拓展。 ​    C
         </div>
       </a>
 
@@ -711,7 +711,7 @@
       
       <a class="index-excerpt " href="/2024/08/10/20240810-MongoDB%E7%9A%84Index/" target="_self">
         <div>
-          从业务查询需求出发，梳理 **MongoDB 索引如何工作**、有哪些索引类型与适用场景，再判断现有方案能否满足「先日期、再业务键」的查询。本文偏重原理与选型。
+          最近在写一个需求，需要用到mongoDB，保存的数据结构大概如下。查找的时候需要先按照日期，再按ob
         </div>
       </a>
 
@@ -752,9 +752,9 @@
             
               <a href="/tags/mongodb/">#mongodb</a>
             
-              <a href="/tags/index/">#index</a>
-            
               <a href="/tags/database/">#database</a>
+            
+              <a href="/tags/index/">#index</a>
             
           </div>
         
@@ -782,7 +782,7 @@
       
       <a class="index-excerpt " href="/2024/06/23/20240623-%E4%BD%BF%E7%94%A8java%20function%E5%8C%85%E5%86%99%E4%B8%80%E4%B8%AARetryUtils/" target="_self">
         <div>
-          用 **java.util.function** 抽象三种重试形态（无返回值、带返回值、按条件重试），写成无额外依赖的 **RetryUtils** 工具类。本文给出实现与测试用法。
+          在项目中，我们总会遇到很多需要重复执行的代码。为了方便，将重复执行抽象成工具类，提供三种功能  直接重试
         </div>
       </a>
 
@@ -853,7 +853,7 @@
       
       <a class="index-excerpt " href="/2024/02/05/%E5%85%B3%E4%BA%8Eequals%E5%92%8Chashcode%E6%96%B9%E6%B3%95/" target="_self">
         <div>
-          梳理 **equals 与 hashCode** 的契约、Object 默认实现与在集合类中的行为，并说明覆写时如何保持一致性。本文适合作为 Java 基础备忘。
+          equals用于判断两个对象是否是同一个 hashcode用来快速判断对象是否相同（对象相同hashco
         </div>
       </a>
 
