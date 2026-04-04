@@ -16,16 +16,16 @@
   <meta name="author" content="chanon">
   <meta name="keywords" content="">
   
-    <meta name="description" content="创作透明度： 🖋️ 人工创作（完全作者撰写） | ✨ AI润色（作者撰写，AI优化语言） | 🤖 AI辅助（作者主导，AI提供内容&#x2F;结构建议） | 🛠️ AI+人工（AI生成初稿，作者修改完善） | 🧠 全AI生成（内容完全由AI生成） 本文标注：✨ AI润色   最近在发布一个版本时发现：测试环境报错，生产环境正常；把测试环境回滚到几个月前的版本，问题依旧。排查到最后可以确">
+    <meta name="description" content="创作透明度： 🖋️ 人工创作（完全作者撰写） | ✨ AI润色（作者撰写，AI优化语言） | 🤖 AI辅助（作者主导，AI提供内容&#x2F;结构建议） | 🛠️ AI+人工（AI生成初稿，作者修改完善） | 🧠 全AI生成（内容完全由AI生成） 本文标注：🤖 AI辅助   最近在发布一个版本时发现：测试环境报错，生产环境正常；把测试环境回滚到几个月前的版本，问题依旧。排查到最后可以">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一个只在测试环境出现的诡异反射报错：我最后查到了 JaCoCo">
 <meta property="og:url" content="http://example.com/2026/04/04/20260404-%E4%B8%80%E4%B8%AA%E5%8F%AA%E5%9C%A8%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E5%87%BA%E7%8E%B0%E7%9A%84%E8%AF%A1%E5%BC%82%E5%8F%8D%E5%B0%84%E6%8A%A5%E9%94%99JaCoCo/index.html">
 <meta property="og:site_name" content="Chanon_Lee">
-<meta property="og:description" content="创作透明度： 🖋️ 人工创作（完全作者撰写） | ✨ AI润色（作者撰写，AI优化语言） | 🤖 AI辅助（作者主导，AI提供内容&#x2F;结构建议） | 🛠️ AI+人工（AI生成初稿，作者修改完善） | 🧠 全AI生成（内容完全由AI生成） 本文标注：✨ AI润色   最近在发布一个版本时发现：测试环境报错，生产环境正常；把测试环境回滚到几个月前的版本，问题依旧。排查到最后可以确">
+<meta property="og:description" content="创作透明度： 🖋️ 人工创作（完全作者撰写） | ✨ AI润色（作者撰写，AI优化语言） | 🤖 AI辅助（作者主导，AI提供内容&#x2F;结构建议） | 🛠️ AI+人工（AI生成初稿，作者修改完善） | 🧠 全AI生成（内容完全由AI生成） 本文标注：🤖 AI辅助   最近在发布一个版本时发现：测试环境报错，生产环境正常；把测试环境回滚到几个月前的版本，问题依旧。排查到最后可以">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/44d47d503b09e7879b9788cdcc98082.jpg">
 <meta property="article:published_time" content="2026-04-04T02:00:00.000Z">
-<meta property="article:modified_time" content="2026-04-04T10:23:27.315Z">
+<meta property="article:modified_time" content="2026-04-04T10:24:08.345Z">
 <meta property="article:author" content="chanon">
 <meta property="article:tag" content="java">
 <meta property="article:tag" content="reflection">
@@ -257,7 +257,7 @@
                 <div style="font-size: 0.9em; color: #8a8a8a; line-height: 1.7;">
 
 <p><strong>创作透明度：</strong> 🖋️ 人工创作（完全作者撰写） | ✨ AI润色（作者撰写，AI优化语言） | 🤖 AI辅助（作者主导，AI提供内容&#x2F;结构建议） | 🛠️ AI+人工（AI生成初稿，作者修改完善） | 🧠 全AI生成（内容完全由AI生成）</p>
-<p><strong>本文标注：✨ AI润色</strong></p>
+<p><strong>本文标注：🤖 AI辅助</strong></p>
 </div>
 
 <p>最近在发布一个版本时发现：<strong>测试环境报错，生产环境正常</strong>；把测试环境回滚到几个月前的版本，问题依旧。排查到最后可以确定：<strong>不是业务代码回归</strong>，而是 <strong>JVM 挂载 JaCoCo 后向类里插入了额外字段</strong>，破坏了「按字段名拼 getter 再反射调用」的假设。本文记录完整排查过程，也方便以后按类似思路拆问题。</p>
