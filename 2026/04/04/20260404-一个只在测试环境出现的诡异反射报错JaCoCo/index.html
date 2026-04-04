@@ -24,12 +24,12 @@
 <meta property="og:description" content="创作透明度： 🖋️ 人工创作（完全作者撰写） | ✨ AI润色（作者撰写，AI优化语言） | 🤖 AI辅助（作者主导，AI提供内容&#x2F;结构建议） | 🛠️ AI+人工（AI生成初稿，作者修改完善） | 🧠 全AI生成（内容完全由AI生成） 本文标注：🤖 AI辅助   最近在发布一个版本时发现：测试环境报错，生产环境正常；把测试环境回滚到几个月前的版本，问题依旧。排查到最后可以">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/44d47d503b09e7879b9788cdcc98082.jpg">
-<meta property="article:published_time" content="2026-04-04T02:00:00.000Z">
-<meta property="article:modified_time" content="2026-04-04T10:24:08.345Z">
+<meta property="article:published_time" content="2026-04-04T10:27:00.000Z">
+<meta property="article:modified_time" content="2026-04-04T10:27:59.989Z">
 <meta property="article:author" content="chanon">
 <meta property="article:tag" content="java">
-<meta property="article:tag" content="reflection">
 <meta property="article:tag" content="jacoco">
+<meta property="article:tag" content="reflection">
 <meta property="article:tag" content="java-agent">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/img/44d47d503b09e7879b9788cdcc98082.jpg">
@@ -189,8 +189,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2026-04-04 10:00" pubdate>
-          April 4, 2026 am
+        <time datetime="2026-04-04 18:27" pubdate>
+          April 4, 2026 pm
         </time>
       </span>
     
@@ -201,7 +201,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3k words
+          2.8k words
         
       </span>
     
@@ -212,7 +212,7 @@
         
         
         
-          25 mins
+          24 mins
         
       </span>
     
@@ -294,11 +294,7 @@
 <li>运行结束后汇总成覆盖率报告。</li>
 </ul>
 <p>这样一来，前面的 <strong><code>$jacocoData</code></strong> 就完全说得通了：它<strong>不是源码里写的字段</strong>，而是 <strong>JaCoCo 在运行时插进类里的字段</strong>。这类 Java Agent 在日常里也不少见，例如 <strong>JProfiler</strong> 等工具也是类似思路。</p>
-<h2 id="六、小结与拓展阅读"><a href="#六、小结与拓展阅读" class="headerlink" title="六、小结与拓展阅读"></a>六、小结与拓展阅读</h2><ul>
-<li><strong>根因</strong>：测试环境（或带覆盖率&#x2F;agent 的环境）里类上多了 JaCoCo 插入的字段；若反射逻辑<strong>无脑遍历所有字段并拼 getter</strong>，就会踩到没有 getter 的字段。</li>
-<li><strong>修复思路</strong>（择一或组合）：过滤合成字段&#x2F;按命名约定忽略 <code>$jacocoData</code>、只处理业务声明的字段、用 BeanInfo&#x2F;显式白名单等，避免把运行期插桩字段当普通属性。</li>
-</ul>
-<p>若想继续深入 <strong>Java Agent</strong>，可以参考下面这篇文章，自己动手写一个简单的 agent，把整条链路摸透：</p>
+<h2 id="六、拓展阅读"><a href="#六、拓展阅读" class="headerlink" title="六、拓展阅读"></a>六、拓展阅读</h2><p>若想继续深入 <strong>Java Agent</strong>，可以参考下面这篇文章，自己动手写一个简单的 agent，把整条链路摸透：</p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/rickiyang/p/11368932.html">Java Agent 入门与实践（博客园）</a></p>
 
                 
@@ -335,9 +331,9 @@
       
         <a href="/tags/java/" class="print-no-link">#java</a>
       
-        <a href="/tags/reflection/" class="print-no-link">#reflection</a>
-      
         <a href="/tags/jacoco/" class="print-no-link">#jacoco</a>
+      
+        <a href="/tags/reflection/" class="print-no-link">#reflection</a>
       
         <a href="/tags/java-agent/" class="print-no-link">#java-agent</a>
       
