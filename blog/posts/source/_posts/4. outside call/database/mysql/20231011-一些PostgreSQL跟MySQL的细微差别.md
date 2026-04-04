@@ -8,6 +8,7 @@ tags:
   - mysql
   - mvcc
 categories: 数据库
+description: 对比 **PostgreSQL 与 MySQL** 在 MVCC、锁与日常行为上的细微差别，帮助在两种引擎之间切换或联调时少踩坑。本文以笔记形式记录差异与直觉。
 ---
 <div style="font-size: 0.9em; color: #8a8a8a; line-height: 1.7;">
 

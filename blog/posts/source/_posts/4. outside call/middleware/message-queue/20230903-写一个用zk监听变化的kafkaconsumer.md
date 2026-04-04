@@ -9,6 +9,7 @@ tags:
   - zookeeper
   - consumer
 categories: 中间件
+description: 实现一个 **Kafka Consumer Manager** 与具体 Consumer，并用 **ZooKeeper 监听变更** 动态调整订阅的 topic。本文给出完整搭建步骤与代码组织方式。
 ---
 <div style="font-size: 0.9em; color: #8a8a8a; line-height: 1.7;">
 

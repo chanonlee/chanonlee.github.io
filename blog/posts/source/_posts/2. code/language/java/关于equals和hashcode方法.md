@@ -8,6 +8,7 @@ tags:
   - equals
   - hashcode
 categories: Java
+description: 梳理 **equals 与 hashCode** 的契约、Object 默认实现与在集合类中的行为，并说明覆写时如何保持一致性。本文适合作为 Java 基础备忘。
 ---
 <div style="font-size: 0.9em; color: #8a8a8a; line-height: 1.7;">
 

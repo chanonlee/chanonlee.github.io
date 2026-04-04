@@ -8,6 +8,7 @@ tags:
   - index
   - database
 categories: 数据库
+description: 从业务查询需求出发，梳理 **MongoDB 索引如何工作**、有哪些索引类型与适用场景，再判断现有方案能否满足「先日期、再业务键」的查询。本文偏重原理与选型。
 ---
 <div style="font-size: 0.9em; color: #8a8a8a; line-height: 1.7;">
 
