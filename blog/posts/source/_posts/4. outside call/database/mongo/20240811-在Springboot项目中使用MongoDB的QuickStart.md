@@ -8,7 +8,6 @@ tags:
   - spring-boot
   - database
 categories: 数据库
-description: 在 **Spring Boot** 中引入 MongoDB，熟悉 **MongoTemplate / Repository** 与基本 CRUD，并顺带了解依赖选型与上手路径。本文是一篇面向落地的 QuickStart。
 ---
 <div style="font-size: 0.9em; color: #8a8a8a; line-height: 1.7;">
 

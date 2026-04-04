@@ -8,7 +8,6 @@ tags:
   - source-code
   - collection
 categories: Java
-description: 从 **java.util Collection 家族** 入手做源码阅读，讨论阅读顺序、容易陷入的细节，以及 Iterable、序列化、扩容与异常等横切关注点。本文是阅读过程里的方法与笔记。
 ---
 <div style="font-size: 0.9em; color: #8a8a8a; line-height: 1.7;">
 

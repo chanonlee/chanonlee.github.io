@@ -8,7 +8,6 @@ tags:
   - function
   - retry
 categories: 工程实践
-description: 用 **java.util.function** 抽象三种重试形态（无返回值、带返回值、按条件重试），写成无额外依赖的 **RetryUtils** 工具类。本文给出实现与测试用法。
 ---
 <div style="font-size: 0.9em; color: #8a8a8a; line-height: 1.7;">
 

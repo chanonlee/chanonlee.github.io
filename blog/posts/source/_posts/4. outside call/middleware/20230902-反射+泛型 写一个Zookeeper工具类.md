@@ -9,7 +9,6 @@ tags:
   - reflection
   - generic
 categories: 中间件
-description: 用 **Java 反射与泛型** 封装一个可复用的 ZooKeeper 工具类，覆盖初始化与关闭、节点增删、监听器注册等常见操作。本文附实现要点与示例。
 ---
 <div style="font-size: 0.9em; color: #8a8a8a; line-height: 1.7;">
 
