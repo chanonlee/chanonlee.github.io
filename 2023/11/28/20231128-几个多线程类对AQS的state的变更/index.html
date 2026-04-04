@@ -16,16 +16,16 @@
   <meta name="author" content="chanon">
   <meta name="keywords" content="">
   
-    <meta name="description" content="几个多线程类对AQS的state的变更1. 序章1.1. AQS的几个重要接口介绍重要属性：    属性 说明    int state 同步状态，用它来标记是否加解锁了   对外加解锁的重要接口：    tryAcquire 排他锁加锁    tryRelease 排他锁解锁   tryAcquireShared 共享锁加锁   tryReleaseShared 共享锁解锁   对AQS的使用基">
+    <meta name="description" content="创作透明度： 🖋️ 人工创作（完全作者撰写） | ✨ AI润色（作者撰写，AI优化语言） | 🤖 AI辅助（作者主导，AI提供内容&#x2F;结构建议） | 🛠️ AI+人工（AI生成初稿，作者修改完善） | 🧠 全AI生成（内容完全由AI生成） 本文标注： 🖋️ 人工创作    几个多线程类对AQS的state的变更1. 序章1.1. AQS的几个重要接口介绍重要属性：    属性">
 <meta property="og:type" content="article">
 <meta property="og:title" content="几个多线程类对AQS的state的变更">
 <meta property="og:url" content="http://example.com/2023/11/28/20231128-%E5%87%A0%E4%B8%AA%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%B1%BB%E5%AF%B9AQS%E7%9A%84state%E7%9A%84%E5%8F%98%E6%9B%B4/index.html">
 <meta property="og:site_name" content="Chanon_Lee">
-<meta property="og:description" content="几个多线程类对AQS的state的变更1. 序章1.1. AQS的几个重要接口介绍重要属性：    属性 说明    int state 同步状态，用它来标记是否加解锁了   对外加解锁的重要接口：    tryAcquire 排他锁加锁    tryRelease 排他锁解锁   tryAcquireShared 共享锁加锁   tryReleaseShared 共享锁解锁   对AQS的使用基">
+<meta property="og:description" content="创作透明度： 🖋️ 人工创作（完全作者撰写） | ✨ AI润色（作者撰写，AI优化语言） | 🤖 AI辅助（作者主导，AI提供内容&#x2F;结构建议） | 🛠️ AI+人工（AI生成初稿，作者修改完善） | 🧠 全AI生成（内容完全由AI生成） 本文标注： 🖋️ 人工创作    几个多线程类对AQS的state的变更1. 序章1.1. AQS的几个重要接口介绍重要属性：    属性">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/20231128-%E5%87%A0%E4%B8%AA%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%B1%BB%E5%AF%B9AQS%E7%9A%84state%E7%9A%84%E5%8F%98%E6%9B%B4.jpg">
 <meta property="article:published_time" content="2023-11-28T06:56:11.000Z">
-<meta property="article:modified_time" content="2026-03-28T08:06:09.779Z">
+<meta property="article:modified_time" content="2026-04-04T10:42:48.178Z">
 <meta property="article:author" content="chanon">
 <meta property="article:tag" content="java">
 <meta property="article:tag" content="concurrency">
@@ -211,7 +211,7 @@
         
         
         
-          136 mins
+          137 mins
         
       </span>
     
@@ -253,7 +253,14 @@
             
               <div class="markdown-body">
                 
-                <h3 id="几个多线程类对AQS的state的变更"><a href="#几个多线程类对AQS的state的变更" class="headerlink" title="几个多线程类对AQS的state的变更"></a>几个多线程类对AQS的state的变更</h3><h3 id="1-序章"><a href="#1-序章" class="headerlink" title="1. 序章"></a>1. 序章</h3><h4 id="1-1-AQS的几个重要接口介绍"><a href="#1-1-AQS的几个重要接口介绍" class="headerlink" title="1.1. AQS的几个重要接口介绍"></a>1.1. AQS的几个重要接口介绍</h4><p>重要属性：</p>
+                <div style="font-size: 0.9em; color: #8a8a8a; line-height: 1.7;">
+
+<p><strong>创作透明度：</strong> 🖋️ 人工创作（完全作者撰写） | ✨ AI润色（作者撰写，AI优化语言） | 🤖 AI辅助（作者主导，AI提供内容&#x2F;结构建议） | 🛠️ AI+人工（AI生成初稿，作者修改完善） | 🧠 全AI生成（内容完全由AI生成）</p>
+<p><strong>本文标注： 🖋️ 人工创作</strong></p>
+</div>
+
+
+<h3 id="几个多线程类对AQS的state的变更"><a href="#几个多线程类对AQS的state的变更" class="headerlink" title="几个多线程类对AQS的state的变更"></a>几个多线程类对AQS的state的变更</h3><h3 id="1-序章"><a href="#1-序章" class="headerlink" title="1. 序章"></a>1. 序章</h3><h4 id="1-1-AQS的几个重要接口介绍"><a href="#1-1-AQS的几个重要接口介绍" class="headerlink" title="1.1. AQS的几个重要接口介绍"></a>1.1. AQS的几个重要接口介绍</h4><p>重要属性：</p>
 <table>
 <thead>
 <tr>

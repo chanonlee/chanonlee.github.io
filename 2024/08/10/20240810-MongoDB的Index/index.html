@@ -16,16 +16,16 @@
   <meta name="author" content="chanon">
   <meta name="keywords" content="">
   
-    <meta name="description" content="最近在写一个需求，需要用到mongoDB，保存的数据结构大概如下。查找的时候需要先按照日期，再按object_code查询。于是我开始研究MongoDB的索引。我们需要解决两个问题，1. MongoDB的索引是如何工作的，2. MongoDB有哪些索引分类，它们的作用范围、分层模型分别是怎样的。最后我们才能回答，MongoDB的索引能否满足我的需求。  一. MongoDB的索引是如何工作的资料：">
+    <meta name="description" content="创作透明度： 🖋️ 人工创作（完全作者撰写） | ✨ AI润色（作者撰写，AI优化语言） | 🤖 AI辅助（作者主导，AI提供内容&#x2F;结构建议） | 🛠️ AI+人工（AI生成初稿，作者修改完善） | 🧠 全AI生成（内容完全由AI生成） 本文标注： 🖋️ 人工创作      最近在写一个需求，需要用到mongoDB，保存的数据结构大概如下。查找的时候需要先按照日期，再按ob">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MongoDB的Index">
 <meta property="og:url" content="http://example.com/2024/08/10/20240810-MongoDB%E7%9A%84Index/index.html">
 <meta property="og:site_name" content="Chanon_Lee">
-<meta property="og:description" content="最近在写一个需求，需要用到mongoDB，保存的数据结构大概如下。查找的时候需要先按照日期，再按object_code查询。于是我开始研究MongoDB的索引。我们需要解决两个问题，1. MongoDB的索引是如何工作的，2. MongoDB有哪些索引分类，它们的作用范围、分层模型分别是怎样的。最后我们才能回答，MongoDB的索引能否满足我的需求。  一. MongoDB的索引是如何工作的资料：">
+<meta property="og:description" content="创作透明度： 🖋️ 人工创作（完全作者撰写） | ✨ AI润色（作者撰写，AI优化语言） | 🤖 AI辅助（作者主导，AI提供内容&#x2F;结构建议） | 🛠️ AI+人工（AI生成初稿，作者修改完善） | 🧠 全AI生成（内容完全由AI生成） 本文标注： 🖋️ 人工创作      最近在写一个需求，需要用到mongoDB，保存的数据结构大概如下。查找的时候需要先按照日期，再按ob">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/20240810-MongoDB%E7%9A%84Index.jpg">
 <meta property="article:published_time" content="2024-08-10T11:10:08.000Z">
-<meta property="article:modified_time" content="2026-03-28T07:59:15.656Z">
+<meta property="article:modified_time" content="2026-04-04T10:42:48.181Z">
 <meta property="article:author" content="chanon">
 <meta property="article:tag" content="mongodb">
 <meta property="article:tag" content="index">
@@ -200,7 +200,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.6k words
+          1.7k words
         
       </span>
     
@@ -211,7 +211,7 @@
         
         
         
-          14 mins
+          15 mins
         
       </span>
     
@@ -253,7 +253,16 @@
             
               <div class="markdown-body">
                 
-                <p>最近在写一个需求，需要用到mongoDB，保存的数据结构大概如下。查找的时候需要先按照日期，再按object_code查询。于是我开始研究MongoDB的索引。我们需要解决两个问题，1. MongoDB的索引是如何工作的，2. MongoDB有哪些索引分类，它们的作用范围、分层模型分别是怎样的。最后我们才能回答，MongoDB的索引能否满足我的需求。</p>
+                <div style="font-size: 0.9em; color: #8a8a8a; line-height: 1.7;">
+
+<p><strong>创作透明度：</strong> 🖋️ 人工创作（完全作者撰写） | ✨ AI润色（作者撰写，AI优化语言） | 🤖 AI辅助（作者主导，AI提供内容&#x2F;结构建议） | 🛠️ AI+人工（AI生成初稿，作者修改完善） | 🧠 全AI生成（内容完全由AI生成）</p>
+<p><strong>本文标注： 🖋️ 人工创作</strong></p>
+</div>
+
+
+
+
+<p>最近在写一个需求，需要用到mongoDB，保存的数据结构大概如下。查找的时候需要先按照日期，再按object_code查询。于是我开始研究MongoDB的索引。我们需要解决两个问题，1. MongoDB的索引是如何工作的，2. MongoDB有哪些索引分类，它们的作用范围、分层模型分别是怎样的。最后我们才能回答，MongoDB的索引能否满足我的需求。</p>
 <p><img src="/img/20240810-MongoDB%E7%9A%84Index/01.jpg" srcset="/img/loading.gif" lazyload></p>
 <h2 id="一-MongoDB的索引是如何工作的"><a href="#一-MongoDB的索引是如何工作的" class="headerlink" title="一. MongoDB的索引是如何工作的"></a>一. MongoDB的索引是如何工作的</h2><p>资料：<a target="_blank" rel="noopener" href="https://www.mongodb.com/resources/basics/search-index">An Introduction To Search Indexes | MongoDB</a></p>
 <p>资料离给出了一个根据索引排序的示例图。从图里可以看出，索引是挂在数据集外的。索引相当于另写了一个数据结构来处理排序、查找的问题，跟MySQL的非主键索引类似。</p>
