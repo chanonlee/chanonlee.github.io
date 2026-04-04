@@ -10,6 +10,14 @@ tags:
   - generic
 categories: 中间件
 ---
+<div style="font-size: 0.9em; color: #8a8a8a; line-height: 1.7;">
+
+**创作透明度：** 🖋️ 人工创作（完全作者撰写） | ✨ AI润色（作者撰写，AI优化语言） | 🤖 AI辅助（作者主导，AI提供内容/结构建议） | 🛠️ AI+人工（AI生成初稿，作者修改完善） | 🧠 全AI生成（内容完全由AI生成）
+
+**本文标注： 🖋️ 人工创作**
+
+</div>
+
 
 功能简介：
 
