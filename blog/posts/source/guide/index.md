@@ -23,6 +23,7 @@ banner_img: /img/44d47d503b09e7879b9788cdcc98082.jpg
 - [Collection类源码阅读](/2024/08/10/20240810-Collection%E7%B1%BB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/)
 - [使用 java function 包写一个 RetryUtils](/2024/06/23/20240623-%E4%BD%BF%E7%94%A8java-function%E5%8C%85%E5%86%99%E4%B8%80%E4%B8%AARetryUtils/)
 - [go的net包中的套接字编程](/2023/12/19/20231219-go%E7%9A%84net%E5%8C%85%E4%B8%AD%E7%9A%84%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B/)
+- [我如何从混乱里，硬拽出JavaScript的一条学习主线](/2026/04/12/20260412-%E6%88%91%E5%A6%82%E4%BD%95%E4%BB%8E%E6%B7%B7%E4%B9%B1%E9%87%8C%EF%BC%8C%E7%A1%AC%E6%8B%BD%E5%87%BAJavaScript%E7%9A%84%E4%B8%80%E6%9D%A1%E5%AD%A6%E4%B9%A0%E4%B8%BB%E7%BA%BF/)
 
 ## 数据库与中间件
 
