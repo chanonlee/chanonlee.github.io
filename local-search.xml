@@ -82,9 +82,9 @@
       
       <tag>java</tag>
       
-      <tag>jacoco</tag>
-      
       <tag>reflection</tag>
+      
+      <tag>jacoco</tag>
       
       <tag>java-agent</tag>
       
@@ -227,9 +227,9 @@
       
       <tag>mongodb</tag>
       
-      <tag>database</tag>
-      
       <tag>spring-boot</tag>
+      
+      <tag>database</tag>
       
     </tags>
     
@@ -285,9 +285,9 @@
       
       <tag>mongodb</tag>
       
-      <tag>index</tag>
-      
       <tag>database</tag>
+      
+      <tag>index</tag>
       
     </tags>
     
@@ -635,9 +635,9 @@
       
       <tag>java</tag>
       
-      <tag>reflection</tag>
-      
       <tag>zookeeper</tag>
+      
+      <tag>reflection</tag>
       
       <tag>generic</tag>
       
