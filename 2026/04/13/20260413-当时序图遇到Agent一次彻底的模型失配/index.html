@@ -16,16 +16,16 @@
   <meta name="author" content="chanon">
   <meta name="keywords" content="">
   
-    <meta name="description" content="在尝试用传统软件工程工具去描述 Agent（特别是 ReAct 模式）时，我产生过一种很明显的违和感，图是能画出来，但总觉得哪里不对。 一开始以为是表达方式的问题，后来发现不是——是模型本身不兼容。 这篇文章就试图把这个“违和感”讲清楚。 一、时序图的本质：调用链 + 栈模型在传统后端开发中，我们最熟悉的是“调用链”。 比如这样一段代码： 12345678910111213141516171819">
+    <meta name="description" content="创作透明度： 🖋️ 人工创作（完全作者撰写） | ✨ AI润色（作者撰写，AI优化语言） | 🤖 AI辅助（作者主导，AI提供内容&#x2F;结构建议） | 🛠️ AI+人工（AI生成初稿，作者修改完善） | 🧠 全AI生成（内容完全由AI生成） 本文标注： 🤖 AI辅助 在尝试用传统软件工程工具去描述 Agent（特别是 ReAct 模式）时，我产生过一种很明显的违和感，图是能画出来，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="当时序图遇到 Agent：一次彻底的模型失配">
 <meta property="og:url" content="http://example.com/2026/04/13/20260413-%E5%BD%93%E6%97%B6%E5%BA%8F%E5%9B%BE%E9%81%87%E5%88%B0Agent%E4%B8%80%E6%AC%A1%E5%BD%BB%E5%BA%95%E7%9A%84%E6%A8%A1%E5%9E%8B%E5%A4%B1%E9%85%8D/index.html">
 <meta property="og:site_name" content="Chanon_Lee">
-<meta property="og:description" content="在尝试用传统软件工程工具去描述 Agent（特别是 ReAct 模式）时，我产生过一种很明显的违和感，图是能画出来，但总觉得哪里不对。 一开始以为是表达方式的问题，后来发现不是——是模型本身不兼容。 这篇文章就试图把这个“违和感”讲清楚。 一、时序图的本质：调用链 + 栈模型在传统后端开发中，我们最熟悉的是“调用链”。 比如这样一段代码： 12345678910111213141516171819">
+<meta property="og:description" content="创作透明度： 🖋️ 人工创作（完全作者撰写） | ✨ AI润色（作者撰写，AI优化语言） | 🤖 AI辅助（作者主导，AI提供内容&#x2F;结构建议） | 🛠️ AI+人工（AI生成初稿，作者修改完善） | 🧠 全AI生成（内容完全由AI生成） 本文标注： 🤖 AI辅助 在尝试用传统软件工程工具去描述 Agent（特别是 ReAct 模式）时，我产生过一种很明显的违和感，图是能画出来，">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/44d47d503b09e7879b9788cdcc98082.jpg">
 <meta property="article:published_time" content="2026-04-13T15:09:03.000Z">
-<meta property="article:modified_time" content="2026-04-13T15:09:57.127Z">
+<meta property="article:modified_time" content="2026-04-13T15:19:50.142Z">
 <meta property="article:author" content="chanon">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="Agent">
@@ -201,7 +201,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.9k words
+          3k words
         
       </span>
     
@@ -212,7 +212,7 @@
         
         
         
-          25 mins
+          26 mins
         
       </span>
     
@@ -254,7 +254,9 @@
             
               <div class="markdown-body">
                 
-                <p>在尝试用传统软件工程工具去描述 Agent（特别是 ReAct 模式）时，我产生过一种很明显的违和感，图是能画出来，但总觉得哪里不对。</p>
+                <p><strong>创作透明度：</strong> 🖋️ 人工创作（完全作者撰写） | ✨ AI润色（作者撰写，AI优化语言） | 🤖 AI辅助（作者主导，AI提供内容&#x2F;结构建议） | 🛠️ AI+人工（AI生成初稿，作者修改完善） | 🧠 全AI生成（内容完全由AI生成）</p>
+<p><strong>本文标注： 🤖 AI辅助</strong></p>
+<p>在尝试用传统软件工程工具去描述 Agent（特别是 ReAct 模式）时，我产生过一种很明显的违和感，图是能画出来，但总觉得哪里不对。</p>
 <p>一开始以为是表达方式的问题，后来发现不是——<strong>是模型本身不兼容。</strong></p>
 <p>这篇文章就试图把这个“违和感”讲清楚。</p>
 <h2 id="一、时序图的本质：调用链-栈模型"><a href="#一、时序图的本质：调用链-栈模型" class="headerlink" title="一、时序图的本质：调用链 + 栈模型"></a><strong>一、时序图的本质：调用链 + 栈模型</strong></h2><p>在传统后端开发中，我们最熟悉的是“调用链”。</p>
