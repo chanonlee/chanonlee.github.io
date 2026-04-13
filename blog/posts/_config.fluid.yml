@@ -632,9 +632,9 @@ post:
     # TOC will select these nodes as headings
     headingSelector: "h1,h2,h3,h4,h5,h6"
 
-    # 层级的折叠深度，0 是全部折叠，大于 0 后如果存在下级标题则默认展开
-    # Collapse depth. If 0, all headings collapsed. If greater than 0, it will be expanded by default if there are sub headings
-    collapseDepth: 0
+    # 有多少级标题默认不折叠；0 表示全部折叠，6 对应 h1–h6 全部展开（与 headingSelector 一致）
+    # How many heading levels should not be collapsed; 0 collapses all nested lists, 6 expands h1–h6 (matches headingSelector)
+    collapseDepth: 6
 
   # 版权声明，会显示在每篇文章的结尾
   # Copyright, will be displayed at the end of each post
