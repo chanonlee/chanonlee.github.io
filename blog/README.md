@@ -7,9 +7,13 @@
 - `posts/`
   - Hexo 博客源码目录。
 - `posts/source/_posts/`
-  - 文章 Markdown 源文件。
+  - 文章 Markdown 源文件（含按主题分子目录，如 `1. llm/`）。
+- `posts/source/guide/index.md`
+  - 阅读地图：按目标分类的文章索引，站点生成后为 `/guide/` 页面。
 - `posts/source/img/`
-  - 文章图片资源。
+  - 全站共用图片；正文里用 `![](/img/文件名)` 引用。
+- 与某篇帖子绑定的图片（`posts/_config.yml` 中 `post_asset_folder: true`）
+  - 放在与该帖 `.md` **同名**的子目录下，正文中用 `{% asset_img 文件名 %}`（勿使用 Obsidian 的 `![[...]]` 语法）。
 - `posts/_config.yml`
   - Hexo 主配置。
 - `posts/_config.fluid.yml`
