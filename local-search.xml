@@ -146,9 +146,9 @@
       
       <tag>java</tag>
       
-      <tag>reflection</tag>
-      
       <tag>jacoco</tag>
+      
+      <tag>reflection</tag>
       
       <tag>java-agent</tag>
       
@@ -463,11 +463,11 @@
     
     <tags>
       
+      <tag>reading</tag>
+      
       <tag>architecture</tag>
       
       <tag>distributed-systems</tag>
-      
-      <tag>reading</tag>
       
     </tags>
     
@@ -492,11 +492,11 @@
     
     <tags>
       
-      <tag>reading</tag>
-      
       <tag>bitcoin</tag>
       
       <tag>blockchain</tag>
+      
+      <tag>reading</tag>
       
     </tags>
     
@@ -699,9 +699,9 @@
       
       <tag>java</tag>
       
-      <tag>zookeeper</tag>
-      
       <tag>reflection</tag>
+      
+      <tag>zookeeper</tag>
       
       <tag>generic</tag>
       
