@@ -1,0 +1,691 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chanon">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="创作透明度： 🖋️ 人工创作（完全作者撰写） | ✨ AI润色（作者撰写，AI优化语言） | 🤖 AI辅助（作者主导，AI提供内容&#x2F;结构建议） | 🛠️ AI+人工（AI生成初稿，作者修改完善） | 🧠 全AI生成（内容完全由AI生成） 本文标注： 🤖 AI辅助   在实际使用大模型时，我们有时候会遇到，问大模型同样的问题，大模型的回答每次都不一样，即使清除了上下文、使用了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="让大模型&quot;像函数一样稳定&quot;：从随机输出到可复现结果的实践指南">
+<meta property="og:url" content="http://example.com/2026/04/18/20260418-%E8%AE%A9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%83%8F%E5%87%BD%E6%95%B0%E4%B8%80%E6%A0%B7%E7%A8%B3%E5%AE%9A%E4%BB%8E%E9%9A%8F%E6%9C%BA%E8%BE%93%E5%87%BA%E5%88%B0%E5%8F%AF%E5%A4%8D%E7%8E%B0%E7%BB%93%E6%9E%9C%E7%9A%84%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="Chanon_Lee">
+<meta property="og:description" content="创作透明度： 🖋️ 人工创作（完全作者撰写） | ✨ AI润色（作者撰写，AI优化语言） | 🤖 AI辅助（作者主导，AI提供内容&#x2F;结构建议） | 🛠️ AI+人工（AI生成初稿，作者修改完善） | 🧠 全AI生成（内容完全由AI生成） 本文标注： 🤖 AI辅助   在实际使用大模型时，我们有时候会遇到，问大模型同样的问题，大模型的回答每次都不一样，即使清除了上下文、使用了">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/44d47d503b09e7879b9788cdcc98082.jpg">
+<meta property="article:published_time" content="2026-04-18T10:30:15.000Z">
+<meta property="article:modified_time" content="2026-04-18T10:30:28.106Z">
+<meta property="article:author" content="chanon">
+<meta property="article:tag" content="大模型">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="temperature">
+<meta property="article:tag" content="阿里百炼">
+<meta property="article:tag" content="Cursor">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/44d47d503b09e7879b9788cdcc98082.jpg">
+  
+  
+  
+  <title>让大模型&#34;像函数一样稳定&#34;：从随机输出到可复现结果的实践指南 - Chanon_Lee</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":6},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chanon_Lee</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/guide/">
+                <i class="iconfont icon-bookmark-fill"></i>
+                <span>阅读地图</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/44d47d503b09e7879b9788cdcc98082.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="让大模型&#34;像函数一样稳定&#34;：从随机输出到可复现结果的实践指南"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-04-18 18:30" pubdate>
+          April 18, 2026 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.7k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          23 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">让大模型&#34;像函数一样稳定&#34;：从随机输出到可复现结果的实践指南</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <div style="font-size: 0.9em; color: #8a8a8a; line-height: 1.7;">
+
+<p><strong>创作透明度：</strong> 🖋️ 人工创作（完全作者撰写） | ✨ AI润色（作者撰写，AI优化语言） | 🤖 AI辅助（作者主导，AI提供内容&#x2F;结构建议） | 🛠️ AI+人工（AI生成初稿，作者修改完善） | 🧠 全AI生成（内容完全由AI生成）</p>
+<p><strong>本文标注： 🤖 AI辅助</strong></p>
+</div>
+
+<p>在实际使用大模型时，我们有时候会遇到，问大模型同样的问题，大模型的回答每次都不一样，即使清除了上下文、使用了同样的模型、使用相同的prompt，回答也次次不同。这在工程场景中是一个很大的问题：难以调试、难以复现、难以稳定集成。</p>
+<p>而这一切，往往由一个关键参数决定：<strong>temperature</strong></p>
+<h2 id="1-核心参数：temperature"><a href="#1-核心参数：temperature" class="headerlink" title="1. 核心参数：temperature"></a>1. 核心参数：temperature</h2><p>llm模型每一步都会从概率分布中选择“最可能的下一个词”，而temperature 控制的是回答生成过程中的<strong>随机性</strong>。</p>
+<ul>
+<li>temperature &#x3D; 0 → 每一步都选择概率最高的 token</li>
+<li>temperature &gt; 0 → 在概率分布中进行随机采样</li>
+</ul>
+<p>具体说明一下，假设此时模型输出的下一个候选词有A~F，概率分别如下：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs text">Token候选：<br>A: 0.40<br>B: 0.25<br>C: 0.15<br>D: 0.10<br>E: 0.06<br>F: 0.04<br></code></pre></td></tr></table></figure>
+
+<p>当设置temperature后，模型的选择概率是这样的</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs text">temperature = 0        → 只选 A（完全确定）<br>temperature = 0.7      → A概率高，但B/C也有机会<br>temperature = 1        → 原始分布<br>temperature = 1.5      → 更平均，更随机<br></code></pre></td></tr></table></figure>
+
+<p>这里还有个很反直觉的事，llm并不是输入一个prompt，再输出一段话。它会把prompt和它已经输出的回答作为输入，再输出下一个字。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs text">输入：prompt<br>输出：token1<br><br>输入：prompt + token1<br>输出：token2<br><br>输入：prompt + token1 + token2<br>输出：token3<br>...<br></code></pre></td></tr></table></figure>
+
+<p>模型在根据自己已经说过的话继续往下说。这也是后面“死循环”问题的根本原因。</p>
+<h2 id="2-候选词筛选——top-k和top-p"><a href="#2-候选词筛选——top-k和top-p" class="headerlink" title="2. 候选词筛选——top_k和top_p"></a>2. 候选词筛选——top_k和top_p</h2><p>除了给token选择增加随机性，有时候人们也会给token设置筛选范围，避免随机到过分冷门的词，影响输出效果。这个筛选方案就是top_k和top_p。</p>
+<p><strong>top_k</strong>：只保留<strong>概率最高的 K 个 token</strong>，其他全部丢掉，然后在这 K 个里随机选。<br><strong>top_p</strong>：按概率从高到低累加，直到总概率 ≥ p，保留这些 token。</p>
+<h2 id="3-三个参数是如何配合的？"><a href="#3-三个参数是如何配合的？" class="headerlink" title="3. 三个参数是如何配合的？"></a>3. 三个参数是如何配合的？</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs text">原始概率分布<br>(A:0.40 B:0.25 C:0.15 D:0.10 E:0.06 F:0.04)<br>        │<br>        ▼<br>【Step 1：Top-k / Top-p 过滤】<br>        │<br>        ├── top_k=3  → 只保留 A B C<br>        │<br>        └── top_p=0.8 → 保留 A B C（累计到80%）<br>        │<br>        ▼<br>候选集合（A B C）<br>        │<br>        ▼<br>【Step 2：Temperature 调整分布】<br>        │<br>        ├── T = 0     → A:100%<br>        ├── T = 0.7   → A &gt; B &gt; C<br>        ├── T = 1     → 原始比例<br>        └── T = 1.5   → A ≈ B ≈ C<br>        │<br>        ▼<br>【Step 3：采样输出】<br>        │<br>        ├── 可能输出 A<br>        ├── 或 B<br>        └── 或 C<br></code></pre></td></tr></table></figure>
+
+<p>一句话总结：<strong>top_p &#x2F; top_k 决定“选谁”，temperature 决定“怎么选”。</strong></p>
+<h2 id="4-如何在阿里百炼中稳定输出响应"><a href="#4-如何在阿里百炼中稳定输出响应" class="headerlink" title="4. 如何在阿里百炼中稳定输出响应"></a>4. 如何在阿里百炼中稳定输出响应</h2><p>如果你的目标是：<strong>让模型像函数一样：相同输入 → 相同输出</strong>，可以这样设置：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">temperature = 0<br>top_p = 1   （查到网络资料建议用1，而不是0，目前还没搞清楚为什么）<br></code></pre></td></tr></table></figure>
+
+
+<p><img src="/2026/04/18/20260418-%E8%AE%A9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%83%8F%E5%87%BD%E6%95%B0%E4%B8%80%E6%A0%B7%E7%A8%B3%E5%AE%9A%E4%BB%8E%E9%9A%8F%E6%9C%BA%E8%BE%93%E5%87%BA%E5%88%B0%E5%8F%AF%E5%A4%8D%E7%8E%B0%E7%BB%93%E6%9E%9C%E7%9A%84%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/bailian-stable-output.png" srcset="/img/loading.gif" lazyload></p>
+<p>prompt:</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">写一首关于鸭子的悲伤的诗<br></code></pre></td></tr></table></figure>
+
+
+<p>如图，去掉一切随机性，将temperature设为0，top_p设为1，输入一样的prompt，你也可以写出跟我相同的诗。</p>
+<h2 id="5-cursor等编程Agent里可以设置temperature参数吗？"><a href="#5-cursor等编程Agent里可以设置temperature参数吗？" class="headerlink" title="5. cursor等编程Agent里可以设置temperature参数吗？"></a>5. cursor等编程Agent里可以设置temperature参数吗？</h2><p><strong>不能直接设置。</strong></p>
+<p>在工程场景中，如果需要进行编程、数学计算等对结果一致性要求较高的任务，通常会将 temperature 设置为 0，以保证模型输出的稳定性和可复现性；而在生成图片描述、文本创作等更偏创意的任务中，则会适当提高 temperature，以获得更丰富、多样的结果。</p>
+<p>大多数编程类 Agent（如 Cursor）为了避免代码生成过程中的不稳定性，通常会在内部预设合适的参数组合，并不对用户开放这些配置。可以理解为： <strong>这些工具已经在底层帮你调好了参数。</strong></p>
+<h2 id="6-temperature-0带来的问题——死循环"><a href="#6-temperature-0带来的问题——死循环" class="headerlink" title="6. temperature &#x3D; 0带来的问题——死循环"></a>6. temperature &#x3D; 0带来的问题——死循环</h2><p>稳定并不总是好事。</p>
+<p>当 temperature &#x3D; 0 时，模型每一步都会选择“当前最优解”，再将已输出的结果作为输入，生成下一个词。当重复一定次数，上下文稳定不再变化，模型就会持续输出重复词语，陷入死循环。</p>
+<p>我把复现这个问题的方式写在这里。</p>
+<p>我使用 LM Studio 运行了一个本地小模型（qwen3-vl-4b），并通过 LangChain 调用。</p>
+<p><strong>LM Studio设置</strong><br><img src="/2026/04/18/20260418-%E8%AE%A9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%83%8F%E5%87%BD%E6%95%B0%E4%B8%80%E6%A0%B7%E7%A8%B3%E5%AE%9A%E4%BB%8E%E9%9A%8F%E6%9C%BA%E8%BE%93%E5%87%BA%E5%88%B0%E5%8F%AF%E5%A4%8D%E7%8E%B0%E7%BB%93%E6%9E%9C%E7%9A%84%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/lm-studio-settings.png" srcset="/img/loading.gif" lazyload></p>
+<p>其他参数设为默认。此时程序里的temperature不为0，不过问题不大，传入参数会强制覆盖。</p>
+<hr>
+<p><strong>调用代码</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> langchain_openai <span class="hljs-keyword">import</span> ChatOpenAI<br><br><span class="hljs-comment"># =====================模型层=====================</span><br><span class="hljs-comment"># 此处可设置为本地模型或远程模型</span><br><br>llm = ChatOpenAI(<br>	base_url=<span class="hljs-string">&quot;http://127.0.0.1:1234/v1&quot;</span>,<br>	api_key=<span class="hljs-string">&quot;lm-studio&quot;</span>,<br>	temperature=<span class="hljs-number">0</span>,<br>	model=<span class="hljs-string">&quot;local&quot;</span>,<br>)<br><br><span class="hljs-comment"># =====================提示层=====================</span><br><br>prompt_text = <span class="hljs-string">&quot;Write a sad poem about ducks, gooses.&quot;</span><br><br><span class="hljs-comment"># =====================调用层=====================</span><br><br>response = llm.invoke(prompt_text)<br><br><span class="hljs-comment"># =====================输出层=====================</span><br><br><span class="hljs-built_in">print</span>(response.content)<br><br></code></pre></td></tr></table></figure>
+
+
+<p>假设某一时刻，模型生成了一个高概率短语：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">Still hear you…<br></code></pre></td></tr></table></figure>
+
+<p>接下来：</p>
+<ul>
+<li>这个短语被拼回输入</li>
+<li>模型再次预测下一个 token</li>
+<li>由于上下文几乎没变，这个短语仍然是“最优解”，在temperature &#x3D; 0的情况下永远输出这个token</li>
+</ul>
+<p>最终形成<strong>确定性的无限重复</strong>。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" class="category-chain-item">工程实践</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" class="print-no-link">#大模型</a>
+      
+        <a href="/tags/LLM/" class="print-no-link">#LLM</a>
+      
+        <a href="/tags/temperature/" class="print-no-link">#temperature</a>
+      
+        <a href="/tags/%E9%98%BF%E9%87%8C%E7%99%BE%E7%82%BC/" class="print-no-link">#阿里百炼</a>
+      
+        <a href="/tags/Cursor/" class="print-no-link">#Cursor</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>让大模型&#34;像函数一样稳定&#34;：从随机输出到可复现结果的实践指南</div>
+      <div>http://example.com/2026/04/18/20260418-让大模型像函数一样稳定从随机输出到可复现结果的实践指南/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>chanon</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>April 18, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/04/13/20260413-%E5%BD%93%E6%97%B6%E5%BA%8F%E5%9B%BE%E9%81%87%E5%88%B0Agent%E4%B8%80%E6%AC%A1%E5%BD%BB%E5%BA%95%E7%9A%84%E6%A8%A1%E5%9E%8B%E5%A4%B1%E9%85%8D/" title="当时序图遇到 Agent：一次彻底的模型失配">
+                        <span class="hidden-mobile">当时序图遇到 Agent：一次彻底的模型失配</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
