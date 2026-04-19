@@ -16,15 +16,15 @@
   <meta name="author" content="chanon">
   <meta name="keywords" content="">
   
-    <meta name="description" content="这个博客大致分成几条线：Java 与 JVM（集合与并发源码、引用语义、equals&#x2F;hashCode 等基础题）、数据与中间件（MySQL&#x2F;PostgreSQL 对照、MongoDB 入门与索引、ZooKeeper 与 Kafka 的小工具）、工程与设计（SPI 扩展、策略模式、领域里的树与交易模型、重构时的取舍、测试覆盖率工具带来的「只在测试环境出现」类问题），以及少量 G">
+    <meta name="description" content="创作透明度： 🖋️ 人工创作（完全作者撰写） | ✨ AI润色（作者撰写，AI优化语言） | 🤖 AI辅助（作者主导，AI提供内容&#x2F;结构建议） | 🛠️ AI+人工（AI生成初稿，作者修改完善） | 🧠 全AI生成（内容完全由AI生成） **本文标注：🧠 全AI生成 **   这个博客主题比较杂，大致包括：后端与 JVM（集合与并发、equals&#x2F;hashCode">
 <meta property="og:type" content="website">
 <meta property="og:title" content="About">
 <meta property="og:url" content="http://example.com/about/index.html">
 <meta property="og:site_name" content="Chanon_Lee">
-<meta property="og:description" content="这个博客大致分成几条线：Java 与 JVM（集合与并发源码、引用语义、equals&#x2F;hashCode 等基础题）、数据与中间件（MySQL&#x2F;PostgreSQL 对照、MongoDB 入门与索引、ZooKeeper 与 Kafka 的小工具）、工程与设计（SPI 扩展、策略模式、领域里的树与交易模型、重构时的取舍、测试覆盖率工具带来的「只在测试环境出现」类问题），以及少量 G">
+<meta property="og:description" content="创作透明度： 🖋️ 人工创作（完全作者撰写） | ✨ AI润色（作者撰写，AI优化语言） | 🤖 AI辅助（作者主导，AI提供内容&#x2F;结构建议） | 🛠️ AI+人工（AI生成初稿，作者修改完善） | 🧠 全AI生成（内容完全由AI生成） **本文标注：🧠 全AI生成 **   这个博客主题比较杂，大致包括：后端与 JVM（集合与并发、equals&#x2F;hashCode">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-03-28T04:00:00.000Z">
-<meta property="article:modified_time" content="2026-04-12T12:51:49.117Z">
+<meta property="article:modified_time" content="2026-04-19T02:30:25.537Z">
 <meta property="article:author" content="chanon">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -215,9 +215,15 @@
 
 <article class="about-content page-content mt-5">
   <div class="markdown-body">
-    <p>这个博客大致分成几条线：<strong>Java 与 JVM</strong>（集合与并发源码、引用语义、<code>equals</code>&#x2F;<code>hashCode</code> 等基础题）、<strong>数据与中间件</strong>（MySQL&#x2F;PostgreSQL 对照、MongoDB 入门与索引、ZooKeeper 与 Kafka 的小工具）、<strong>工程与设计</strong>（SPI 扩展、策略模式、领域里的树与交易模型、重构时的取舍、测试覆盖率工具带来的「只在测试环境出现」类问题），以及少量 <strong>Go &#x2F; JavaScript</strong> 和 <strong>脚本</strong>（例如音频流处理）的笔记。</p>
-<p>另外还有 <strong>读书笔记</strong>：分布式服务架构、区块链入门类书籍的摘记，用来把零散阅读和日常工作串起来。</p>
-<p>文章多数是「遇到一个具体问题 → 查资料或翻源码 → 记下来」的形状，不追求体系课的完整性，而追求可检索、可复用。若你想按主题浏览全文索引，请看 <a href="/guide/">阅读地图</a>。</p>
+    <div style="font-size: 0.9em; color: #8a8a8a; line-height: 1.7;">
+
+<p><strong>创作透明度：</strong> 🖋️ 人工创作（完全作者撰写） | ✨ AI润色（作者撰写，AI优化语言） | 🤖 AI辅助（作者主导，AI提供内容&#x2F;结构建议） | 🛠️ AI+人工（AI生成初稿，作者修改完善） | 🧠 全AI生成（内容完全由AI生成）</p>
+<p>**本文标注：🧠 全AI生成 **</p>
+</div>
+
+<p>这个博客主题比较杂，大致包括：<strong>后端与 JVM</strong>（集合与并发、<code>equals</code>&#x2F;<code>hashCode</code>、引用语义；以及 JaCoCo 一类覆盖率工具触发的「只在测试环境冒出」的反射与运行时问题）、<strong>业务抽象与工程设计</strong>（交易状态机与资金履约、SPI&#x2F;策略式扩展点、领域里的树结构、重构时的取舍）、<strong>数据与中间件</strong>（MySQL 与 PostgreSQL、MongoDB、ZooKeeper&#x2F;Kafka 小工具）。近年则更常写 <strong>与大模型共事</strong>（分层与抽象边界由谁拍板、传统建模工具与 Agent 范式是否合拍、采样参数与可复现集成），以及 <strong>JavaScript &#x2F; 前端概念</strong>的补充整理；此外还有少量 <strong>Go</strong> 与 <strong>脚本</strong>（例如音频流）。</p>
+<p><strong>读书笔记</strong>仍以分布式服务架构、区块链入门类书目为主，把书目阅读和日常工作对齐。</p>
+<p>文章多数是「遇到一个具体问题 → 查资料或翻源码 → 记下来」的形状，不追求体系课的完整性，而追求可检索、可复用。若你想浏览 <strong>2026 年发文</strong>的索引与读法，请看 <a href="/guide/">阅读地图</a>。</p>
 
   </div>
 
