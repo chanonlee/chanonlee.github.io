@@ -2,6 +2,17 @@
 
 这个目录本质上是一个个人技术博客工作区，核心站点在 `posts/`。
 
+## 2026 年发文（阅读地图摘要）
+
+站内阅读地图页面仅整理 **2026 年** 文章（共 6 篇），源文件见 [`posts/source/guide/index.md`](posts/source/guide/index.md)，生成站点后为 `/guide/`。
+
+- **交易系统**：状态机视角理解交易与资金履约（03-29）。
+- **JaCoCo / 反射**：测试环境独有反射报错与插桩排查（04-04）。
+- **JavaScript**：用框架分层再挂术语的学习路径（04-12）。
+- **AI 与分层**：人类先框定分层与落点，AI 协作才稳（04-13）。
+- **时序图与 Agent**：调用链心智模型与 Agent 范式失配（04-13）。
+- **可复现输出**：temperature 等与稳定集成（04-18）。
+
 ## 建议保留
 
 - `posts/`
@@ -9,7 +20,7 @@
 - `posts/source/_posts/`
   - 文章 Markdown 源文件（含按主题分子目录，如 `1. llm/`）。
 - `posts/source/guide/index.md`
-  - 阅读地图：按目标分类的文章索引，站点生成后为 `/guide/` 页面。
+  - 阅读地图（当前为 2026 年发文索引与读法），站点生成后为 `/guide/` 页面。
 - `posts/source/img/`
   - 全站共用图片；正文里用 `![](/img/文件名)` 引用。
 - 与某篇帖子绑定的图片（`posts/_config.yml` 中 `post_asset_folder: true`）

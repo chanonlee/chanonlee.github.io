@@ -343,6 +343,7 @@ navbar:
   menu:
     - { key: "home", link: "/", icon: "iconfont icon-home-fill" }
     - { key: "guide", name: "阅读地图", link: "/guide/", icon: "iconfont icon-bookmark-fill" }
+    - { key: "side-projects", name: "Side Project", link: "/side-projects/", icon: "iconfont icon-git-repository-fill" }
     - { key: "about", link: "/about/", icon: "iconfont icon-user-fill" }
     #- { key: "links", link: "/links/", icon: "iconfont icon-link-fill" }
 

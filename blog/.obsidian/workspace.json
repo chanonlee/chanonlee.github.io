@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "posts/source/_posts/2. code/language/javascript/20260412-我如何从混乱里，硬拽出JavaScript的一条学习主线.md",
+                "file": "posts/source/_posts/1. llm/20260413-当时序图遇到Agent一次彻底的模型失配.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "20260412-我如何从混乱里，硬拽出JavaScript的一条学习主线"
+              "title": "20260413-当时序图遇到Agent一次彻底的模型失配"
             }
           }
         ]
@@ -192,21 +192,27 @@
     "posts/public/js/local-search.js",
     "posts/public/js/leancloud.js",
     "posts/public/js/img-lazyload.js",
-    "posts/public/js/color-schema.js",
     "posts/public/js/events.js",
+    "posts/public/js/color-schema.js",
     "posts/public/js/boot.js",
     "posts/public/js",
     "posts/public/css/main.css",
-    "posts/public/img/avatar.png",
     "posts/public/img/loading.gif",
-    "posts/public/img/fluid.png",
     "posts/public/img/police_beian.png",
+    "posts/public/img/fluid.png",
+    "posts/public/img/avatar.png",
+    "posts/public/2026/04/18/20260418-如何让大模型稳定输出：从随机生成到可复现结果/lm-studio-settings.png",
+    "posts/public/2026/04/18/20260418-如何让大模型稳定输出：从随机生成到可复现结果/bailian-stable-output.png",
     "posts/public/img/20240810-Collection类源码阅读.jpg",
     "posts/public/img/20231016-实现拓展的方式：SPI、拦截调用.jpg",
-    "posts/public/img/20240810-MongoDB的Index/03.jpg",
     "posts/public/img/20240810-MongoDB的Index/02.jpg",
-    "posts/public/img/20240810-MongoDB的Index/01.jpg",
+    "posts/source/_posts/1. llm/20260418-如何让大模型稳定输出：从随机生成到可复现结果.md",
+    "posts/source/_posts/1. llm/20260418-让大模型像函数一样稳定从随机输出到可复现结果的实践指南.md",
+    "posts/source/_posts/1. llm/17. 让大模型“像函数一样稳定”：从随机输出到可复现结果的实践指南.md",
     "posts/source/_posts/1. llm/20260413-AI写得对但写得不对关于代码分层抽象与设计.md",
+    "posts/source/_posts/2. code/language/javascript/20260412-我如何从混乱里，硬拽出JavaScript的一条学习主线.md",
+    "posts/source/_posts/1. llm/20260413-当时序图遇到Agent一次彻底的模型失配.md",
+    "posts/source/_posts/1. llm/13. 当时序图遇到 Agent：一次彻底的模型失配.md",
     "chanonlee.github.io/img/12. AI 写得对，但写得不对：关于代码分层、抽象与设计.md",
     "posts/public/img/12. AI 写得对，但写得不对：关于代码分层、抽象与设计.md",
     "posts/source/_posts/2. code/engineering/20260413-AI写得对但写得不对关于代码分层抽象与设计.md",
@@ -214,7 +220,6 @@
     "posts/source/img/12. AI 写得对，但写得不对：关于代码分层、抽象与设计.md",
     "posts/source/_posts/2. code/engineering/20260404-一个只在测试环境出现的诡异反射报错JaCoCo.md",
     "posts/source/_posts/2. code/engineering/20260329-我如何理解交易系统：从状态机到资金流转.md",
-    "posts/source/_posts/2. code/language/javascript/20260412-我如何从混乱里，硬拽出JavaScript的一条学习主线.md",
     "posts/source/_posts/2. code/language/javascript/0. 我如何从混乱里，硬拽出JavaScript的一条学习主线.md",
     "posts/source/_posts/2. code/engineering/6. 一个只在测试环境出现的诡异反射报错，我最后查到了 JaCoCo.md",
     "posts/source/_posts/2. code/engineering/20231016-实现拓展的方式：SPI 拦截调用.md",
@@ -225,11 +230,6 @@
     "posts/source/_posts/5. reading/20231225-Bitcoin——《精通区块链编程》读书笔记.md",
     "posts/source/_posts/2. code/engineering/20240103-策略模式学习笔记.md",
     "posts/source/_posts/2. code/language/go/20231219-go的net包中的套接字编程.md",
-    "posts/source/_posts/2. code/language/java/20240623-使用java function包写一个RetryUtils.md",
-    "posts/source/_posts/2. code/engineering/20251202-代码重构中的Trade Off.md",
-    "posts/source/_posts/4. outside call/database/mongo/20240810-MongoDB的Index.md",
-    "posts/source/_posts/4. outside call/database/mongo/20240811-在Springboot项目中使用MongoDB的QuickStart.md",
-    "posts/source/_posts/4. outside call/database/mysql/20231011-一些PostgreSQL跟MySQL的细微差别.md",
-    "posts/source/_posts/20251202-代码重构中的Trade Off.md"
+    "posts/source/_posts/2. code/language/java/20240623-使用java function包写一个RetryUtils.md"
   ]
 }
