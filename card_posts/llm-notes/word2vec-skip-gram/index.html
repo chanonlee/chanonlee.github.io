@@ -16,23 +16,23 @@
   <meta name="author" content="chanon">
   <meta name="keywords" content="">
   
-    <meta name="description" content="本页是 Side Project 入口：按问题空间分层挂笔记与 Jupyter 实验；不进首页列表。站内已发文见 阅读地图。完整 notebook 仓库：chanon-data-lab。 模型问题空间的持续扩展模式识别 多元线性回归 线性判别分析（LDA）  特征工程深度学习 Word2Vec Skip-gram Word2Vec Skip-gram 训练  大模型 LangChain 入门 de">
+    <meta name="description" content="← LLM 相关笔记 通向语言模型的过渡：词向量。 Skip-gram 用神经网络学稠密表示，对应「自动提取特征」这一层。完整 notebook：14_word2vec_skip_gram.ipynb（仓库 chanon-data-lab）。 公式给定中心词 (w_c) 与上下文词 (w_o)：  \[ P(w_o \mid w_c) &#x3D; \frac{\exp(\mathbf{u}_o^\top">
 <meta property="og:type" content="website">
-<meta property="og:title" content="LLM 相关笔记（Side Project 入口）">
-<meta property="og:url" content="http://example.com/card_posts/llm-notes/index.html">
+<meta property="og:title" content="Word2Vec Skip-gram">
+<meta property="og:url" content="http://example.com/card_posts/llm-notes/word2vec-skip-gram/index.html">
 <meta property="og:site_name" content="Chanon_Lee">
-<meta property="og:description" content="本页是 Side Project 入口：按问题空间分层挂笔记与 Jupyter 实验；不进首页列表。站内已发文见 阅读地图。完整 notebook 仓库：chanon-data-lab。 模型问题空间的持续扩展模式识别 多元线性回归 线性判别分析（LDA）  特征工程深度学习 Word2Vec Skip-gram Word2Vec Skip-gram 训练  大模型 LangChain 入门 de">
+<meta property="og:description" content="← LLM 相关笔记 通向语言模型的过渡：词向量。 Skip-gram 用神经网络学稠密表示，对应「自动提取特征」这一层。完整 notebook：14_word2vec_skip_gram.ipynb（仓库 chanon-data-lab）。 公式给定中心词 (w_c) 与上下文词 (w_o)：  \[ P(w_o \mid w_c) &#x3D; \frac{\exp(\mathbf{u}_o^\top">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/44d47d503b09e7879b9788cdcc98082.jpg">
-<meta property="article:published_time" content="2026-05-04T04:00:00.000Z">
-<meta property="article:modified_time" content="2026-07-25T09:09:20.991Z">
+<meta property="article:published_time" content="2026-07-25T09:07:43.000Z">
+<meta property="article:modified_time" content="2026-07-25T09:10:00.492Z">
 <meta property="article:author" content="chanon">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/img/44d47d503b09e7879b9788cdcc98082.jpg">
   
   
   
-  <title>LLM 相关笔记（Side Project 入口） - Chanon_Lee</title>
+  <title>Word2Vec Skip-gram - Chanon_Lee</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -186,7 +186,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="LLM 相关笔记（Side Project 入口）"></span>
+            <span id="subtitle" data-typed-text="Word2Vec Skip-gram"></span>
           
         </div>
 
@@ -224,39 +224,22 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">LLM 相关笔记（Side Project 入口）</h1>
+            <h1 id="seo-header">Word2Vec Skip-gram</h1>
             
             
               <div class="markdown-body">
                 
-                <p>本页是 Side Project 入口：按<a href="/2026/07/25/20260725-%E4%B8%8D%E8%A6%81%E8%AE%B0%E5%BF%86%20AI%20%E5%90%8D%E8%AF%8D%EF%BC%9A%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%97%B6%E4%BB%A3%E9%97%AE%E9%A2%98%E7%A9%BA%E9%97%B4%E7%9A%84%E6%BC%94%E5%8C%96/">问题空间分层</a>挂笔记与 Jupyter 实验；<strong>不进首页列表</strong>。站内已发文见 <a href="/guide/">阅读地图</a>。完整 notebook 仓库：<a target="_blank" rel="noopener" href="https://github.com/chanonlee/chanon-data-lab">chanon-data-lab</a>。</p>
-<h2 id="模型问题空间的持续扩展"><a href="#模型问题空间的持续扩展" class="headerlink" title="模型问题空间的持续扩展"></a>模型问题空间的持续扩展</h2><h3 id="模式识别"><a href="#模式识别" class="headerlink" title="模式识别"></a>模式识别</h3><ul>
-<li><a href="/card_posts/llm-notes/multi-linear-regression/">多元线性回归</a></li>
-<li><a href="/card_posts/llm-notes/lda-multi-feature/">线性判别分析（LDA）</a></li>
-</ul>
-<h3 id="特征工程"><a href="#特征工程" class="headerlink" title="特征工程"></a>特征工程</h3><h3 id="深度学习"><a href="#深度学习" class="headerlink" title="深度学习"></a>深度学习</h3><ul>
-<li><a href="/card_posts/llm-notes/word2vec-skip-gram/">Word2Vec Skip-gram</a></li>
-<li><a href="/card_posts/llm-notes/word2vec-skip-gram-train/">Word2Vec Skip-gram 训练</a></li>
-</ul>
-<h3 id="大模型"><a href="#大模型" class="headerlink" title="大模型"></a>大模型</h3><ul>
-<li><a href="/card_posts/llm-notes/langchain-demo/">LangChain 入门 demo</a></li>
-<li><a href="/card_posts/llm-notes/langchain-agents/">LangChain Agents demo</a></li>
-</ul>
-<h2 id="大模型时代问题空间如何变迁"><a href="#大模型时代问题空间如何变迁" class="headerlink" title="大模型时代问题空间如何变迁"></a>大模型时代问题空间如何变迁</h2><h3 id="持续对话"><a href="#持续对话" class="headerlink" title="持续对话"></a>持续对话</h3><ul>
-<li><a href="/card_posts/llm-notes/conversational-retrieval/">Conversational Retrieval 聊天 demo</a></li>
-</ul>
-<h3 id="图像与声音"><a href="#图像与声音" class="headerlink" title="图像与声音"></a>图像与声音</h3><ul>
-<li><a href="/card_posts/llm-notes/local-vision-minimal/">本地视觉识别</a></li>
-</ul>
-<h3 id="固定目标（Agent）"><a href="#固定目标（Agent）" class="headerlink" title="固定目标（Agent）"></a>固定目标（Agent）</h3><ul>
-<li><a href="/card_posts/llm-notes/local-text-tools/">本地文本 Prompt + Tool</a></li>
-</ul>
-<h3 id="用法优化"><a href="#用法优化" class="headerlink" title="用法优化"></a>用法优化</h3><h3 id="Harness"><a href="#Harness" class="headerlink" title="Harness"></a>Harness</h3><h3 id="工程落地"><a href="#工程落地" class="headerlink" title="工程落地"></a>工程落地</h3><h2 id="问题空间收敛：从-AI-系统设计到代码实现"><a href="#问题空间收敛：从-AI-系统设计到代码实现" class="headerlink" title="问题空间收敛：从 AI 系统设计到代码实现"></a>问题空间收敛：从 AI 系统设计到代码实现</h2><h2 id="工具用法"><a href="#工具用法" class="headerlink" title="工具用法"></a>工具用法</h2><ul>
-<li><a href="/card_posts/llm-notes/pytorch-autograd/">PyTorch autograd</a></li>
-<li><a href="/card_posts/llm-notes/langchain-chroma/">Chroma 向量数据库</a></li>
-<li><a href="/card_posts/llm-notes/langchain-chroma-summarize/">Chroma 检索摘要</a></li>
-<li><a href="/card_posts/llm-notes/pydantic/">Pydantic 校验</a></li>
-</ul>
+                <p><a href="/card_posts/llm-notes/">← LLM 相关笔记</a></p>
+<p><strong>通向语言模型的过渡：词向量。</strong> Skip-gram 用神经网络学稠密表示，对应「自动提取特征」这一层。完整 notebook：<a target="_blank" rel="noopener" href="https://github.com/chanonlee/chanon-data-lab/blob/main/notebooks/14_word2vec_skip_gram.ipynb">14_word2vec_skip_gram.ipynb</a>（仓库 <a target="_blank" rel="noopener" href="https://github.com/chanonlee/chanon-data-lab">chanon-data-lab</a>）。</p>
+<h2 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h2><p>给定中心词 (w_c) 与上下文词 (w_o)：</p>
+<div>
+\[
+P(w_o \mid w_c) = \frac{\exp(\mathbf{u}_o^\top \mathbf{v}_c)}{\sum_{i \in \mathcal{V}} \exp(\mathbf{u}_i^\top \mathbf{v}_c)}
+\]
+</div>
+
+<h2 id="关键代码"><a href="#关键代码" class="headerlink" title="关键代码"></a>关键代码</h2><p>小语料 + 窗口构造中心–上下文对：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python">corpus = [<br>    <span class="hljs-string">&quot;我 喜欢 学习 机器 学习&quot;</span>,<br>    <span class="hljs-string">&quot;机器 学习 很 有趣&quot;</span>,<br>    <span class="hljs-string">&quot;我 喜欢 编程&quot;</span>,<br>]<br>window_size = <span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
 
                 
               </div>
@@ -274,8 +257,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>LLM 相关笔记（Side Project 入口）</div>
-      <div>http://example.com/card_posts/llm-notes/index.html</div>
+      <div>Word2Vec Skip-gram</div>
+      <div>http://example.com/card_posts/llm-notes/word2vec-skip-gram/index.html</div>
     </div>
     <div class="license-meta">
       
@@ -287,7 +270,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>May 4, 2026</div>
+          <div>July 25, 2026</div>
         </div>
       
       
@@ -375,6 +358,12 @@
 
 
   
+
+
+  
+  
+
+
 
 
 
@@ -573,6 +562,49 @@
 
 
   <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
 
   <script  src="/js/local-search.js" ></script>
 
