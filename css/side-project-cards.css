@@ -1,0 +1,19 @@
+/* Override Fluid .links .card { min-width: 33% } so 2/4 equal columns can share a row. */
+.links.links-span-full .card {
+  min-width: 0;
+}
+
+/* Widen content board on pages that use horizontal card grids. */
+body:has(.links-span-full) #board-ctn.container {
+  max-width: 1140px;
+}
+
+.links.links-span-full .card-content {
+  height: auto;
+  min-height: 3.5rem;
+}
+
+.links.links-span-full .link-intro {
+  max-height: 3.6rem;
+  -webkit-line-clamp: 3;
+}
