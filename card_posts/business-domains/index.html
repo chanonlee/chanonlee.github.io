@@ -16,23 +16,23 @@
   <meta name="author" content="chanon">
   <meta name="keywords" content="">
   
-    <meta name="description" content="此处为 Side Project 卡片对应的说明文（不进首页归档）。可按需改写正文，或外链仓库：GitHub · toy-trade。 你在写什么（示例小节：状态机、履约、资金管理……）">
+    <meta name="description" content="← Side Project 按领域拆开的模型入口：库存、支付、交易、会员。每张卡对应一块边界内的概念与笔记；下方「代码实现」是跨领域共享的落地架子。                                    库存           可用量、预占、出入库与对账；把「有多少」和「谁占了」说清楚。">
 <meta property="og:type" content="website">
-<meta property="og:title" content="toy-trade">
-<meta property="og:url" content="http://example.com/card_posts/toy-trade/index.html">
+<meta property="og:title" content="业务领域">
+<meta property="og:url" content="http://example.com/card_posts/business-domains/index.html">
 <meta property="og:site_name" content="Chanon_Lee">
-<meta property="og:description" content="此处为 Side Project 卡片对应的说明文（不进首页归档）。可按需改写正文，或外链仓库：GitHub · toy-trade。 你在写什么（示例小节：状态机、履约、资金管理……）">
+<meta property="og:description" content="← Side Project 按领域拆开的模型入口：库存、支付、交易、会员。每张卡对应一块边界内的概念与笔记；下方「代码实现」是跨领域共享的落地架子。                                    库存           可用量、预占、出入库与对账；把「有多少」和「谁占了」说清楚。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/44d47d503b09e7879b9788cdcc98082.jpg">
-<meta property="article:published_time" content="2026-05-04T04:00:00.000Z">
-<meta property="article:modified_time" content="2026-05-03T19:31:18.850Z">
+<meta property="article:published_time" content="2026-07-25T09:47:38.000Z">
+<meta property="article:modified_time" content="2026-07-25T09:48:07.140Z">
 <meta property="article:author" content="chanon">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/img/44d47d503b09e7879b9788cdcc98082.jpg">
   
   
   
-  <title>toy-trade - Chanon_Lee</title>
+  <title>业务领域 - Chanon_Lee</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -186,7 +186,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="toy-trade"></span>
+            <span id="subtitle" data-typed-text="业务领域"></span>
           
         </div>
 
@@ -224,13 +224,60 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">toy-trade</h1>
+            <h1 id="seo-header">业务领域</h1>
             
             
               <div class="markdown-body">
                 
-                <p>此处为 Side Project 卡片对应的说明文（不进首页归档）。可按需改写正文，或外链仓库：<a target="_blank" rel="noopener" href="https://github.com/chanonlee/toy-trade">GitHub · toy-trade</a>。</p>
-<h2 id="你在写什么"><a href="#你在写什么" class="headerlink" title="你在写什么"></a>你在写什么</h2><p>（示例小节：状态机、履约、资金管理……）</p>
+                <p><a href="/side-projects/">← Side Project</a></p>
+<p>按领域拆开的模型入口：库存、支付、交易、会员。每张卡对应一块边界内的概念与笔记；下方「代码实现」是跨领域共享的落地架子。</p>
+<div class="row links">
+  <div class="card col-lg-4 col-md-6 col-sm-12">
+    <a href="/card_posts/business-domains/inventory/" class="card-body hover-with-bg">
+      <div class="card-content">
+        <div class="link-text">
+          <div class="link-title">库存</div>
+          <div class="link-intro">可用量、预占、出入库与对账；把「有多少」和「谁占了」说清楚。</div>
+        </div>
+      </div>
+    </a>
+  </div>
+  <div class="card col-lg-4 col-md-6 col-sm-12">
+    <a href="/card_posts/business-domains/payment/" class="card-body hover-with-bg">
+      <div class="card-content">
+        <div class="link-text">
+          <div class="link-title">支付</div>
+          <div class="link-intro">支付意图、渠道选择与回调验签；对齐术语与边界分支。</div>
+        </div>
+      </div>
+    </a>
+  </div>
+  <div class="card col-lg-4 col-md-6 col-sm-12">
+    <a href="/card_posts/business-domains/trade/" class="card-body hover-with-bg">
+      <div class="card-content">
+        <div class="link-text">
+          <div class="link-title">交易</div>
+          <div class="link-intro">单据与状态机，把成交、履约与资金流转串起来。</div>
+        </div>
+      </div>
+    </a>
+  </div>
+  <div class="card col-lg-4 col-md-6 col-sm-12">
+    <a href="/card_posts/business-domains/membership/" class="card-body hover-with-bg">
+      <div class="card-content">
+        <div class="link-text">
+          <div class="link-title">会员</div>
+          <div class="link-intro">身份、权益与账户关系；谁在用、能做什么、账落在哪。</div>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><h3 id="系统边界"><a href="#系统边界" class="headerlink" title="系统边界"></a>系统边界</h3><p>（待填：领域之间与外部系统的边界、防腐与契约。）</p>
+<h3 id="代码组织"><a href="#代码组织" class="headerlink" title="代码组织"></a>代码组织</h3><p>（待填：包&#x2F;模块划分、领域层与基础设施的落点。）</p>
+<h3 id="工程能力"><a href="#工程能力" class="headerlink" title="工程能力"></a>工程能力</h3><p>（待填：测试、观测、发布与变更约束等横切能力。）</p>
+<h3 id="服务运行"><a href="#服务运行" class="headerlink" title="服务运行"></a>服务运行</h3><p>（待填：部署形态、配置、运行时依赖与运维入口。）</p>
 
                 
               </div>
@@ -248,8 +295,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>toy-trade</div>
-      <div>http://example.com/card_posts/toy-trade/index.html</div>
+      <div>业务领域</div>
+      <div>http://example.com/card_posts/business-domains/index.html</div>
     </div>
     <div class="license-meta">
       
@@ -261,7 +308,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>May 4, 2026</div>
+          <div>July 25, 2026</div>
         </div>
       
       

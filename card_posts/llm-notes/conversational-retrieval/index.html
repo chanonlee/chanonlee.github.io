@@ -16,23 +16,23 @@
   <meta name="author" content="chanon">
   <meta name="keywords" content="">
   
-    <meta name="description" content="← LLM 相关笔记 带记忆的检索问答（聊天 demo）。 Chroma + ConversationBufferMemory + ConversationalRetrievalChain。本地 embedding + LM Studio；仅占位 key。 完整 notebook：09_langchain_conversational_retrieval.ipynb（仓库 chanon-data-">
+    <meta name="description" content="← LLM 相关笔记 带记忆的 Conversational RAG。 Chroma 检索 + ConversationBufferMemory + ConversationalRetrievalChain 生成。本地 embedding + LM Studio；仅占位 key。 完整 notebook：09_langchain_rag_conversational.ipynb（仓库 chanon">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Conversational Retrieval 聊天 demo">
+<meta property="og:title" content="Conversational RAG demo">
 <meta property="og:url" content="http://example.com/card_posts/llm-notes/conversational-retrieval/index.html">
 <meta property="og:site_name" content="Chanon_Lee">
-<meta property="og:description" content="← LLM 相关笔记 带记忆的检索问答（聊天 demo）。 Chroma + ConversationBufferMemory + ConversationalRetrievalChain。本地 embedding + LM Studio；仅占位 key。 完整 notebook：09_langchain_conversational_retrieval.ipynb（仓库 chanon-data-">
+<meta property="og:description" content="← LLM 相关笔记 带记忆的 Conversational RAG。 Chroma 检索 + ConversationBufferMemory + ConversationalRetrievalChain 生成。本地 embedding + LM Studio；仅占位 key。 完整 notebook：09_langchain_rag_conversational.ipynb（仓库 chanon">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/44d47d503b09e7879b9788cdcc98082.jpg">
 <meta property="article:published_time" content="2026-07-25T09:07:43.000Z">
-<meta property="article:modified_time" content="2026-07-25T09:10:00.494Z">
+<meta property="article:modified_time" content="2026-07-25T09:48:27.338Z">
 <meta property="article:author" content="chanon">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/img/44d47d503b09e7879b9788cdcc98082.jpg">
   
   
   
-  <title>Conversational Retrieval 聊天 demo - Chanon_Lee</title>
+  <title>Conversational RAG demo - Chanon_Lee</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -186,7 +186,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Conversational Retrieval 聊天 demo"></span>
+            <span id="subtitle" data-typed-text="Conversational RAG demo"></span>
           
         </div>
 
@@ -224,13 +224,13 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Conversational Retrieval 聊天 demo</h1>
+            <h1 id="seo-header">Conversational RAG demo</h1>
             
             
               <div class="markdown-body">
                 
                 <p><a href="/card_posts/llm-notes/">← LLM 相关笔记</a></p>
-<p><strong>带记忆的检索问答（聊天 demo）。</strong> Chroma + <code>ConversationBufferMemory</code> + <code>ConversationalRetrievalChain</code>。本地 embedding + LM Studio；<strong>仅占位 key。</strong> 完整 notebook：<a target="_blank" rel="noopener" href="https://github.com/chanonlee/chanon-data-lab/blob/main/notebooks/09_langchain_conversational_retrieval.ipynb">09_langchain_conversational_retrieval.ipynb</a>（仓库 <a target="_blank" rel="noopener" href="https://github.com/chanonlee/chanon-data-lab">chanon-data-lab</a>）。</p>
+<p><strong>带记忆的 Conversational RAG。</strong> Chroma 检索 + <code>ConversationBufferMemory</code> + <code>ConversationalRetrievalChain</code> 生成。本地 embedding + LM Studio；<strong>仅占位 key。</strong> 完整 notebook：<a target="_blank" rel="noopener" href="https://github.com/chanonlee/chanon-data-lab/blob/main/notebooks/09_langchain_rag_conversational.ipynb">09_langchain_rag_conversational.ipynb</a>（仓库 <a target="_blank" rel="noopener" href="https://github.com/chanonlee/chanon-data-lab">chanon-data-lab</a>）。</p>
 <h2 id="关键代码"><a href="#关键代码" class="headerlink" title="关键代码"></a>关键代码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python">embeddings = HuggingFaceEmbeddings(model_name=<span class="hljs-string">&quot;sentence-transformers/all-MiniLM-L6-v2&quot;</span>)<br>vectorstore = Chroma.from_documents(documents, embeddings)<br>memory = ConversationBufferMemory(memory_key=<span class="hljs-string">&quot;chat_history&quot;</span>, return_messages=<span class="hljs-literal">True</span>)<br>qa = ConversationalRetrievalChain.from_llm(<br>    llm, vectorstore.as_retriever(), memory=memory,<br>)<br>result = qa(&#123;<span class="hljs-string">&quot;question&quot;</span>: <span class="hljs-string">&quot;我该怎么阅读transformer模型？&quot;</span>&#125;)<br></code></pre></td></tr></table></figure>
 
                 
@@ -249,7 +249,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Conversational Retrieval 聊天 demo</div>
+      <div>Conversational RAG demo</div>
       <div>http://example.com/card_posts/llm-notes/conversational-retrieval/index.html</div>
     </div>
     <div class="license-meta">
