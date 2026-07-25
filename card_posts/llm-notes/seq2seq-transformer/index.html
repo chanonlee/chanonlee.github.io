@@ -16,23 +16,23 @@
   <meta name="author" content="chanon">
   <meta name="keywords" content="">
   
-    <meta name="description" content="← 业务领域 支付领域模型入口。 围绕支付意图、渠道选择与回调验签，对齐术语与边界分支。 笔记与链接 演练仓库：GitHub · toy-payment">
+    <meta name="description" content="← LLM 相关笔记 同一用例下的 Seq2Seq，骨干为 Transformer（自注意力 + 跨注意力）。 中文句子 → Encoder → Decoder 逐词生成英文。完整 notebook：06_pytorch_transformer.ipynb（仓库 chanon-data-lab）。 同用例对照：seq2seq(use rnn) · seq2seq(use lstm) 用例（三篇共用">
 <meta property="og:type" content="website">
-<meta property="og:title" content="支付">
-<meta property="og:url" content="http://example.com/card_posts/business-domains/payment/index.html">
+<meta property="og:title" content="seq2seq(use Transformer)">
+<meta property="og:url" content="http://example.com/card_posts/llm-notes/seq2seq-transformer/index.html">
 <meta property="og:site_name" content="Chanon_Lee">
-<meta property="og:description" content="← 业务领域 支付领域模型入口。 围绕支付意图、渠道选择与回调验签，对齐术语与边界分支。 笔记与链接 演练仓库：GitHub · toy-payment">
+<meta property="og:description" content="← LLM 相关笔记 同一用例下的 Seq2Seq，骨干为 Transformer（自注意力 + 跨注意力）。 中文句子 → Encoder → Decoder 逐词生成英文。完整 notebook：06_pytorch_transformer.ipynb（仓库 chanon-data-lab）。 同用例对照：seq2seq(use rnn) · seq2seq(use lstm) 用例（三篇共用">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/44d47d503b09e7879b9788cdcc98082.jpg">
-<meta property="article:published_time" content="2026-07-25T09:47:38.000Z">
-<meta property="article:modified_time" content="2026-07-25T09:48:09.106Z">
+<meta property="article:published_time" content="2026-07-25T12:33:54.000Z">
+<meta property="article:modified_time" content="2026-07-25T12:34:11.671Z">
 <meta property="article:author" content="chanon">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/img/44d47d503b09e7879b9788cdcc98082.jpg">
   
   
   
-  <title>支付 - Chanon_Lee</title>
+  <title>seq2seq(use Transformer) - Chanon_Lee</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -191,7 +191,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="支付"></span>
+            <span id="subtitle" data-typed-text="seq2seq(use Transformer)"></span>
           
         </div>
 
@@ -229,16 +229,17 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">支付</h1>
+            <h1 id="seo-header">seq2seq(use Transformer)</h1>
             
             
               <div class="markdown-body">
                 
-                <p><a href="/card_posts/business-domains/">← 业务领域</a></p>
-<p><strong>支付领域模型入口。</strong> 围绕支付意图、渠道选择与回调验签，对齐术语与边界分支。</p>
-<h2 id="笔记与链接"><a href="#笔记与链接" class="headerlink" title="笔记与链接"></a>笔记与链接</h2><ul>
-<li>演练仓库：<a target="_blank" rel="noopener" href="https://github.com/chanonlee/toy-payment">GitHub · toy-payment</a></li>
-</ul>
+                <p><a href="/card_posts/llm-notes/">← LLM 相关笔记</a></p>
+<p><strong>同一用例下的 Seq2Seq，骨干为 Transformer（自注意力 + 跨注意力）。</strong> 中文句子 → Encoder → Decoder 逐词生成英文。完整 notebook：<a target="_blank" rel="noopener" href="https://github.com/chanonlee/chanon-data-lab/blob/main/notebooks/06_pytorch_transformer.ipynb">06_pytorch_transformer.ipynb</a>（仓库 <a target="_blank" rel="noopener" href="https://github.com/chanonlee/chanon-data-lab">chanon-data-lab</a>）。</p>
+<p>同用例对照：<a href="/card_posts/llm-notes/seq2seq-rnn/">seq2seq(use rnn)</a> · <a href="/card_posts/llm-notes/seq2seq-lstm/">seq2seq(use lstm)</a></p>
+<h2 id="用例（三篇共用）"><a href="#用例（三篇共用）" class="headerlink" title="用例（三篇共用）"></a>用例（三篇共用）</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python">sentences = [<br>    [<span class="hljs-string">&#x27;我 是 教 师 P&#x27;</span>, <span class="hljs-string">&#x27;S I am a teacher&#x27;</span>, <span class="hljs-string">&#x27;I am a teacher E&#x27;</span>],<br>    [<span class="hljs-string">&#x27;我 喜 欢 教 学&#x27;</span>, <span class="hljs-string">&#x27;S I like teaching P&#x27;</span>, <span class="hljs-string">&#x27;I like teaching P E&#x27;</span>],<br>    [<span class="hljs-string">&#x27;我 是 厨 师 P&#x27;</span>, <span class="hljs-string">&#x27;S I am a cook&#x27;</span>, <span class="hljs-string">&#x27;I am a cook E&#x27;</span>],<br>]<br></code></pre></td></tr></table></figure>
+
+<h2 id="本篇骨干"><a href="#本篇骨干" class="headerlink" title="本篇骨干"></a>本篇骨干</h2><figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mathematica"><span class="hljs-variable">Transformer</span><br>├── <span class="hljs-variable">Encoder</span><span class="hljs-operator">:</span> <span class="hljs-variable">Embedding</span> → <span class="hljs-variable">PositionalEncoding</span> → <span class="hljs-built_in">N</span>×<span class="hljs-punctuation">(</span><span class="hljs-variable">Self</span><span class="hljs-operator">-</span><span class="hljs-variable">Attn</span> <span class="hljs-operator">+</span> <span class="hljs-variable">FFN</span><span class="hljs-punctuation">)</span><br>└── <span class="hljs-variable">Decoder</span><span class="hljs-operator">:</span> <span class="hljs-variable">Embedding</span> → <span class="hljs-variable">PositionalEncoding</span> → <span class="hljs-built_in">N</span>×<span class="hljs-punctuation">(</span><span class="hljs-variable">Self</span><span class="hljs-operator">-</span><span class="hljs-variable">Attn</span> <span class="hljs-operator">+</span> <span class="hljs-built_in">Cross</span><span class="hljs-operator">-</span><span class="hljs-variable">Attn</span> <span class="hljs-operator">+</span> <span class="hljs-variable">FFN</span><span class="hljs-punctuation">)</span> → <span class="hljs-variable">projection</span><br></code></pre></td></tr></table></figure>
 
                 
               </div>
@@ -256,8 +257,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>支付</div>
-      <div>http://example.com/card_posts/business-domains/payment/index.html</div>
+      <div>seq2seq(use Transformer)</div>
+      <div>http://example.com/card_posts/llm-notes/seq2seq-transformer/index.html</div>
     </div>
     <div class="license-meta">
       
@@ -357,6 +358,12 @@
 
 
   
+
+
+  
+  
+
+
 
 
 
@@ -555,6 +562,49 @@
 
 
   <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
 
   <script  src="/js/local-search.js" ></script>
 
