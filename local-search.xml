@@ -20,9 +20,9 @@
     
     <tags>
       
-      <tag>LLM</tag>
-      
       <tag>Agent</tag>
+      
+      <tag>LLM</tag>
       
       <tag>harness</tag>
       
@@ -88,8 +88,6 @@
     
     <tags>
       
-      <tag>LLM</tag>
-      
       <tag>Agent</tag>
       
       <tag>Java</tag>
@@ -97,6 +95,8 @@
       <tag>Spring AI</tag>
       
       <tag>AgentScope</tag>
+      
+      <tag>LLM</tag>
       
       <tag>ReAct</tag>
       
@@ -123,9 +123,9 @@
     
     <tags>
       
-      <tag>大模型</tag>
-      
       <tag>LLM</tag>
+      
+      <tag>大模型</tag>
       
       <tag>temperature</tag>
       
@@ -363,11 +363,11 @@
     
     <tags>
       
+      <tag>domain-modeling</tag>
+      
       <tag>tree</tag>
       
       <tag>data-structure</tag>
-      
-      <tag>domain-modeling</tag>
       
     </tags>
     
@@ -394,9 +394,9 @@
       
       <tag>mongodb</tag>
       
-      <tag>spring-boot</tag>
-      
       <tag>database</tag>
+      
+      <tag>spring-boot</tag>
       
     </tags>
     
@@ -452,9 +452,9 @@
       
       <tag>mongodb</tag>
       
-      <tag>database</tag>
-      
       <tag>index</tag>
+      
+      <tag>database</tag>
       
     </tags>
     
