@@ -16,16 +16,16 @@
   <meta name="author" content="chanon">
   <meta name="keywords" content="">
   
-    <meta name="description" content="← LLM 相关笔记 MLX 系统心智模型：数据 · 资源 · 执行 · 通信 · 优化。 先把五层拆开，再看一次训练步如何穿过各层。完整 notebook：05_mlx_device_stream.ipynb（仓库 chanon-data-lab）。 五层 数据：Dataset &#x2F; Shard — 哪些样本由谁处理 资源：Device — 算子落在哪（cpu &#x2F; gpu） 执">
+    <meta name="description" content="← LLM 相关笔记 目标：建立 MLX 的系统心智模型——先把五层拆开，再看一次训练步如何穿过各层。完整 notebook：05_mlx_device_stream.ipynb（仓库 chanon-data-lab）。 假设：本机同时可用 mx.cpu 与 mx.gpu（Apple Silicon &#x2F; Metal）。无 GPU 环境请勿直接跑本笔记。 12345678910111213">
 <meta property="og:type" content="website">
 <meta property="og:title" content="MLX Runtime">
 <meta property="og:url" content="http://example.com/card_posts/llm-notes/mlx-runtime/index.html">
 <meta property="og:site_name" content="Chanon_Lee">
-<meta property="og:description" content="← LLM 相关笔记 MLX 系统心智模型：数据 · 资源 · 执行 · 通信 · 优化。 先把五层拆开，再看一次训练步如何穿过各层。完整 notebook：05_mlx_device_stream.ipynb（仓库 chanon-data-lab）。 五层 数据：Dataset &#x2F; Shard — 哪些样本由谁处理 资源：Device — 算子落在哪（cpu &#x2F; gpu） 执">
+<meta property="og:description" content="← LLM 相关笔记 目标：建立 MLX 的系统心智模型——先把五层拆开，再看一次训练步如何穿过各层。完整 notebook：05_mlx_device_stream.ipynb（仓库 chanon-data-lab）。 假设：本机同时可用 mx.cpu 与 mx.gpu（Apple Silicon &#x2F; Metal）。无 GPU 环境请勿直接跑本笔记。 12345678910111213">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/44d47d503b09e7879b9788cdcc98082.jpg">
 <meta property="article:published_time" content="2026-08-09T07:27:34.000Z">
-<meta property="article:modified_time" content="2026-08-09T07:27:47.583Z">
+<meta property="article:modified_time" content="2026-08-09T07:32:01.313Z">
 <meta property="article:author" content="chanon">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/img/44d47d503b09e7879b9788cdcc98082.jpg">
@@ -235,15 +235,57 @@
               <div class="markdown-body">
                 
                 <p><a href="/card_posts/llm-notes/">← LLM 相关笔记</a></p>
-<p><strong>MLX 系统心智模型：数据 · 资源 · 执行 · 通信 · 优化。</strong> 先把五层拆开，再看一次训练步如何穿过各层。完整 notebook：<a target="_blank" rel="noopener" href="https://github.com/chanonlee/chanon-data-lab/blob/lab/simple_example/notebooks/runtime/05_mlx_device_stream.ipynb">05_mlx_device_stream.ipynb</a>（仓库 <a target="_blank" rel="noopener" href="https://github.com/chanonlee/chanon-data-lab">chanon-data-lab</a>）。</p>
-<h2 id="五层"><a href="#五层" class="headerlink" title="五层"></a>五层</h2><ul>
-<li><strong>数据</strong>：Dataset &#x2F; Shard — 哪些样本由谁处理</li>
-<li><strong>资源</strong>：Device — 算子落在哪（cpu &#x2F; gpu）</li>
-<li><strong>执行</strong>：Stream &#x2F; kernel — 任务如何入队与跑完</li>
-<li><strong>通信</strong>：distributed &#x2F; <code>all_sum</code> — 多路如何同步与归约</li>
-<li><strong>优化</strong>：Optimizer &#x2F; Parameter Update — 如何根据梯度更新参数</li>
+<p>目标：建立 MLX 的<strong>系统心智模型</strong>——先把五层拆开，再看一次训练步如何穿过各层。完整 notebook：<a target="_blank" rel="noopener" href="https://github.com/chanonlee/chanon-data-lab/blob/lab/simple_example/notebooks/runtime/05_mlx_device_stream.ipynb">05_mlx_device_stream.ipynb</a>（仓库 <a target="_blank" rel="noopener" href="https://github.com/chanonlee/chanon-data-lab">chanon-data-lab</a>）。</p>
+<p>假设：本机同时可用 <code>mx.cpu</code> 与 <code>mx.gpu</code>（Apple Silicon &#x2F; Metal）。无 GPU 环境请勿直接跑本笔记。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs text">MLX System Model<br><br>  数据世界<br>  Data World<br>       |<br>       v<br>  资源世界<br>  Resource World<br>       |<br>       v<br>  执行世界<br>  Execution World<br>       |<br>       v<br>  通信世界<br>  Communication World<br>       |<br>       v<br>  优化世界<br>  Optimization World<br></code></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>世界</th>
+<th>回答的问题</th>
+<th>本层对象</th>
+<th>本层不负责</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>数据世界 Data</strong></td>
+<td>哪些样本由谁处理？</td>
+<td>Dataset、Shard</td>
+<td>设备、队列、归约、更新策略</td>
+</tr>
+<tr>
+<td><strong>资源世界 Resource</strong></td>
+<td>有哪些计算资源？算子落在哪？</td>
+<td>Device（cpu &#x2F; gpu）</td>
+<td>数据怎么切、队列怎么排</td>
+</tr>
+<tr>
+<td><strong>执行世界 Execution</strong></td>
+<td>任务如何入队与跑完？</td>
+<td>Stream、kernel</td>
+<td>跨进程归约、Optimizer 策略</td>
+</tr>
+<tr>
+<td><strong>通信世界 Communication</strong></td>
+<td>多路如何同步&#x2F;归约？</td>
+<td><code>distributed</code> group、<code>all_sum</code> &#x2F; average_gradients</td>
+<td>参数更新公式、数据切分本身</td>
+</tr>
+<tr>
+<td><strong>优化世界 Optimization</strong></td>
+<td>如何根据梯度更新参数？</td>
+<td>Optimizer、Parameter Update</td>
+<td>Device 枚举、collective 语义</td>
+</tr>
+</tbody></table>
+<h2 id="正交关系"><a href="#正交关系" class="headerlink" title="正交关系"></a>正交关系</h2><ul>
+<li><code>shard ≠ device</code>（Data ≠ Resource）——中间是 <strong>runtime mapping</strong></li>
+<li><code>device ≠ stream</code>（Resource ≠ Execution）</li>
+<li><code>stream ≠ hardware</code></li>
+<li>通信（归约）≠ 优化（用归约后的梯度改参数）</li>
+<li>Optimizer <strong>不属于</strong> Execution 的一条 Stream 身份；它是 Optimization 层的步骤（其内部 update 仍会再变成 Execution 里的 kernels）</li>
 </ul>
-<p>正交关系：<code>shard ≠ device</code>，<code>device ≠ stream</code>；通信（归约）≠ 优化（用归约后的梯度改参数）。</p>
 <h2 id="关键代码"><a href="#关键代码" class="headerlink" title="关键代码"></a>关键代码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 资源：同一切片可换 Device 重算（数据对象不变，只改 runtime mapping）</span><br>shard0 = mx.arange(<span class="hljs-number">6</span>).astype(mx.float32)<br>r_cpu = mx.multiply(shard0, <span class="hljs-number">2</span>, stream=mx.cpu)<br>r_gpu = mx.multiply(shard0, <span class="hljs-number">2</span>, stream=mx.gpu)<br>mx.<span class="hljs-built_in">eval</span>(r_cpu, r_gpu)<br><br><span class="hljs-comment"># 执行：同 Device 两条 Stream，可重叠入队</span><br>dev = mx.gpu<br>s1, s2 = mx.new_stream(dev), mx.new_stream(dev)<br>c = mx.matmul(a, b, stream=s1)<br>d = mx.matmul(a, b, stream=s2)<br>mx.<span class="hljs-built_in">eval</span>(c, d)<br></code></pre></td></tr></table></figure>
 
                 
