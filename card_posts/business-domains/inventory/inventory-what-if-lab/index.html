@@ -16,23 +16,23 @@
   <meta name="author" content="chanon">
   <meta name="keywords" content="">
   
-    <meta name="description" content="← 业务领域 库存领域模型入口。 关注可用量、预占、出入库与对账——把「有多少」和「谁占了」说清楚。 笔记与链接                                   Inventory What-If Lab           单变量 Control &#x2F; Experiment 对比的门店库存 What-If 试验台；看局部规则如何牵动报废、流水与盈利。">
+    <meta name="description" content="← 库存 门店库存 What-If 试验台。 同一套订货 &#x2F; FEFO &#x2F; 生产规则下，只改一个局部变量，把 Control 与 Experiment 从 Day 0 各自跑满 N 天，对照库存、报废、流水与盈利。代码在 chanon-data-lab · src&#x2F;inventory-what-if-lab。 机制 BaseConfig 深拷贝为两组；实验层只 pat">
 <meta property="og:type" content="website">
-<meta property="og:title" content="库存">
-<meta property="og:url" content="http://example.com/card_posts/business-domains/inventory/index.html">
+<meta property="og:title" content="Inventory What-If Lab">
+<meta property="og:url" content="http://example.com/card_posts/business-domains/inventory/inventory-what-if-lab/index.html">
 <meta property="og:site_name" content="Chanon_Lee">
-<meta property="og:description" content="← 业务领域 库存领域模型入口。 关注可用量、预占、出入库与对账——把「有多少」和「谁占了」说清楚。 笔记与链接                                   Inventory What-If Lab           单变量 Control &#x2F; Experiment 对比的门店库存 What-If 试验台；看局部规则如何牵动报废、流水与盈利。">
+<meta property="og:description" content="← 库存 门店库存 What-If 试验台。 同一套订货 &#x2F; FEFO &#x2F; 生产规则下，只改一个局部变量，把 Control 与 Experiment 从 Day 0 各自跑满 N 天，对照库存、报废、流水与盈利。代码在 chanon-data-lab · src&#x2F;inventory-what-if-lab。 机制 BaseConfig 深拷贝为两组；实验层只 pat">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/44d47d503b09e7879b9788cdcc98082.jpg">
-<meta property="article:published_time" content="2026-07-25T09:47:38.000Z">
-<meta property="article:modified_time" content="2026-08-17T15:43:59.983Z">
+<meta property="article:published_time" content="2026-08-17T15:43:40.000Z">
+<meta property="article:modified_time" content="2026-08-17T15:44:42.595Z">
 <meta property="article:author" content="chanon">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/img/44d47d503b09e7879b9788cdcc98082.jpg">
   
   
   
-  <title>库存 - Chanon_Lee</title>
+  <title>Inventory What-If Lab - Chanon_Lee</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -191,7 +191,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="库存"></span>
+            <span id="subtitle" data-typed-text="Inventory What-If Lab"></span>
           
         </div>
 
@@ -229,25 +229,28 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">库存</h1>
+            <h1 id="seo-header">Inventory What-If Lab</h1>
             
             
               <div class="markdown-body">
                 
-                <p><a href="/card_posts/business-domains/">← 业务领域</a></p>
-<p><strong>库存领域模型入口。</strong> 关注可用量、预占、出入库与对账——把「有多少」和「谁占了」说清楚。</p>
-<h2 id="笔记与链接"><a href="#笔记与链接" class="headerlink" title="笔记与链接"></a>笔记与链接</h2><div class="row links links-span-full">
-  <div class="card col-12">
-    <a href="/card_posts/business-domains/inventory/inventory-what-if-lab/" class="card-body hover-with-bg">
-      <div class="card-content">
-        <div class="link-text">
-          <div class="link-title">Inventory What-If Lab</div>
-          <div class="link-intro">单变量 Control / Experiment 对比的门店库存 What-If 试验台；看局部规则如何牵动报废、流水与盈利。</div>
-        </div>
-      </div>
-    </a>
-  </div>
-</div>
+                <p><a href="/card_posts/business-domains/inventory/">← 库存</a></p>
+<p><strong>门店库存 What-If 试验台。</strong> 同一套订货 &#x2F; FEFO &#x2F; 生产规则下，只改一个局部变量，把 Control 与 Experiment 从 Day 0 各自跑满 N 天，对照库存、报废、流水与盈利。代码在 <a target="_blank" rel="noopener" href="https://github.com/chanonlee/chanon-data-lab/tree/lab/simple_example/src/inventory-what-if-lab">chanon-data-lab · src&#x2F;inventory-what-if-lab</a>。</p>
+<h2 id="机制"><a href="#机制" class="headerlink" title="机制"></a>机制</h2><ul>
+<li>BaseConfig 深拷贝为两组；实验层只 patch 一个变量（保质期、提前期、订货点、再订货量、期初、产品开关、配方增减、单价、售价）。</li>
+<li>价格只进入统计层：流水 &#x3D; 销售额 − 采购支出；真实盈利 &#x3D; 销售额 − COGS − 报废成本。订货决策不读价格。</li>
+<li>当前模型按销售上限生产即售出，日销售量 ≡ 日产量。</li>
+</ul>
+<h2 id="对比试验：芒果再订货量-60-→-300"><a href="#对比试验：芒果再订货量-60-→-300" class="headerlink" title="对比试验：芒果再订货量 60 → 300"></a>对比试验：芒果再订货量 60 → 300</h2><p>默认芒果订货量&#x3D;60、日销上限&#x3D;20 时，原料往往当日周转完，保质期拉长几乎看不出报废差异。要观察「多订一点」的系统后果，把再订货量从 60 提到 300，跑 365 天。</p>
+<h3 id="总库存"><a href="#总库存" class="headerlink" title="总库存"></a>总库存</h3><p><img src="/img/inventory-what-if-stock.png" srcset="/img/loading.gif" lazyload alt="总库存双曲线"></p>
+<p>实验组能支撑更多高复杂度配方（芝芝芒芒），总销量约 +16.8%；平均在库库存反而略降（约 −1.4%）——多订带来的是<strong>更高周转与更多报废</strong>，不是简单的「库存在高水平趴着」。</p>
+<h3 id="每日报废"><a href="#每日报废" class="headerlink" title="每日报废"></a>每日报废</h3><p><img src="/img/inventory-what-if-waste.png" srcset="/img/loading.gif" lazyload alt="每日报废双曲线"></p>
+<p>对照组报废为 0；实验组累计报废约 2960（主要是芒果），报废成本约 888。局部「多补一点」把短保物料推过了消耗窗口，报废从无到有。</p>
+<h3 id="每日流水"><a href="#每日流水" class="headerlink" title="每日流水"></a>每日流水</h3><p><img src="/img/inventory-what-if-cashflow.png" srcset="/img/loading.gif" lazyload alt="每日流水双曲线"></p>
+<p>总收入约 +24.6%，总流水与总盈利约 +14.7%。收入涨幅高于流水&#x2F;盈利：多采多卖的同时，采购支出与报废成本一起上来；流水与盈利同向，但口径仍不同——采购进流水、报废进盈利。</p>
+<h2 id="本地启动"><a href="#本地启动" class="headerlink" title="本地启动"></a>本地启动</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> src/inventory-what-if-lab<br>pip install -r requirements.txt<br>streamlit run app.py<br></code></pre></td></tr></table></figure>
+
+<p>也可导出本页用的对比图：<code>python scripts/export_compare_charts.py</code>。</p>
 
                 
               </div>
@@ -265,8 +268,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>库存</div>
-      <div>http://example.com/card_posts/business-domains/inventory/index.html</div>
+      <div>Inventory What-If Lab</div>
+      <div>http://example.com/card_posts/business-domains/inventory/inventory-what-if-lab/index.html</div>
     </div>
     <div class="license-meta">
       
@@ -278,7 +281,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>July 25, 2026</div>
+          <div>August 17, 2026</div>
         </div>
       
       
